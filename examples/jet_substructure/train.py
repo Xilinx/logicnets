@@ -148,7 +148,8 @@ def train(model, datasets, train_cfg, options):
 
     # Main training loop
     maxAcc = 0.0
-    for epoch in range(0,train_cfg["epochs"]):
+    num_epochs = train_cfg["epochs"]
+    for epoch in range(0, num_epochs):
         # Train for this epoch
         model.train()
         accLoss = 0.0
@@ -177,7 +178,7 @@ def train(model, datasets, train_cfg, options):
 
         accLoss /= len(train_loader.dataset)
         accuracy = 100.0*correct / len(train_loader.dataset)
-        print(f"Epoch: {epoch}\tTrain Acc (%): {accuracy.detach().cpu().numpy():.2f}\tTrain Loss: {accLoss.detach().cpu().numpy():.3e}")
+        print(f"Epoch: {epoch}/{num_epochs}\tTrain Acc (%): {accuracy.detach().cpu().numpy():.2f}\tTrain Loss: {accLoss.detach().cpu().numpy():.3e}")
         #for g in optimizer.param_groups:
         #        print("LR: {:.6f} ".format(g['lr']))
         #        print("LR: {:.6f} ".format(g['weight_decay']))
@@ -196,7 +197,7 @@ def train(model, datasets, train_cfg, options):
             maxAcc = val_accuracy
         writer.add_scalar('val_accuracy', val_accuracy, (epoch+1)*steps)
         writer.add_scalar('test_accuracy', test_accuracy, (epoch+1)*steps)
-        print(f"Epoch: {epoch}\tValid Acc (%): {val_accuracy:.2f}\tTest Acc: {test_accuracy:.2f}")
+        print(f"Epoch: {epoch}/{num_epochs}\tValid Acc (%): {val_accuracy:.2f}\tTest Acc: {test_accuracy:.2f}")
 
 def test(model, dataset_loader, cuda):
     model.eval()

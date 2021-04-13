@@ -95,6 +95,7 @@ if __name__ == "__main__":
     model.load_state_dict(checkpoint['model_dict'])
 
     # Test the PyTorch model
+    print("Running inference on baseline model...")
     model.eval()
     baseline_accuracy = test(model, test_loader, cuda=False)
     print("Baseline accuracy: %f" % (baseline_accuracy))
@@ -104,9 +105,11 @@ if __name__ == "__main__":
     lut_model.load_state_dict(checkpoint['model_dict'])
 
     # Generate the truth tables in the LUT module
+    print("Converting to NEQs to LUTs...")
     generate_truth_tables(lut_model, verbose=True)
 
     # Test the LUT-based model
+    print("Running inference on LUT-based model...")
     lut_inference(lut_model)
     lut_model.eval()
     lut_accuracy = test(lut_model, test_loader, cuda=False)
@@ -116,10 +119,14 @@ if __name__ == "__main__":
 
     torch.save(modelSave, options_cfg["log_dir"] + "/lut_based_model.pth")
 
+    print("Generating verilog in %s..." % (options_cfg["log_dir"]))
     module_list_to_verilog_module(lut_model.module_list, "logicnet", options_cfg["log_dir"])
+    print("Top level entity stored at: %s/logicnet.v ..." % (options_cfg["log_dir"]))
 
+    print("Running inference simulation of Verilog-based model...")
     lut_model.verilog_inference(options_cfg["log_dir"], "logicnet.v")
     verilog_accuracy = test(lut_model, test_loader, cuda=False)
     print("Verilog-Based Model accuracy: %f" % (verilog_accuracy))
 
+    print("Running out-of-context synthesis")
     ret = synthesize_and_get_resource_counts(options_cfg["log_dir"], "logicnet", fpga_part="xcu280-fsvh2892-2L-e", clk_period_ns=1.0)

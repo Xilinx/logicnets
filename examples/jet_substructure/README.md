@@ -19,7 +19,7 @@ Otherwise, you can install the above dependencies with pip and/or conda.
 
 ## Download the Dataset
 
-In order to download the dataset, run the following:
+In order to download the dataset, browse to the directory where this example is contained (e.g., `cd /path/to/logicnets/examples/jet_substructure/`) and run the following:
 
 ```bash
 mkdir -p data
@@ -44,7 +44,7 @@ python neq2lut.py --arch <jsc-s|jsc-m|jsc-l> --checkpoint ./<jsc_s|jsc_m|jsc_l>/
 ## Results
 
 Your results may vary slightly, depending on your system configuration.
-The following results are attained when training on a CPU and sythesising with Vivado 2019.2:
+The following results are attained when training on a CPU and synthesising with Vivado 2019.2:
 
 | Network Architecture  | Test Accuracy (%) | LUTs  | Flip Flops    | Fmax (Mhz)    | Latency (Cycles)  |
 | --------------------- | ----------------- | ----- | ------------- | ------------- | ----------------- |

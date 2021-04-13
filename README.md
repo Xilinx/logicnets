@@ -42,7 +42,7 @@ Follow the steps below to install LogicNets within a `docker` container:
 
 You are now ready to run an example, browse to `/workspace/logicnets/examples/jet_substructure/` and start training a LogicNets network!
 
-Note, a license if not required to run any of the provided examples.
+Note, a license is not required to run any of the provided examples.
 
 ### Manual Installation
 

@@ -9,6 +9,10 @@ They are able to achieve extremely high throughput and low latency on Xilinx FPG
 This project provides a set of library components and examples to help you design,
 train and deploy your own LogicNets networks.
 Note, this is considered to be an \'alpha\' release: expect API changes and issues.
+You can learn more about LogicNets from [this paper](https://arxiv.org/pdf/2004.03021), or from the following YouTube videos:
+* [10-minute presentation at DATE'21](https://www.youtube.com/watch?v=xtWySQ-ehRw)
+* [20-minute presentation at FPL'20](https://www.youtube.com/watch?v=qCyK5v84jpI)
+
 
 ## Prerequisites
 
@@ -80,7 +84,7 @@ Documentation site coming soon.
 ## Citation
 
 If you find this work useful for your research, please consider citing
-our paper below:
+[our paper](https://arxiv.org/pdf/2004.03021) from FPL'20 below:
 
 ```bibtex
 @inproceedings{umuroglu2020logicnets,

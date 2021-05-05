@@ -64,12 +64,14 @@ class JetSubstructureNeqModel(nn.Module):
         self.verilog_dir = None
         self.top_module_filename = None
         self.dut = None
+        self.logfile = None
 
-    def verilog_inference(self, verilog_dir, top_module_filename):
+    def verilog_inference(self, verilog_dir, top_module_filename, logfile=False):
         self.verilog_dir = realpath(verilog_dir)
         self.top_module_filename = top_module_filename
         self.dut = PyVerilator.build(f"{self.verilog_dir}/{self.top_module_filename}", verilog_path=[self.verilog_dir], build_dir=f"{self.verilog_dir}/verilator")
         self.is_verilog_inference = True
+        self.logfile = logfile
 
     def pytorch_inference(self):
         self.is_verilog_inference = False
@@ -110,6 +112,10 @@ class JetSubstructureNeqModel(nn.Module):
             res_split = [result[i:i+output_bitwidth] for i in range(0, len(result), output_bitwidth)][::-1]
             yv_i = torch.Tensor(list(map(lambda z: int(z, 2), res_split)))
             y[i,:] = yv_i
+            # Dump the I/O pairs
+            if self.logfile is not None:
+                with open(self.logfile, "a") as f:
+                    f.write(f"{int(xvc_i,2):0{int(total_input_bits)}b}{int(ysc_i,2):0{int(total_output_bits)}b}\n")
         return y
 
     def pytorch_forward(self, x):

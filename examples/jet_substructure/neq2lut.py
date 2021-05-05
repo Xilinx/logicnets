@@ -124,7 +124,7 @@ if __name__ == "__main__":
     print("Top level entity stored at: %s/logicnet.v ..." % (options_cfg["log_dir"]))
 
     print("Running inference simulation of Verilog-based model...")
-    lut_model.verilog_inference(options_cfg["log_dir"], "logicnet.v")
+    lut_model.verilog_inference(options_cfg["log_dir"], "logicnet.v", options_cfg["log_dir"] + "io.txt")
     verilog_accuracy = test(lut_model, test_loader, cuda=False)
     print("Verilog-Based Model accuracy: %f" % (verilog_accuracy))
 

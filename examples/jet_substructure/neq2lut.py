@@ -57,6 +57,8 @@ if __name__ == "__main__":
         help="A location to store the log output of the training run and the output model (default: %(default)s)")
     parser.add_argument('--checkpoint', type=str, required=True,
         help="The checkpoint file which contains the model weights")
+    parser.add_argument('--dump-io', action='store_true', default=False,
+        help="Dump I/O to the verilog LUT to a text file in the log directory (default: %(default)s)")
     args = parser.parse_args()
     defaults = configs[args.arch]
     options = vars(args)
@@ -126,7 +128,14 @@ if __name__ == "__main__":
     print("Top level entity stored at: %s/logicnet.v ..." % (options_cfg["log_dir"]))
 
     print("Running inference simulation of Verilog-based model...")
-    lut_model.verilog_inference(options_cfg["log_dir"], "logicnet.v", options_cfg["log_dir"] + "io.txt")
+    if args.dump_io:
+        io_filename = options_cfg["log_dir"] + f"io_{args.dataset_split}.txt"
+        with open(io_filename, 'w') as f:
+            pass # Create an empty file.
+        print(f"Dumping verilog I/O to {io_filename}...")
+    else:
+        io_filename = None
+    lut_model.verilog_inference(options_cfg["log_dir"], "logicnet.v", io_filename)
     verilog_accuracy = test(lut_model, test_loader, cuda=False)
     print("Verilog-Based Model accuracy: %f" % (verilog_accuracy))
 

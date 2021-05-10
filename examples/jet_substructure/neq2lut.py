@@ -51,6 +51,8 @@ if __name__ == "__main__":
         help="The file to use as the dataset input (default: %(default)s)")
     parser.add_argument('--dataset-config', type=str, default='config/yaml_IP_OP_config.yml',
         help="The file to use to configure the input dataset (default: %(default)s)")
+    parser.add_argument('--dataset-split', type=str, default='test', choices=['train', 'test'],
+        help="Dataset to use for evaluation (default: %(default)s)")
     parser.add_argument('--log-dir', type=str, default='./log',
         help="A location to store the log output of the training run and the output model (default: %(default)s)")
     parser.add_argument('--checkpoint', type=str, required=True,
@@ -81,11 +83,11 @@ if __name__ == "__main__":
 
     # Fetch the test set
     dataset = {}
-    dataset['test'] = JetSubstructureDataset(dataset_cfg['dataset_file'], dataset_cfg['dataset_config'], split="test")
-    test_loader = DataLoader(dataset["test"], batch_size=config['batch_size'], shuffle=False)
+    dataset[args.dataset_split] = JetSubstructureDataset(dataset_cfg['dataset_file'], dataset_cfg['dataset_config'], split=args.dataset_split)
+    test_loader = DataLoader(dataset[args.dataset_split], batch_size=config['batch_size'], shuffle=False)
 
     # Instantiate the PyTorch model
-    x, y = dataset['test'][0]
+    x, y = dataset[args.dataset_split][0]
     model_cfg['input_length'] = len(x)
     model_cfg['output_length'] = len(y)
     model = JetSubstructureNeqModel(model_cfg)

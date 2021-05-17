@@ -46,7 +46,7 @@ def dump_io(model, data_loader, input_file, output_file):
                 o_f.write(f"{int(indices[i])}\n")
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="Synthesize convert a PyTorch trained model into verilog")
+    parser = ArgumentParser(description="Dump the train and test datasets (after input quantization) into text files")
     parser.add_argument('--arch', type=str, choices=configs.keys(), default="jsc-s",
         help="Specific the neural network model to use (default: %(default)s)")
     parser.add_argument('--batch-size', type=int, default=None, metavar='N',

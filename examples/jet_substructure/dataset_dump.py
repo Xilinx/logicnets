@@ -128,4 +128,4 @@ if __name__ == "__main__":
     print(f"Dumping train I/O to {train_input_file} and {train_output_file}")
     dump_io(model, train_loader, train_input_file, train_output_file)
     print(f"Dumping test I/O to {test_input_file} and {test_output_file}")
-    dump_io(model, train_loader, test_input_file, test_output_file)
+    dump_io(model, test_loader, test_input_file, test_output_file)

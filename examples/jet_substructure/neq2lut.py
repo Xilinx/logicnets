@@ -49,6 +49,8 @@ if __name__ == "__main__":
         help="A list of hidden layer neuron sizes (default: %(default)s)")
     parser.add_argument('--dataset-file', type=str, default='data/processed-pythia82-lhc13-all-pt1-50k-r1_h022_e0175_t220_nonu_truth.z',
         help="The file to use as the dataset input (default: %(default)s)")
+    parser.add_argument('--clock-period', type=float, default=1.0,
+        help="Target clock frequency to use during Vivado synthesis (default: %(default)s)")
     parser.add_argument('--dataset-config', type=str, default='config/yaml_IP_OP_config.yml',
         help="The file to use to configure the input dataset (default: %(default)s)")
     parser.add_argument('--log-dir', type=str, default='./log',
@@ -129,4 +131,4 @@ if __name__ == "__main__":
     print("Verilog-Based Model accuracy: %f" % (verilog_accuracy))
 
     print("Running out-of-context synthesis")
-    ret = synthesize_and_get_resource_counts(options_cfg["log_dir"], "logicnet", fpga_part="xcu280-fsvh2892-2L-e", clk_period_ns=1.0)
+    ret = synthesize_and_get_resource_counts(options_cfg["log_dir"], "logicnet", fpga_part="xcu280-fsvh2892-2L-e", clk_period_ns=args.clock_period)

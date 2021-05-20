@@ -45,13 +45,15 @@ endmodule\n"""
                                 output_bits_1=output_bits-1,
                                 module_contents=module_contents)
 
-def layer_connection_verilog(layer_string: str, input_string: str, input_bits: int, output_string: str, output_bits: int, output_wire=True):
-    layer_connection_template = """\
+def layer_connection_verilog(layer_string: str, input_string: str, input_bits: int, output_string: str, output_bits: int, output_wire=True, register=False):
+    if register:
+        layer_connection_template = """\
 wire [{input_bits_1:d}:0] {input_string}w;
 myreg #(.DataWidth({input_bits})) {layer_string}_reg (.data_in({input_string}), .clk(clk), .rst(rst), .data_out({input_string}w));\n"""
-#    layer_connection_template = """\
-#wire [{input_bits_1:d}:0] {input_string}w;
-#assign {input_string}w = {input_string};\n"""
+    else:
+        layer_connection_template = """\
+wire [{input_bits_1:d}:0] {input_string}w;
+assign {input_string}w = {input_string};\n"""
     layer_connection_template += "wire [{output_bits_1:d}:0] {output_string};\n" if output_wire else ""
     layer_connection_template += "{layer_string} {layer_string}_inst (.M0({input_string}w), .M1({output_string}));\n"
     return layer_connection_template.format(    layer_string=layer_string,

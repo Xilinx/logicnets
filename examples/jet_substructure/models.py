@@ -61,7 +61,7 @@ class JetSubstructureNeqModel(nn.Module):
                 layer_list.append(layer)
         self.module_list = nn.ModuleList(layer_list)
         self.is_verilog_inference = False
-        self.latency = len(self.num_neurons)
+        self.latency = 1
         self.verilog_dir = None
         self.top_module_filename = None
         self.dut = None

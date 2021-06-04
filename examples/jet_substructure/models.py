@@ -41,8 +41,9 @@ class JetSubstructureNeqModel(nn.Module):
             out_features = self.num_neurons[i]
             bn = nn.BatchNorm1d(out_features)
             if i == 1:
+                bn_in = nn.BatchNorm1d(in_features)
                 input_bias = ScalarBiasScale(scale=False, bias_init=-0.25)
-                input_quant = QuantBrevitasActivation(QuantHardTanh(model_config["input_bitwidth"], max_val=1., narrow_range=False, quant_type=QuantType.INT, scaling_impl_type=ScalingImplType.PARAMETER), pre_transforms=[input_bias])
+                input_quant = QuantBrevitasActivation(QuantHardTanh(model_config["input_bitwidth"], max_val=1., narrow_range=False, quant_type=QuantType.INT, scaling_impl_type=ScalingImplType.PARAMETER), pre_transforms=[bn_in, input_bias])
                 output_quant = QuantBrevitasActivation(QuantReLU(bit_width=model_config["hidden_bitwidth"], max_val=1.61, quant_type=QuantType.INT, scaling_impl_type=ScalingImplType.PARAMETER), pre_transforms=[bn])
                 mask = RandomFixedSparsityMask2D(in_features, out_features, fan_in=model_config["input_fanin"])
                 layer = SparseLinearNeq(in_features, out_features, input_quant=input_quant, output_quant=output_quant, sparse_linear_kws={'mask': mask})

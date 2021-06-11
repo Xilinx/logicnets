@@ -252,7 +252,7 @@ if __name__ == "__main__":
     parser.add_argument('--dataset-config', type=str, default='config/yaml_IP_OP_config.yml',
         help="The file to use to configure the input dataset (default: %(default)s)")
     parser.add_argument('--checkpoint', type=str, default=None,
-        help="Resume training from a given checkpoint (default: %(default)s - NOT IMPLEMENTED!)")
+        help="Retrain the model from a previous checkpoint (default: %(default)s)")
     args = parser.parse_args()
     defaults = configs[args.arch]
     options = vars(args)
@@ -298,6 +298,10 @@ if __name__ == "__main__":
     model_cfg['input_length'] = len(x)
     model_cfg['output_length'] = len(y)
     model = JetSubstructureNeqModel(model_cfg)
+    if options_cfg['checkpoint'] is not None:
+        print(f"Loading pre-trained checkpoint {options_cfg['checkpoint']}")
+        checkpoint = torch.load(options_cfg['checkpoint'], map_location='cpu')
+        model.load_state_dict(checkpoint['model_dict'])
 
     train(model, dataset, train_cfg, options_cfg)
 

@@ -129,14 +129,13 @@ class SparseLinearNeq(nn.Module):
         for index in range(self.out_features):
             module_name = f"{module_prefix}_N{index}"
             indices, _, _, _ = self.neuron_truth_tables[index]
+            neuron_verilog = self.gen_neuron_verilog(index, module_name) # Generate the contents of the neuron verilog
+            with open(f"{directory}/{module_name}.v", "w") as f:
+                f.write(neuron_verilog)
             if generate_bench:
                 neuron_bench = self.gen_neuron_bench(index, module_name) # Generate the contents of the neuron verilog
                 with open(f"{directory}/{module_name}.bench", "w") as f:
                     f.write(neuron_bench)
-            else:
-                neuron_verilog = self.gen_neuron_verilog(index, module_name) # Generate the contents of the neuron verilog
-                with open(f"{directory}/{module_name}.v", "w") as f:
-                    f.write(neuron_verilog)
             connection_string = generate_neuron_connection_verilog(indices, input_bitwidth) # Generate the string which connects the synapses to this neuron
             wire_name = f"{module_name}_wire"
             connection_line = f"wire [{len(indices)*input_bitwidth-1}:0] {wire_name} = {{{connection_string}}};\n"

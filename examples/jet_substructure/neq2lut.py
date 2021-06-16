@@ -57,6 +57,8 @@ if __name__ == "__main__":
         help="A location to store the log output of the training run and the output model (default: %(default)s)")
     parser.add_argument('--checkpoint', type=str, required=True,
         help="The checkpoint file which contains the model weights")
+    parser.add_argument('--generate-bench', action='store_true', default=False,
+        help="Generate the truth table in BENCH format as well as verilog (default: %(default)s)")
     args = parser.parse_args()
     defaults = configs[args.arch]
     options = vars(args)

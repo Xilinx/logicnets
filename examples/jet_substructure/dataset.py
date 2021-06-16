@@ -62,6 +62,21 @@ class JetSubstructureDataset(Dataset):
             X_train_val = scaler.transform(X_train_val)
             X_test = scaler.transform(X_test)
 
+        if self.config["ApplyPca"]:
+            # Apply dimenionality reduction to the inputs
+            with torch.no_grad():
+                dim = self.config["PcaDimensions"]
+                X_train_val_fp64 = torch.from_numpy(X_train_val).double()
+                X_test_fp64 = torch.from_numpy(X_test).double()
+                U,S,V = torch.svd(X_train_val_fp64)
+                X_train_val_pca_fp64 = torch.mm(X_train_val_fp64, V[:,0:dim])
+                X_test_pca_fp64 = torch.mm(X_test_fp64, V[:,0:dim])
+                variance_retained = 100*(S[0:dim].sum() / S.sum())
+                print(f"Dimensions used for PCA: {dim}")
+                print(f"Variance retained (%): {variance_retained}")
+                X_train_val = X_train_val_pca_fp64.float().numpy()
+                X_test = X_test_pca_fp64.float().numpy()
+
         if self.split == "train":
             self.X = torch.from_numpy(X_train_val)
             self.y = torch.from_numpy(y_train_val)

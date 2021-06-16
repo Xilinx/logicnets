@@ -105,6 +105,7 @@ other_options = {
     "cuda": None,
     "log_dir": None,
     "checkpoint": None,
+    "generate_bench": None,
 }
 
 def train(model, datasets, train_cfg, options):

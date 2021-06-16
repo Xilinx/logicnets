@@ -48,9 +48,9 @@ The following results are attained when training on a CPU and synthesising with 
 
 | Network Architecture  | Test Accuracy (%) | LUTs  | Flip Flops    | Fmax (Mhz)    | Latency (Cycles)  |
 | --------------------- | ----------------- | ----- | ------------- | ------------- | ----------------- |
-| JSC-S                 |              68.8 |   232 |           268 |       1394.70 |                 5 |
-| JSC-M                 |              71.5 | 14576 |           803 |        596.66 |                 5 |
-| JSC-L                 |              72.6 | 38925 |          2418 |        485.44 |                 6 |
+| JSC-S                 |              69.4 |   241 |           269 |       1400.56 |                 5 |
+| JSC-M                 |              71.9 | 15009 |           848 |        583.77 |                 5 |
+| JSC-L                 |              73.0 | 36336 |          2771 |        395.88 |                 6 |
 
 Note, the model architectures reflect the architectures described in our [FPL'20 paper](https://arxiv.org/abs/2004.03021).
 

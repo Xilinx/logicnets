@@ -124,7 +124,7 @@ if __name__ == "__main__":
     torch.save(modelSave, options_cfg["log_dir"] + "/lut_based_model.pth")
 
     print("Generating verilog in %s..." % (options_cfg["log_dir"]))
-    module_list_to_verilog_module(lut_model.module_list, "logicnet", options_cfg["log_dir"])
+    module_list_to_verilog_module(lut_model.module_list, "logicnet", options_cfg["log_dir"], generate_bench=options_cfg["generate_bench"])
     print("Top level entity stored at: %s/logicnet.v ..." % (options_cfg["log_dir"]))
 
     print("Running inference simulation of Verilog-based model...")

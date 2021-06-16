@@ -53,12 +53,16 @@ if __name__ == "__main__":
         help="Target clock frequency to use during Vivado synthesis (default: %(default)s)")
     parser.add_argument('--dataset-config', type=str, default='config/yaml_IP_OP_config.yml',
         help="The file to use to configure the input dataset (default: %(default)s)")
+    parser.add_argument('--dataset-split', type=str, default='test', choices=['train', 'test'],
+        help="Dataset to use for evaluation (default: %(default)s)")
     parser.add_argument('--log-dir', type=str, default='./log',
         help="A location to store the log output of the training run and the output model (default: %(default)s)")
     parser.add_argument('--checkpoint', type=str, required=True,
         help="The checkpoint file which contains the model weights")
     parser.add_argument('--generate-bench', action='store_true', default=False,
         help="Generate the truth table in BENCH format as well as verilog (default: %(default)s)")
+    parser.add_argument('--dump-io', action='store_true', default=False,
+        help="Dump I/O to the verilog LUT to a text file in the log directory (default: %(default)s)")
     args = parser.parse_args()
     defaults = configs[args.arch]
     options = vars(args)
@@ -85,11 +89,11 @@ if __name__ == "__main__":
 
     # Fetch the test set
     dataset = {}
-    dataset['test'] = JetSubstructureDataset(dataset_cfg['dataset_file'], dataset_cfg['dataset_config'], split="test")
-    test_loader = DataLoader(dataset["test"], batch_size=config['batch_size'], shuffle=False)
+    dataset[args.dataset_split] = JetSubstructureDataset(dataset_cfg['dataset_file'], dataset_cfg['dataset_config'], split=args.dataset_split)
+    test_loader = DataLoader(dataset[args.dataset_split], batch_size=config['batch_size'], shuffle=False)
 
     # Instantiate the PyTorch model
-    x, y = dataset['test'][0]
+    x, y = dataset[args.dataset_split][0]
     model_cfg['input_length'] = len(x)
     model_cfg['output_length'] = len(y)
     model = JetSubstructureNeqModel(model_cfg)
@@ -128,7 +132,14 @@ if __name__ == "__main__":
     print("Top level entity stored at: %s/logicnet.v ..." % (options_cfg["log_dir"]))
 
     print("Running inference simulation of Verilog-based model...")
-    lut_model.verilog_inference(options_cfg["log_dir"], "logicnet.v")
+    if args.dump_io:
+        io_filename = options_cfg["log_dir"] + f"io_{args.dataset_split}.txt"
+        with open(io_filename, 'w') as f:
+            pass # Create an empty file.
+        print(f"Dumping verilog I/O to {io_filename}...")
+    else:
+        io_filename = None
+    lut_model.verilog_inference(options_cfg["log_dir"], "logicnet.v", io_filename)
     verilog_accuracy = test(lut_model, test_loader, cuda=False)
     print("Verilog-Based Model accuracy: %f" % (verilog_accuracy))
 

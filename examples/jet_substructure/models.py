@@ -41,8 +41,9 @@ class JetSubstructureNeqModel(nn.Module):
             out_features = self.num_neurons[i]
             bn = nn.BatchNorm1d(out_features)
             if i == 1:
+                bn_in = nn.BatchNorm1d(in_features)
                 input_bias = ScalarBiasScale(scale=False, bias_init=-0.25)
-                input_quant = QuantBrevitasActivation(QuantHardTanh(model_config["input_bitwidth"], max_val=1., narrow_range=False, quant_type=QuantType.INT, scaling_impl_type=ScalingImplType.PARAMETER), pre_transforms=[input_bias])
+                input_quant = QuantBrevitasActivation(QuantHardTanh(model_config["input_bitwidth"], max_val=1., narrow_range=False, quant_type=QuantType.INT, scaling_impl_type=ScalingImplType.PARAMETER), pre_transforms=[bn_in, input_bias])
                 output_quant = QuantBrevitasActivation(QuantReLU(bit_width=model_config["hidden_bitwidth"], max_val=1.61, quant_type=QuantType.INT, scaling_impl_type=ScalingImplType.PARAMETER), pre_transforms=[bn])
                 mask = RandomFixedSparsityMask2D(in_features, out_features, fan_in=model_config["input_fanin"])
                 layer = SparseLinearNeq(in_features, out_features, input_quant=input_quant, output_quant=output_quant, sparse_linear_kws={'mask': mask})
@@ -64,12 +65,14 @@ class JetSubstructureNeqModel(nn.Module):
         self.verilog_dir = None
         self.top_module_filename = None
         self.dut = None
+        self.logfile = None
 
-    def verilog_inference(self, verilog_dir, top_module_filename):
+    def verilog_inference(self, verilog_dir, top_module_filename, logfile=False):
         self.verilog_dir = realpath(verilog_dir)
         self.top_module_filename = top_module_filename
         self.dut = PyVerilator.build(f"{self.verilog_dir}/{self.top_module_filename}", verilog_path=[self.verilog_dir], build_dir=f"{self.verilog_dir}/verilator")
         self.is_verilog_inference = True
+        self.logfile = logfile
 
     def pytorch_inference(self):
         self.is_verilog_inference = False
@@ -110,6 +113,10 @@ class JetSubstructureNeqModel(nn.Module):
             res_split = [result[i:i+output_bitwidth] for i in range(0, len(result), output_bitwidth)][::-1]
             yv_i = torch.Tensor(list(map(lambda z: int(z, 2), res_split)))
             y[i,:] = yv_i
+            # Dump the I/O pairs
+            if self.logfile is not None:
+                with open(self.logfile, "a") as f:
+                    f.write(f"{int(xvc_i,2):0{int(total_input_bits)}b}{int(ysc_i,2):0{int(total_output_bits)}b}\n")
         return y
 
     def pytorch_forward(self, x):

@@ -49,6 +49,8 @@ if __name__ == "__main__":
         help="A list of hidden layer neuron sizes (default: %(default)s)")
     parser.add_argument('--dataset-file', type=str, default='data/processed-pythia82-lhc13-all-pt1-50k-r1_h022_e0175_t220_nonu_truth.z',
         help="The file to use as the dataset input (default: %(default)s)")
+    parser.add_argument('--clock-period', type=float, default=1.0,
+        help="Target clock frequency to use during Vivado synthesis (default: %(default)s)")
     parser.add_argument('--dataset-config', type=str, default='config/yaml_IP_OP_config.yml',
         help="The file to use to configure the input dataset (default: %(default)s)")
     parser.add_argument('--dataset-split', type=str, default='test', choices=['train', 'test'],
@@ -57,6 +59,8 @@ if __name__ == "__main__":
         help="A location to store the log output of the training run and the output model (default: %(default)s)")
     parser.add_argument('--checkpoint', type=str, required=True,
         help="The checkpoint file which contains the model weights")
+    parser.add_argument('--generate-bench', action='store_true', default=False,
+        help="Generate the truth table in BENCH format as well as verilog (default: %(default)s)")
     parser.add_argument('--dump-io', action='store_true', default=False,
         help="Dump I/O to the verilog LUT to a text file in the log directory (default: %(default)s)")
     args = parser.parse_args()
@@ -124,7 +128,7 @@ if __name__ == "__main__":
     torch.save(modelSave, options_cfg["log_dir"] + "/lut_based_model.pth")
 
     print("Generating verilog in %s..." % (options_cfg["log_dir"]))
-    module_list_to_verilog_module(lut_model.module_list, "logicnet", options_cfg["log_dir"])
+    module_list_to_verilog_module(lut_model.module_list, "logicnet", options_cfg["log_dir"], generate_bench=options_cfg["generate_bench"])
     print("Top level entity stored at: %s/logicnet.v ..." % (options_cfg["log_dir"]))
 
     print("Running inference simulation of Verilog-based model...")
@@ -140,4 +144,4 @@ if __name__ == "__main__":
     print("Verilog-Based Model accuracy: %f" % (verilog_accuracy))
 
     print("Running out-of-context synthesis")
-    ret = synthesize_and_get_resource_counts(options_cfg["log_dir"], "logicnet", fpga_part="xcu280-fsvh2892-2L-e", clk_period_ns=1.0)
+    ret = synthesize_and_get_resource_counts(options_cfg["log_dir"], "logicnet", fpga_part="xcu280-fsvh2892-2L-e", clk_period_ns=args.clock_period)

@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from functools import partial
+from functools import partial, reduce
 
 import torch
 from torch import Tensor
@@ -28,6 +28,9 @@ from .verilog import    generate_lut_verilog, \
                         layer_connection_verilog, \
                         generate_logicnets_verilog, \
                         generate_register_verilog
+from .bench import      generate_lut_bench, \
+                        generate_lut_input_string, \
+                        sort_to_bench
 
 # TODO: Create a container module which performs this function.
 # Generate all truth tables for NEQs for a given nn.Module()
@@ -57,7 +60,7 @@ def neq_inference(model: nn.Module) -> None:
 
 # TODO: Should this go in with the other verilog functions?
 # TODO: Support non-linear topologies
-def module_list_to_verilog_module(module_list: nn.ModuleList, module_name: str, output_directory: str):
+def module_list_to_verilog_module(module_list: nn.ModuleList, module_name: str, output_directory: str, generate_bench: bool = True):
     input_bitwidth = None
     output_bitwidth = None
     module_contents = ""
@@ -65,7 +68,7 @@ def module_list_to_verilog_module(module_list: nn.ModuleList, module_name: str, 
         m = module_list[i]
         if type(m) == SparseLinearNeq:
             module_prefix = f"layer{i}"
-            module_input_bits, module_output_bits = m.gen_layer_verilog(module_prefix, output_directory)
+            module_input_bits, module_output_bits = m.gen_layer_verilog(module_prefix, output_directory, generate_bench=generate_bench)
             if i == 0:
                 input_bitwidth = module_input_bits
             elif i == len(module_list)-1:
@@ -115,7 +118,7 @@ class SparseLinearNeq(nn.Module):
     # TODO: Move the verilog string templates to elsewhere
     # TODO: Move this to another class
     # TODO: Update this code to support custom bitwidths per input/output
-    def gen_layer_verilog(self, module_prefix, directory):
+    def gen_layer_verilog(self, module_prefix, directory, generate_bench: bool = True):
         _, input_bitwidth = self.input_quant.get_scale_factor_bits()
         _, output_bitwidth = self.output_quant.get_scale_factor_bits()
         input_bitwidth, output_bitwidth = int(input_bitwidth), int(output_bitwidth)
@@ -129,6 +132,10 @@ class SparseLinearNeq(nn.Module):
             neuron_verilog = self.gen_neuron_verilog(index, module_name) # Generate the contents of the neuron verilog
             with open(f"{directory}/{module_name}.v", "w") as f:
                 f.write(neuron_verilog)
+            if generate_bench:
+                neuron_bench = self.gen_neuron_bench(index, module_name) # Generate the contents of the neuron verilog
+                with open(f"{directory}/{module_name}.bench", "w") as f:
+                    f.write(neuron_bench)
             connection_string = generate_neuron_connection_verilog(indices, input_bitwidth) # Generate the string which connects the synapses to this neuron
             wire_name = f"{module_name}_wire"
             connection_line = f"wire [{len(indices)*input_bitwidth-1}:0] {wire_name} = {{{connection_string}}};\n"
@@ -157,6 +164,27 @@ class SparseLinearNeq(nn.Module):
             res_str = self.output_quant.get_bin_str(bin_output_states[i])
             lut_string += f"\t\t\t{int(cat_input_bitwidth)}'b{entry_str}: M1r = {int(output_bitwidth)}'b{res_str};\n"
         return generate_lut_verilog(module_name, int(cat_input_bitwidth), int(output_bitwidth), lut_string)
+
+    # TODO: Move the string templates to bench.py
+    # TODO: Move this to another class
+    def gen_neuron_bench(self, index, module_name):
+        indices, input_perm_matrix, float_output_states, bin_output_states = self.neuron_truth_tables[index]
+        _, input_bitwidth = self.input_quant.get_scale_factor_bits()
+        _, output_bitwidth = self.output_quant.get_scale_factor_bits()
+        cat_input_bitwidth = len(indices)*input_bitwidth
+        lut_string = ""
+        num_entries = input_perm_matrix.shape[0]
+        # Sort the input_perm_matrix to match the bench format
+        input_state_space_bin_str = list(map(lambda y: list(map(lambda z: self.input_quant.get_bin_str(z), y)), input_perm_matrix))
+        sorted_bin_output_states = sort_to_bench(input_state_space_bin_str, bin_output_states)
+        # Generate the LUT for each output
+        for i in range(int(output_bitwidth)):
+            lut_string += f"M1[{i}]       = LUT 0x"
+            output_bin_str = reduce(lambda b,c: b+c, map(lambda a: self.output_quant.get_bin_str(a)[int(output_bitwidth)-1-i], sorted_bin_output_states))
+            lut_hex_string = f"{int(output_bin_str,2):0{int(num_entries/4)}x} "
+            lut_string += lut_hex_string
+            lut_string += generate_lut_input_string(int(cat_input_bitwidth))
+        return generate_lut_bench(int(cat_input_bitwidth), int(output_bitwidth), lut_string)
 
     def lut_inference(self):
         self.is_lut_inference = True

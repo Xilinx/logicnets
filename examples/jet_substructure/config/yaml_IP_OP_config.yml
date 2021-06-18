@@ -44,4 +44,6 @@ KerasLoss: categorical_crossentropy
 L1Reg: 0.0001
 NormalizeInputs: 1 
 InputType: Dense
+ApplyPca: false
+PcaDimensions: 10
 

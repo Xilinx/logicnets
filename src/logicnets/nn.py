@@ -274,6 +274,20 @@ class SparseLinearNeq(nn.Module):
                 neuron_truth_tables.append((indices, bin_input_permutation_matrix, output_states, bin_output_states)) # Change this to be the binary output states
         self.neuron_truth_tables = neuron_truth_tables
 
+class DenseMask2D(nn.Module):
+    def __init__(self, in_features: int, out_features: int) -> None:
+        super(DenseMask2D, self).__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        self.mask = Parameter(torch.Tensor(out_features, in_features), requires_grad=False)
+        self.reset_parameters()
+
+    def reset_parameters(self) -> None:
+        init.constant_(self.mask, 1.0)
+
+    def forward(self):
+        return self.mask
+
 class RandomFixedSparsityMask2D(nn.Module):
     def __init__(self, in_features: int, out_features: int, fan_in: int) -> None:
         super(RandomFixedSparsityMask2D, self).__init__()

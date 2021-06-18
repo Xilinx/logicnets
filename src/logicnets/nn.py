@@ -60,7 +60,7 @@ def neq_inference(model: nn.Module) -> None:
 
 # TODO: Should this go in with the other verilog functions?
 # TODO: Support non-linear topologies
-def module_list_to_verilog_module(module_list: nn.ModuleList, module_name: str, output_directory: str, generate_bench: bool = True):
+def module_list_to_verilog_module(module_list: nn.ModuleList, module_name: str, output_directory: str, add_registers: bool = True, generate_bench: bool = True):
     input_bitwidth = None
     output_bitwidth = None
     module_contents = ""
@@ -78,7 +78,8 @@ def module_list_to_verilog_module(module_list: nn.ModuleList, module_name: str, 
                                                         input_bits=module_input_bits,
                                                         output_string=f"M{i+1}",
                                                         output_bits=module_output_bits,
-                                                        output_wire=i!=len(module_list)-1)
+                                                        output_wire=i!=len(module_list)-1,
+                                                        register=add_registers)
         else:
             raise Exception(f"Expect type(module) == SparseLinearNeq, {type(module)} found")
     module_list_verilog = generate_logicnets_verilog(   module_name=module_name,

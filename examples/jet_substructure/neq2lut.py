@@ -22,10 +22,17 @@ from logicnets.nn import    generate_truth_tables, \
                             lut_inference, \
                             module_list_to_verilog_module
 
-from train import configs, model_config, dataset_config, other_options, test
+from train import configs, model_config, dataset_config, test
 from dataset import JetSubstructureDataset
 from models import JetSubstructureNeqModel, JetSubstructureLutModel
 from logicnets.synthesis import synthesize_and_get_resource_counts
+
+other_options = {
+    "cuda": None,
+    "log_dir": None,
+    "checkpoint": None,
+    "generate_bench": None,
+}
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Synthesize convert a PyTorch trained model into verilog")

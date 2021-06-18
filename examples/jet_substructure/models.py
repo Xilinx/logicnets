@@ -61,18 +61,20 @@ class JetSubstructureNeqModel(nn.Module):
                 layer_list.append(layer)
         self.module_list = nn.ModuleList(layer_list)
         self.is_verilog_inference = False
-        self.latency = len(self.num_neurons)
+        self.latency = 1
         self.verilog_dir = None
         self.top_module_filename = None
         self.dut = None
         self.logfile = None
 
-    def verilog_inference(self, verilog_dir, top_module_filename, logfile=False):
+    def verilog_inference(self, verilog_dir, top_module_filename, logfile: bool = False, add_registers: bool = False):
         self.verilog_dir = realpath(verilog_dir)
         self.top_module_filename = top_module_filename
         self.dut = PyVerilator.build(f"{self.verilog_dir}/{self.top_module_filename}", verilog_path=[self.verilog_dir], build_dir=f"{self.verilog_dir}/verilator")
         self.is_verilog_inference = True
         self.logfile = logfile
+        if add_registers:
+            self.latency = len(self.num_neurons)
 
     def pytorch_inference(self):
         self.is_verilog_inference = False

@@ -276,7 +276,7 @@ class SparseLinearNeq(nn.Module):
 
 class DenseMask2D(nn.Module):
     def __init__(self, in_features: int, out_features: int) -> None:
-        super(RandomFixedSparsityMask2D, self).__init__()
+        super(DenseMask2D, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
         self.mask = Parameter(torch.Tensor(out_features, in_features), requires_grad=False)

@@ -38,7 +38,7 @@ python train.py --arch <jsc-s|jsc-m|jsc-l> --log-dir ./<jsc_s|jsc_m|jsc_l>/
 To then generate verilog from this trained model, run the following:
 
 ```bash
-python neq2lut.py --arch <jsc-s|jsc-m|jsc-l> --checkpoint ./<jsc_s|jsc_m|jsc_l>/best_accuracy.pth --log-dir ./<jsc_s|jsc_m|jsc_l>/verilog/
+python neq2lut.py --arch <jsc-s|jsc-m|jsc-l> --checkpoint ./<jsc_s|jsc_m|jsc_l>/best_accuracy.pth --log-dir ./<jsc_s|jsc_m|jsc_l>/verilog/ --add-registers
 ```
 
 ## Results

@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
@@ -36,6 +36,10 @@ RUN apt-get -qq update && apt-get -qq -y install verilator build-essential libx1
 # Adding LogicNets dependency on OHMYXILINX
 RUN git clone https://bitbucket.org/maltanar/oh-my-xilinx.git
 ENV OHMYXILINX=/workspace/oh-my-xilinx
+
+# Add Nitro-parts-library
+RUN  git clone https://github.com/dirjud/Nitro-Parts-lib-Xilinx.git
+ENV NITROPARTSLIB=/workspace/Nitro-Parts-lib-Xilinx
 
 # Create the user account to run LogicNets
 RUN groupadd -g $GID $GNAME

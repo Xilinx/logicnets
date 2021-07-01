@@ -13,7 +13,6 @@
 #  limitations under the License.
 
 import os
-import subprocess
 from argparse import ArgumentParser
 
 import torch
@@ -27,6 +26,7 @@ from train import configs, model_config, dataset_config, test
 from dataset import JetSubstructureDataset
 from models import JetSubstructureNeqModel, JetSubstructureLutModel
 from logicnets.synthesis import synthesize_and_get_resource_counts
+from proc_file import proc_postsynth_file
 
 other_options = {
     "cuda": None,
@@ -157,37 +157,8 @@ if __name__ == "__main__":
     print("Running out-of-context synthesis")
     ret = synthesize_and_get_resource_counts(options_cfg["log_dir"], "logicnet", fpga_part="xcu280-fsvh2892-2L-e", clk_period_ns=args.clock_period, post_synthesis = 1)
 
-    # The post synthesis file ("logicnet_post") needs some preparation work.
-    # Two top level modules are included, "logicnets" and "GLBL". We do not need "GLBL", so we are deleting it.
-    post_synth_file = open("%s/results_logicnet/logicnet_post_synth.v"%(options_cfg["log_dir"]))
-    post_synth_list = post_synth_file.readlines()
-    post_synth_list_len = len(post_synth_list)
-    post_synth_list_index = post_synth_list.index("`ifndef GLBL\n")
-    post_synth_list_offset = post_synth_list_len - post_synth_list_index
-    post_synth_list = post_synth_list[:-post_synth_list_offset]
-    post_synth_file.close()
-    post_synth_file = open("%s/results_logicnet/logicnet_post_synth.v"%(options_cfg["log_dir"]),"w")
-    for element in post_synth_list:
-        post_synth_file.write(element)
-    post_synth_file.close()
-    # Create post-synthesis simulation folder called "post_synthesis"
-    call_omx = "mkdir %s/post_synth" % (options_cfg["log_dir"])
-    call_omx = call_omx.split()
-    proc = subprocess.Popen(call_omx, stdout=subprocess.PIPE, env=os.environ)
-    proc.communicate()
-    # Copy post-synthesis Verilog file into the post-synthesis simulation folder
-    call_omx = "cp %s/results_logicnet/logicnet_post_synth.v %s/post_synth/." % (options_cfg["log_dir"], options_cfg["log_dir"])
-    call_omx = call_omx.split()
-    proc = subprocess.Popen(call_omx, stdout=subprocess.PIPE, env=os.environ)
-    proc.communicate()
-    # Read "NITROPARTSLIB" environment variable and copy files into simulation folder
-    npl_env = os.environ["NITROPARTSLIB"]
-    call_omx = "cp -a %s/. %s/post_synth/." % (npl_env, options_cfg["log_dir"])
-    call_omx = call_omx.split()
-    proc = subprocess.Popen(call_omx, stdout=subprocess.PIPE, env=os.environ)
-    proc.communicate()
-
     print("Running post-synthesis inference simulation of Verilog-based model...")
+    proc_postsynth_file(options_cfg["log_dir"])
     if args.dump_io:
         io_filename = options_cfg["log_dir"] + f"io_{args.dataset_split}.txt"
         with open(io_filename, 'w') as f:

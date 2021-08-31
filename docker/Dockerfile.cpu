@@ -59,6 +59,9 @@ RUN curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64
 # Install LogicNets prerequisites
 RUN conda install -y pytorch==1.4.0 torchvision==0.5.0 cpuonly -c pytorch && \
     conda clean -ya
+# Install Brevitas prerequisites
+RUN conda install -y docrep packaging pyparsing && \
+    conda clean -ya
 RUN pip install --no-cache-dir git+https://github.com/Xilinx/brevitas.git@67be9b58c1c63d3923cac430ade2552d0db67ba5
 # Install prerequisites for pyverilator
 RUN pip install --no-cache-dir pyverilator

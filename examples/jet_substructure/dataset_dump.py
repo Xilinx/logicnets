@@ -70,7 +70,7 @@ if __name__ == "__main__":
     parser.add_argument('--dataset-config', type=str, default='config/yaml_IP_OP_config.yml',
         help="The file to use to configure the input dataset (default: %(default)s)")
     parser.add_argument('--log-dir', type=str, default='./log',
-        help="A location to store the log output of the training run and the output model (default: %(default)s)")
+        help="A location to store the output I/O text files (default: %(default)s)")
     parser.add_argument('--checkpoint', type=str, required=True,
         help="The checkpoint file which contains the model weights")
     args = parser.parse_args()

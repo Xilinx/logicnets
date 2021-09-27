@@ -39,6 +39,7 @@ echo "Mounting LogicNets to ${LOGICNETS_MOUNT_POINT} inside the docker container
 DOCKER_EXEC+="-v ${LOGICNETS_PATH}:${LOGICNETS_MOUNT_POINT} "
 
 if [ ! -z "$VIVADO_SETTINGS_FILE" ]; then
+    export VIVADO_SETTINGS_FILE=$(readlink -f $VIVADO_SETTINGS_FILE) # Resolve symlinks
     export VIVADO_PATH=$(dirname $VIVADO_SETTINGS_FILE)
     export VIVADO_MOUNT_POINT=$(dirname $VIVADO_PATH)
     echo "\$VIVADO_SETTINGS_FILE defined. Mounting ${VIVADO_MOUNT_POINT} inside the docker container"

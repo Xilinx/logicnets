@@ -159,14 +159,7 @@ if __name__ == "__main__":
 
     print("Running post-synthesis inference simulation of Verilog-based model...")
     proc_postsynth_file(options_cfg["log_dir"])
-    if args.dump_io:
-        io_filename = options_cfg["log_dir"] + f"io_{args.dataset_split}.txt"
-        with open(io_filename, 'w') as f:
-            pass # Create an empty file.
-        print(f"Dumping verilog I/O to {io_filename}...")
-    else:
-        io_filename = None
-    lut_model.verilog_inference(options_cfg["log_dir"]+"/post_synth", "logicnet_post_synth.v", io_filename, add_registers=options_cfg["add_registers"])
+    lut_model.verilog_inference(options_cfg["log_dir"]+"/post_synth", "logicnet_post_synth.v", None, add_registers=options_cfg["add_registers"])
     post_synth_accuracy = test(lut_model, test_loader, cuda=False)
     print("Post-synthesis Verilog-Based Model accuracy: %f" % (post_synth_accuracy))
     

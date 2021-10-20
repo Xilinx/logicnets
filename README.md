@@ -58,11 +58,12 @@ as this contains details for a full environmental setup (including the installat
 The basic steps for a manual installation are as follows:
 
 1.  Install [Vivado Design Suite](https://www.xilinx.com/products/design-tools/vivado.html)
-2.  Install `oh-my-xilinx` by cloning repository and creating the environment variable `OHMYXILINX` which points to its root directory (e.g., `export OHMYXILINX=/path/to/oh-my-xilinx`)
+1.  Install `oh-my-xilinx` by cloning this [repository](https://bitbucket.org/maltanar/oh-my-xilinx.git) and creating the environment variable `OHMYXILINX` which points to its root directory (e.g., `export OHMYXILINX=/path/to/oh-my-xilinx`)
      * `oh-my-xilinx` requires `zsh`, on Ubuntu, this can be installed as follows: `sudo apt-get install zsh`
-3.  Install `verilator`, on Ubuntu, this can be done as follows: `sudo apt-get install verilator build-essential`
-4.  Install `python3`, `pytorch`, `brevitas` and `pyverilator` using `conda` and/or `pip` or your preferred method
-5.  Install `logicnets` using: `pip install --upgrade git+https://github.com/Xilinx/logicnets.git`
+1.  Install `Nitro-Parts-lib-Xilinx` by cloning this [repository](https://github.com/nickfraser/Nitro-Parts-lib-Xilinx.git), switching to the `feat/muxf8` branch and creating the environment variable `NITROPARTSLIB` which points to its root directory (e.g., `export NITROPARTSLIB=/path/to/Nitro-Parts-lib-Xilinx`)
+1.  Install `verilator`, on Ubuntu, this can be done as follows: `sudo apt-get install verilator build-essential`
+1.  Install `python3`, `pytorch`, `brevitas` and `pyverilator` using `conda` and/or `pip` or your preferred method
+1.  Install `logicnets` using: `pip install --upgrade git+https://github.com/Xilinx/logicnets.git`
 
 Alternatively, instead of the last step you can clone the LogicNets repository and install as follows:
 

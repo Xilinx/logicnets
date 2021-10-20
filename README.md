@@ -74,6 +74,7 @@ pip install --upgrade .
 
 Currently, we have the following examples, located in `./examples/`:
 * [Jet substructure classification](examples/jet_substructure/)
+* [Network intrusion detection](examples/cybersecurity/)
 
 More examples coming soon.
 

@@ -22,11 +22,11 @@ from torch.utils.data import DataLoader
 from logicnets.nn import    generate_truth_tables, \
                             lut_inference, \
                             module_list_to_verilog_module
+from logicnets.synthesis import synthesize_and_get_resource_counts
 
 from train import configs, model_config, dataset_config, other_options, test
-from dataset import JetSubstructureDataset
-from models import JetSubstructureNeqModel, JetSubstructureLutModel
-from logicnets.synthesis import synthesize_and_get_resource_counts
+from dataset import get_preqnt_dataset
+from models import UnswNb15NeqModel
 
 def dump_io(model, data_loader, input_file, output_file):
     input_quant = model.module_list[0].input_quant
@@ -47,7 +47,7 @@ def dump_io(model, data_loader, input_file, output_file):
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Dump the train and test datasets (after input quantization) into text files")
-    parser.add_argument('--arch', type=str, choices=configs.keys(), default="jsc-s",
+    parser.add_argument('--arch', type=str, choices=configs.keys(), default="nid-s",
         help="Specific the neural network model to use (default: %(default)s)")
     parser.add_argument('--batch-size', type=int, default=None, metavar='N',
         help="Batch size for evaluation (default: %(default)s)")
@@ -65,10 +65,8 @@ if __name__ == "__main__":
         help="Fanin to use at the output (default: %(default)s)")
     parser.add_argument('--hidden-layers', nargs='+', type=int, default=None,
         help="A list of hidden layer neuron sizes (default: %(default)s)")
-    parser.add_argument('--dataset-file', type=str, default='data/processed-pythia82-lhc13-all-pt1-50k-r1_h022_e0175_t220_nonu_truth.z',
+    parser.add_argument('--dataset-file', type=str, default='data/unsw_nb15_binarized.npz',
         help="The file to use as the dataset input (default: %(default)s)")
-    parser.add_argument('--dataset-config', type=str, default='config/yaml_IP_OP_config.yml',
-        help="The file to use to configure the input dataset (default: %(default)s)")
     parser.add_argument('--log-dir', type=str, default='./log',
         help="A location to store the output I/O text files (default: %(default)s)")
     parser.add_argument('--checkpoint', type=str, required=True,
@@ -97,18 +95,18 @@ if __name__ == "__main__":
             continue
         options_cfg[k] = config[k]
 
-    # Fetch the test set
+    # Fetch the datasets
     dataset = {}
-    dataset["train"] = JetSubstructureDataset(dataset_cfg['dataset_file'], dataset_cfg['dataset_config'], split="train")
-    dataset["test"] = JetSubstructureDataset(dataset_cfg['dataset_file'], dataset_cfg['dataset_config'], split="test")
+    dataset['train'] = get_preqnt_dataset(dataset_cfg['dataset_file'], split="train")
+    dataset['test'] = get_preqnt_dataset(dataset_cfg['dataset_file'], split="test")
     train_loader = DataLoader(dataset["train"], batch_size=config['batch_size'], shuffle=False)
     test_loader = DataLoader(dataset["test"], batch_size=config['batch_size'], shuffle=False)
 
     # Instantiate the PyTorch model
-    x, y = dataset["train"][0]
+    x, y = dataset[args.dataset_split][0]
     model_cfg['input_length'] = len(x)
-    model_cfg['output_length'] = len(y)
-    model = JetSubstructureNeqModel(model_cfg)
+    model_cfg['output_length'] = 1
+    model = UnswNb15NeqModel(model_cfg)
 
     # Load the model weights
     checkpoint = torch.load(options_cfg['checkpoint'], map_location='cpu')

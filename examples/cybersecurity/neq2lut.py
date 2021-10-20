@@ -40,7 +40,7 @@ other_options = {
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Synthesize convert a PyTorch trained model into verilog")
-    parser.add_argument('--arch', type=str, choices=configs.keys(), default="jsc-s",
+    parser.add_argument('--arch', type=str, choices=configs.keys(), default="nid-s",
         help="Specific the neural network model to use (default: %(default)s)")
     parser.add_argument('--batch-size', type=int, default=None, metavar='N',
         help="Batch size for evaluation (default: %(default)s)")

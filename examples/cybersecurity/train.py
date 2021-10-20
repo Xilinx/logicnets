@@ -259,7 +259,7 @@ def test(model, dataset_loader, cuda, thresh=0.75):
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="LogicNets Network Intrusion Detection Example")
-    parser.add_argument('--arch', type=str, choices=configs.keys(), default="jsc-s",
+    parser.add_argument('--arch', type=str, choices=configs.keys(), default="nid-s",
         help="Specific the neural network model to use (default: %(default)s)")
     parser.add_argument('--weight-decay', type=float, default=None, metavar='D',
         help="Weight decay (default: %(default)s)")

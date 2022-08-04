@@ -37,7 +37,7 @@ def dump_io(model, data_loader, input_file, output_file):
     with open(input_file, 'w') as i_f, open(output_file, 'w') as o_f:
         for data, target in data_loader:
             x = input_quant(data)
-            indices = torch.argmax(target,dim=1)
+            indices = target
             for i in range(x.shape[0]):
                 x_i = x[i,:]
                 xv_i = list(map(lambda z: input_quant.get_bin_str(z), x_i))
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     test_loader = DataLoader(dataset["test"], batch_size=config['batch_size'], shuffle=False)
 
     # Instantiate the PyTorch model
-    x, y = dataset[args.dataset_split][0]
+    x, y = dataset["train"][0]
     model_cfg['input_length'] = len(x)
     model_cfg['output_length'] = 1
     model = UnswNb15NeqModel(model_cfg)

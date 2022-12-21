@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 h5py
-yaml
+pyyaml<6.0
 numpy
 pandas
 scikit-learn

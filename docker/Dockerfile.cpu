@@ -83,7 +83,7 @@ RUN conda install -y zsh -c conda-forge && \
 # Install prerequisites for the JSC examples
 RUN conda install -y wget && \
     conda clean -ya
-RUN conda install -y h5py pyyaml numpy pandas scikit-learn tensorboard && \
+RUN conda install -y h5py pyyaml=5 numpy pandas scikit-learn tensorboard && \
     conda clean -ya
 
 # Add entry point script to install LogicNets and setup vivado.

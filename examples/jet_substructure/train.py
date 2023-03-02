@@ -18,10 +18,12 @@ from functools import reduce
 import random
 
 import numpy as np
+from sklearn.metrics import roc_auc_score
 
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
@@ -184,12 +186,14 @@ def train(model, datasets, train_cfg, options):
         #        print("LR: {:.6f} ".format(g['weight_decay']))
         writer.add_scalar('avg_train_loss', accLoss.detach().cpu().numpy(), (epoch+1)*steps)
         writer.add_scalar('avg_train_accuracy', accuracy.detach().cpu().numpy(), (epoch+1)*steps)
-        val_accuracy = test(model, val_loader, options["cuda"])
-        test_accuracy = test(model, test_loader, options["cuda"])
+        val_accuracy, val_avg_roc_auc = test(model, val_loader, options["cuda"])
+        test_accuracy, test_avg_roc_auc = test(model, test_loader, options["cuda"])
         modelSave = {   'model_dict': model.state_dict(),
                         'optim_dict': optimizer.state_dict(),
                         'val_accuracy': val_accuracy,
                         'test_accuracy': test_accuracy,
+                        'val_avg_roc_auc': val_avg_roc_auc,
+                        'test_avg_roc_auc': test_avg_roc_auc,
                         'epoch': epoch}
         torch.save(modelSave, options["log_dir"] + "/checkpoint.pth")
         if(maxAcc<val_accuracy):
@@ -197,23 +201,36 @@ def train(model, datasets, train_cfg, options):
             maxAcc = val_accuracy
         writer.add_scalar('val_accuracy', val_accuracy, (epoch+1)*steps)
         writer.add_scalar('test_accuracy', test_accuracy, (epoch+1)*steps)
+        writer.add_scalar('val_avg_roc_auc', val_avg_roc_auc, (epoch+1)*steps)
+        writer.add_scalar('test_avg_roc_auc', test_avg_roc_auc, (epoch+1)*steps)
         print(f"Epoch: {epoch}/{num_epochs}\tValid Acc (%): {val_accuracy:.2f}\tTest Acc: {test_accuracy:.2f}")
 
 def test(model, dataset_loader, cuda):
-    model.eval()
-    correct = 0
-    accLoss = 0.0
-    for batch_idx, (data, target) in enumerate(dataset_loader):
-        if cuda:
-            data, target = data.cuda(), target.cuda()
-        output = model(data)
-        pred = output.detach().max(1, keepdim=True)[1]
-        target_label = torch.max(target.detach(), 1, keepdim=True)[1]
-        curCorrect = pred.eq(target_label).long().sum()
-        curAcc = 100.0*curCorrect / len(data)
-        correct += curCorrect
-    accuracy = 100*float(correct) / len(dataset_loader.dataset)
-    return accuracy
+    with torch.no_grad():
+        model.eval()
+        entire_prob = None
+        golden_ref = None
+        correct = 0
+        accLoss = 0.0
+        for batch_idx, (data, target) in enumerate(dataset_loader):
+            if cuda:
+                data, target = data.cuda(), target.cuda()
+            output = model(data)
+            prob = F.softmax(output, dim=1)
+            pred = output.detach().max(1, keepdim=True)[1]
+            target_label = torch.max(target.detach(), 1, keepdim=True)[1]
+            curCorrect = pred.eq(target_label).long().sum()
+            curAcc = 100.0*curCorrect / len(data)
+            correct += curCorrect
+            if batch_idx == 0:
+                entire_prob = prob
+                golden_ref = target_label
+            else:
+                entire_prob = torch.cat((entire_prob, prob), dim=0)
+                golden_ref = torch.cat((golden_ref, target_label))
+        accuracy = 100*float(correct) / len(dataset_loader.dataset)
+        avg_roc_auc = roc_auc_score(golden_ref.detach().numpy(), entire_prob.detach().numpy(), average='macro', multi_class='ovr')
+        return accuracy, avg_roc_auc
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="LogicNets Jet Substructure Classification Example")

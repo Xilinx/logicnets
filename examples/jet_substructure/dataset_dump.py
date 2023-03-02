@@ -117,8 +117,9 @@ if __name__ == "__main__":
     # Test the PyTorch model
     print("Running inference on baseline model...")
     model.eval()
-    baseline_accuracy = test(model, test_loader, cuda=False)
+    baseline_accuracy, baseline_avg_roc_auc = test(model, test_loader, cuda=False)
     print("Baseline accuracy: %f" % (baseline_accuracy))
+    print("Baseline AVG ROC AUC: %f" % (baseline_avg_roc_auc))
 
     # Run preprocessing on training set.
     train_input_file = config['log_dir'] + "/train_input.txt"

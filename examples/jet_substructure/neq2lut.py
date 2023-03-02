@@ -122,8 +122,9 @@ if __name__ == "__main__":
     # Test the PyTorch model
     print("Running inference on baseline model...")
     model.eval()
-    baseline_accuracy = test(model, test_loader, cuda=False)
+    baseline_accuracy, baseline_avg_roc_auc = test(model, test_loader, cuda=False)
     print("Baseline accuracy: %f" % (baseline_accuracy))
+    print("Baseline AVG ROC AUC: %f" % (baseline_avg_roc_auc))
 
     # Instantiate LUT-based model
     lut_model = JetSubstructureLutModel(model_cfg)
@@ -137,10 +138,12 @@ if __name__ == "__main__":
     print("Running inference on LUT-based model...")
     lut_inference(lut_model)
     lut_model.eval()
-    lut_accuracy = test(lut_model, test_loader, cuda=False)
+    lut_accuracy, lut_avg_roc_auc = test(lut_model, test_loader, cuda=False)
     print("LUT-Based Model accuracy: %f" % (lut_accuracy))
+    print("LUT-Based AVG ROC AUC: %f" % (lut_avg_roc_auc))
     modelSave = {   'model_dict': lut_model.state_dict(),
-                    'test_accuracy': lut_accuracy}
+                    'test_accuracy': lut_accuracy,
+                    'test_avg_roc_auc': lut_avg_roc_auc}
 
     torch.save(modelSave, options_cfg["log_dir"] + "/lut_based_model.pth")
 
@@ -159,8 +162,9 @@ if __name__ == "__main__":
     if args.simulate_pre_synthesis_verilog:
         print("Running inference simulation of Verilog-based model...")
         lut_model.verilog_inference(options_cfg["log_dir"], "logicnet.v", logfile=io_filename, add_registers=options_cfg["add_registers"])
-        verilog_accuracy = test(lut_model, test_loader, cuda=False)
+        verilog_accuracy, verilog_avg_roc_auc = test(lut_model, test_loader, cuda=False)
         print("Verilog-Based Model accuracy: %f" % (verilog_accuracy))
+        print("Verilog-Based AVG ROC AUC: %f" % (verilog_avg_roc_auc))
 
     print("Running out-of-context synthesis")
     ret = synthesize_and_get_resource_counts(options_cfg["log_dir"], "logicnet", fpga_part="xcu280-fsvh2892-2L-e", clk_period_ns=args.clock_period, post_synthesis = 1)
@@ -169,6 +173,7 @@ if __name__ == "__main__":
         print("Running post-synthesis inference simulation of Verilog-based model...")
         proc_postsynth_file(options_cfg["log_dir"])
         lut_model.verilog_inference(options_cfg["log_dir"]+"/post_synth", "logicnet_post_synth.v", io_filename, add_registers=options_cfg["add_registers"])
-        post_synth_accuracy = test(lut_model, test_loader, cuda=False)
+        post_synth_accuracy, post_synth_avg_roc_auc = test(lut_model, test_loader, cuda=False)
         print("Post-synthesis Verilog-Based Model accuracy: %f" % (post_synth_accuracy))
+        print("Post-synthesis Verilog-Based AVG ROC AUC: %f" % (post_synth_avg_roc_auc))
     

@@ -229,7 +229,7 @@ def test(model, dataset_loader, cuda):
                 entire_prob = torch.cat((entire_prob, prob), dim=0)
                 golden_ref = torch.cat((golden_ref, target_label))
         accuracy = 100*float(correct) / len(dataset_loader.dataset)
-        avg_roc_auc = roc_auc_score(golden_ref.detach().numpy(), entire_prob.detach().numpy(), average='macro', multi_class='ovr')
+        avg_roc_auc = roc_auc_score(golden_ref.detach().cpu().numpy(), entire_prob.detach().cpu().numpy(), average='macro', multi_class='ovr')
         return accuracy, avg_roc_auc
 
 if __name__ == "__main__":

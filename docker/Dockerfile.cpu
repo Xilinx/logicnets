@@ -60,31 +60,37 @@ RUN curl -sSL https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x
     && conda update -y conda \
     && conda clean --all --yes
 
+# Install conda-based prerequisites
 # Install LogicNets prerequisites
-RUN conda install -y pytorch==1.4.0 torchvision==0.5.0 cpuonly -c pytorch && \
-    conda clean -ya
+#RUN conda install -y pytorch==1.4.0 torchvision==0.5.0 cpuonly -c pytorch && \ # Fails since 2023-07-07: https://github.com/Xilinx/logicnets/issues/34
+#    conda clean -ya
 # Install Brevitas prerequisites
 RUN conda install -y packaging pyparsing && \
     conda clean -ya
 RUN conda install -y docrep -c conda-forge && \
     conda clean -ya
-RUN pip install --no-cache-dir git+https://github.com/Xilinx/brevitas.git@67be9b58c1c63d3923cac430ade2552d0db67ba5
-# Install prerequisites for pyverilator
-RUN pip install --no-cache-dir pyverilator
 # Install prerequisites for oh-my-xilinx
 RUN conda install -y zsh -c conda-forge && \
     conda clean -ya
+
+# Install prerequisites for the JSC/NIDS examples
+RUN conda install -y wget && \
+    conda clean -ya
+RUN conda install -y h5py pyyaml=5 numpy pandas scikit-learn tensorboard protobuf\<3.19 && \
+    conda clean -ya
+
+# Install pip-based prerequisites
+# Install LogicNets prerequisites
+RUN pip install --no-cache-dir torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+# Install Brevitas
+RUN pip install --no-cache-dir git+https://github.com/Xilinx/brevitas.git@67be9b58c1c63d3923cac430ade2552d0db67ba5
+# Install prerequisites for pyverilator
+RUN pip install --no-cache-dir pyverilator
 
 # Install LogicNets library - SKIP this step and install during entry-point
 #RUN git clone git@github.com:Xilinx/logicnets.git && \
 #    cd logicnets && \
 #    pip install --upgrade .
-
-# Install prerequisites for the JSC examples
-RUN conda install -y wget && \
-    conda clean -ya
-RUN conda install -y h5py pyyaml=5 numpy pandas scikit-learn tensorboard && \
-    conda clean -ya
 
 # Add entry point script to install LogicNets and setup vivado.
 ENV LOCAL_PATH=$HOME/.local/bin

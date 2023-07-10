@@ -61,9 +61,11 @@ RUN curl -sSL https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x
     && conda clean --all --yes
 
 # Install conda-based prerequisites
-# Install LogicNets prerequisites
-#RUN conda install -y pytorch==1.4.0 torchvision==0.5.0 cpuonly -c pytorch && \ # Fails since 2023-07-07: https://github.com/Xilinx/logicnets/issues/34
+# Install LogicNets prerequisites - fails since 2023-07-07: https://github.com/Xilinx/logicnets/issues/34
+#RUN conda install -y pytorch==1.4.0 torchvision==0.5.0 cpuonly -c pytorch && \
 #    conda clean -ya
+RUN conda install -y pillow && \
+    conda clean -ya
 # Install Brevitas prerequisites
 RUN conda install -y packaging pyparsing && \
     conda clean -ya
@@ -74,9 +76,8 @@ RUN conda install -y zsh -c conda-forge && \
     conda clean -ya
 
 # Install prerequisites for the JSC/NIDS examples
-RUN conda install -y wget && \
-    conda clean -ya
-RUN conda install -y h5py pyyaml=5 numpy pandas scikit-learn tensorboard protobuf\<3.19 && \
+# Later versions of protobuf (>=3.19) require GLIBC >=3.4
+RUN conda install -y wget h5py pyyaml=5 numpy pandas scikit-learn tensorboard protobuf\<3.19 && \
     conda clean -ya
 
 # Install pip-based prerequisites

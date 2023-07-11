@@ -7,7 +7,7 @@ This example is a reimplementation of that work.
 
 * LogicNets
 * h5py
-* yaml
+* yaml<6.0
 * numpy
 * pandas
 * scikit-learn

@@ -68,7 +68,13 @@ The basic steps for a manual installation are as follows:
 Alternatively, instead of the last step you can clone the LogicNets repository and install as follows:
 
 ```bash
-pip install --upgrade .
+pip install .
+```
+
+Note, to install the dependencies for all the examples, you can run the following:
+
+```bash
+pip install .[example-all]
 ```
 
 ## Examples

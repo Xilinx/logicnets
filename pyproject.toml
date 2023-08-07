@@ -50,6 +50,11 @@ example-nid = [ # Install dependencies for cybersecurity example
 example-all = [ # Install dependencies for all examples, if possible
     "logicnets[example-jsc, example-nid]",
 ]
+test = [ # Install dependencies for tests
+    "pytest",
+    "pytest-cov",
+    "hypothesis",
+]
 
 [build-system]
 requires = [

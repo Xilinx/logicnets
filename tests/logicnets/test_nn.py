@@ -16,8 +16,8 @@ def test_instantiate_scalar_bias_scale():
     assert isinstance(m, ScalarBiasScale)
 
 def test_instantiate_scalar_scale_bias():
-    m = ScalarBiasScale()
-    assert isinstance(m, ScalarBiasScale)
+    m = ScalarScaleBias()
+    assert isinstance(m, ScalarScaleBias)
 
 def test_instantiate_dense_mask_2d():
     m = DenseMask2D(1, 1)

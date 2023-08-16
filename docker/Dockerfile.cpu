@@ -62,8 +62,8 @@ RUN curl -sSL https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x
 
 # Install conda-based prerequisites
 # Install LogicNets prerequisites - fails since 2023-07-07: https://github.com/Xilinx/logicnets/issues/34
-#RUN conda install -y pytorch==1.4.0 torchvision==0.5.0 cpuonly -c pytorch && \
-#    conda clean -ya
+RUN conda install -y pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch && \
+    conda clean -ya
 RUN conda install -y pillow && \
     conda clean -ya
 # Install Brevitas prerequisites
@@ -81,8 +81,8 @@ RUN conda install -y wget h5py pyyaml=5 numpy pandas scikit-learn tensorboard pr
     conda clean -ya
 
 # Install pip-based prerequisites
-# Install LogicNets prerequisites
-RUN pip install --no-cache-dir torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+## Install LogicNets prerequisites
+#RUN pip install --no-cache-dir torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
 # Install Brevitas
 RUN pip install --no-cache-dir git+https://github.com/Xilinx/brevitas.git@67be9b58c1c63d3923cac430ade2552d0db67ba5
 # Install prerequisites for pyverilator

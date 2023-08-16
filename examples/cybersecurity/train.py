@@ -42,7 +42,7 @@ configs = {
         "batch_size": 1024,
         "epochs": 100,
         "learning_rate": 1e-1,
-        "seed": 25,
+        "seed": 109,
         "checkpoint": None,
     },
     "nid-s-comp": {
@@ -72,7 +72,7 @@ configs = {
         "batch_size": 1024,
         "epochs": 100,
         "learning_rate": 1e-1,
-        "seed": 20,
+        "seed": 196,
         "checkpoint": None,
     },
     "nid-m-comp": {
@@ -102,7 +102,7 @@ configs = {
         "batch_size": 1024,
         "epochs": 100,
         "learning_rate": 1e-1,
-        "seed": 2,
+        "seed": 109,
         "checkpoint": None,
     },
     "nid-l-comp": {

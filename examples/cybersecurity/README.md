@@ -45,8 +45,8 @@ The following results are attained when training on a CPU and synthesising with 
 
 | Network Architecture  | Test Accuracy (%) | LUTs  | Flip Flops    | Fmax (Mhz)    | Latency (Cycles)  |
 | --------------------- | ----------------- | ----- | ------------- | ------------- | ----------------- |
-| NID-S                 |              89.2 |    28 |            38 |       1824.82 |                 3 |
-| NID-M                 |              91.1 |  2846 |          1572 |        747.94 |                 5 |
+| NID-S                 |              90.5 |   650 |           515 |        758.15 |                 3 |
+| NID-M                 |              92.6 |  1649 |          1024 |        839.63 |                 5 |
 | NID-L                 |              92.9 |  8106 |          1901 |        498.26 |                 5 |
 
 Note, the model architectures reflect the architectures described in our [FPL'20 paper](https://arxiv.org/abs/2004.03021).

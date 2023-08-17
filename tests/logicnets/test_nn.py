@@ -1,7 +1,6 @@
 
 import pytest
-from hypothesis import given
-from hypothesis import strategies as st
+from hypothesis import given, strategies as st, settings, HealthCheck
 from hypothesis.extra import numpy as hnp
 
 import numpy as np
@@ -70,23 +69,13 @@ def test_instantiate_sparse_linear_neq():
         scale_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
         gpu=st.booleans(),
         )
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
-def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu):
-    if gpu:
-        if torch.cuda.is_available():
-            device = "cuda"
-        else:
-            pytest.skip("GPU not available")
-    else:
-        device = "cpu"
+def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu, fetch_device, fetch_dtype):
+    device = fetch_device(gpu)
+    dtype = fetch_dtype(x_np.dtype)
     x = torch.from_numpy(x_np).to(device)
-    m = ScalarBiasScale(bias_init=bias_init, scale_init=scale_init).to(device)
-    if x_np.dtype == np.float32:
-        m.float()
-    elif x_np.dtype == np.float64:
-        m.double()
-    else:
-        raise ValueError(f"Unsupported dataype: {x_np.dtype}")
+    m = ScalarBiasScale(bias_init=bias_init, scale_init=scale_init).to(device, dtype)
     m.eval()
     y_test = m(x).detach().cpu().numpy()
     y_ref = ((x + bias_init)*scale_init).detach().cpu().numpy()

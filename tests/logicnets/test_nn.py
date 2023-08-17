@@ -2,6 +2,7 @@
 import pytest
 from hypothesis import given
 from hypothesis import strategies as st
+from hypothesis.extra import numpy as hnp
 
 import numpy as np
 
@@ -60,17 +61,25 @@ def test_instantiate_sparse_linear_neq():
     m = SparseLinearNeq(1, 1, qbi, qbo, sparse_linear_kws={'mask': mask})
     assert isinstance(m, SparseLinearNeq)
 
-@given( shape=st.lists(st.integers(min_value=MIN_DIM, max_value=MAX_DIM), min_size=MIN_DIMS, max_size=MAX_DIMS),
-        seed=st.integers(min_value=SEED_MIN,max_value=SEED_MAX),
-        bias=st.floats(allow_infinity=False, allow_nan=False, width=32),
-        scale=st.floats(allow_infinity=False, allow_nan=False, width=32))
+@given( x_np=hnp.arrays(
+            dtype=hnp.floating_dtypes(sizes=(32, 64), endianness='='),
+            shape=hnp.array_shapes(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
+            elements={'allow_nan': False, 'allow_infinity': False}
+        ),
+        bias_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
+        scale_init=st.floats(allow_infinity=False, allow_nan=False, width=32))
 @pytest.mark.hypothesis
-def test_forward_scalar_bias_scale(shape, seed, bias, scale):
-    torch.manual_seed(seed)
-    x = torch.rand(shape, dtype=torch.float32)
-    m = ScalarBiasScale(bias_init=bias, scale_init=scale)
+def test_forward_scalar_bias_scale(x_np, bias_init, scale_init):
+    x = torch.from_numpy(x_np)
+    m = ScalarBiasScale(bias_init=bias_init, scale_init=scale_init)
+    if x_np.dtype == np.float32:
+        m.float()
+    elif x_np.dtype == np.float64:
+        m.double()
+    else:
+        raise ValueError(f"Unsupported dataype: {x_np.dtype}")
     m.eval()
     y_test = m(x).detach().cpu().numpy()
-    y_ref = ((x + bias)*scale).detach().cpu().numpy()
+    y_ref = ((x + bias_init)*scale_init).detach().cpu().numpy()
     assert np.allclose(y_test, y_ref)
 

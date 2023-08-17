@@ -53,7 +53,7 @@ example-all = [ # Install dependencies for all examples, if possible
 test = [ # Install dependencies for tests
     "pytest",
     "pytest-cov",
-    "hypothesis",
+    "hypothesis[numpy]",
 ]
 
 [build-system]

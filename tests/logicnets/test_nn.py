@@ -67,11 +67,20 @@ def test_instantiate_sparse_linear_neq():
             elements={'allow_nan': False, 'allow_infinity': False}
         ),
         bias_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
-        scale_init=st.floats(allow_infinity=False, allow_nan=False, width=32))
+        scale_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
+        gpu=st.booleans(),
+        )
 @pytest.mark.hypothesis
-def test_forward_scalar_bias_scale(x_np, bias_init, scale_init):
-    x = torch.from_numpy(x_np)
-    m = ScalarBiasScale(bias_init=bias_init, scale_init=scale_init)
+def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu):
+    if gpu:
+        if torch.cuda.is_available():
+            device = "cuda"
+        else:
+            pytest.skip("GPU not available")
+    else:
+        device = "cpu"
+    x = torch.from_numpy(x_np).to(device)
+    m = ScalarBiasScale(bias_init=bias_init, scale_init=scale_init).to(device)
     if x_np.dtype == np.float32:
         m.float()
     elif x_np.dtype == np.float64:

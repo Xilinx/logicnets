@@ -18,6 +18,11 @@ description = "Co-Designed Neural Networks and Circuits for Extreme-Throughput A
 authors = [
     { name = "Nicholas J. Fraser", email = "nicholas.fraser@amd.com" },
 ]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+]
 dependencies = [
     "torch",
     "brevitas",

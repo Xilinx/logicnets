@@ -91,7 +91,7 @@ RUN pip install --no-cache-dir pyverilator
 # Install LogicNets library - SKIP this step and install during entry-point
 #RUN git clone git@github.com:Xilinx/logicnets.git && \
 #    cd logicnets && \
-#    pip install --upgrade .
+#    pip install --upgrade .[example-all]
 
 # Add entry point script to install LogicNets and setup vivado.
 ENV LOCAL_PATH=$HOME/.local/bin

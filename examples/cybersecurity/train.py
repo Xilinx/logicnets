@@ -102,7 +102,7 @@ configs = {
         "batch_size": 1024,
         "epochs": 100,
         "learning_rate": 1e-1,
-        "seed": 109,
+        "seed": 2,
         "checkpoint": None,
     },
     "nid-l-comp": {

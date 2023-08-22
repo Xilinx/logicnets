@@ -98,3 +98,20 @@ def test_forward_scalar_scale_bias(x_np, bias_init, scale_init, gpu, fetch_devic
     y_ref = fetch_result((x*scale_init) + bias_init)
     assert np.allclose(y_test, y_ref)
 
+@given( x_np=gen_ndarray(min_dims=2, max_dims=2, min_side=MIN_DIM, max_side=MAX_DIM),
+        gpu=st.booleans(),
+        )
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
+@pytest.mark.hypothesis
+@torch.no_grad()
+def test_forward_dense_mask_2d(x_np, gpu, fetch_device, fetch_dtype, fetch_result):
+    device = fetch_device(gpu)
+    dtype = fetch_dtype(x_np.dtype)
+    x = torch.from_numpy(x_np).to(device)
+    n, m = x_np.shape[0], x_np.shape[1]
+    mask = DenseMask2D(m, n).to(device, dtype)
+    mask.eval()
+    y_test = fetch_result(x*mask())
+    y_ref = x_np
+    assert np.allclose(y_test, y_ref)
+

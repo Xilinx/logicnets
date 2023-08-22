@@ -19,6 +19,8 @@ from logicnets.nn import    ScalarBiasScale, \
                             SparseLinear, \
                             SparseLinearNeq
 
+from tests.logicnets.util import gen_ndarray
+
 N_MIN=1
 N_MAX=100
 M_MIN=1
@@ -60,24 +62,20 @@ def test_instantiate_sparse_linear_neq():
     m = SparseLinearNeq(1, 1, qbi, qbo, sparse_linear_kws={'mask': mask})
     assert isinstance(m, SparseLinearNeq)
 
-@given( x_np=hnp.arrays(
-            dtype=hnp.floating_dtypes(sizes=(32, 64), endianness='='),
-            shape=hnp.array_shapes(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
-            elements={'allow_nan': False, 'allow_infinity': False}
-        ),
+@given( x_np=gen_ndarray(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
         bias_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
         scale_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
         gpu=st.booleans(),
         )
 @settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
-def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu, fetch_device, fetch_dtype):
+def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu, fetch_device, fetch_dtype, fetch_result):
     device = fetch_device(gpu)
     dtype = fetch_dtype(x_np.dtype)
     x = torch.from_numpy(x_np).to(device)
     m = ScalarBiasScale(bias_init=bias_init, scale_init=scale_init).to(device, dtype)
     m.eval()
-    y_test = m(x).detach().cpu().numpy()
-    y_ref = ((x + bias_init)*scale_init).detach().cpu().numpy()
+    y_test = fetch_result(m(x))
+    y_ref = fetch_result((x + bias_init)*scale_init)
     assert np.allclose(y_test, y_ref)
 

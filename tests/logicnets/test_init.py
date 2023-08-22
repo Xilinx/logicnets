@@ -1,18 +1,24 @@
 
 import pytest
-from hypothesis import given
-from hypothesis import strategies as st
+from hypothesis import given, strategies as st, settings, HealthCheck
+from hypothesis.extra import numpy as hnp
 
-from random import randint
+import numpy as np
 
 import torch
 
 from logicnets.init import random_restrict_fanin
 
+from tests.logicnets.util import gen_ndarray
+
 N_MIN=1
 N_MAX=100
 M_MIN=1
 M_MAX=100
+MIN_DIM=1
+MAX_DIM=10
+MIN_DIMS=2
+MAX_DIMS=2
 SEED_MIN=0
 SEED_MAX=10
 
@@ -25,16 +31,22 @@ def expected_exception(request):
     else:
         return AssertionError
 
-@given(n=st.integers(min_value=N_MIN, max_value=N_MAX), m=st.integers(min_value=M_MIN, max_value=M_MAX), seed=st.integers(min_value=SEED_MIN,max_value=SEED_MAX))
+@given( mask_np=gen_ndarray(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
+        gpu=st.booleans(),
+        )
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
-def test_init(n, m, seed):
-    torch.manual_seed(seed)
-    mask = torch.rand((n,m))
-    fan_in = randint(1,m)
+@torch.no_grad()
+def test_init(mask_np, gpu, fetch_device, fetch_dtype, fetch_result):
+    device = fetch_device(gpu)
+    dtype = fetch_dtype(mask_np.dtype)
+    n, m = mask_np.shape[0], mask_np.shape[1]
+    mask = torch.from_numpy(mask_np).to(device)
+    fan_in = np.random.randint(1,m+1)
     new_mask = random_restrict_fanin(mask, fan_in)
     for i in range(n):
-        assert fan_in == torch.sum(mask[i] == 1.0)
-        assert (m - fan_in) == torch.sum(mask[i] == 0.0)
+        assert fan_in == fetch_result(torch.sum(mask[i] == 1.0))
+        assert (m - fan_in) == fetch_result(torch.sum(mask[i] == 0.0))
 
 @pytest.mark.parametrize("shape", [(1,), (1,1,1)])
 def test_init_fails(shape, expected_exception):

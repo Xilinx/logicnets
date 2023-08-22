@@ -49,6 +49,7 @@ def test_init(mask_np, gpu, fetch_device, fetch_dtype, fetch_result):
         assert (m - fan_in) == fetch_result(torch.sum(mask[i] == 0.0))
 
 @pytest.mark.parametrize("shape", [(1,), (1,1,1)])
+@torch.no_grad()
 def test_init_fails(shape, expected_exception):
     mask = torch.zeros(shape)
     fan_in = 1

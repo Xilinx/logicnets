@@ -79,3 +79,20 @@ def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu, fetch_devic
     y_ref = fetch_result((x + bias_init)*scale_init)
     assert np.allclose(y_test, y_ref)
 
+@given( x_np=gen_ndarray(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
+        bias_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
+        scale_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
+        gpu=st.booleans(),
+        )
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
+@pytest.mark.hypothesis
+def test_forward_scalar_scale_bias(x_np, bias_init, scale_init, gpu, fetch_device, fetch_dtype, fetch_result):
+    device = fetch_device(gpu)
+    dtype = fetch_dtype(x_np.dtype)
+    x = torch.from_numpy(x_np).to(device)
+    m = ScalarScaleBias(bias_init=bias_init, scale_init=scale_init).to(device, dtype)
+    m.eval()
+    y_test = fetch_result(m(x))
+    y_ref = fetch_result((x*scale_init) + bias_init)
+    assert np.allclose(y_test, y_ref)
+

@@ -69,6 +69,7 @@ def test_instantiate_sparse_linear_neq():
         )
 @settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
+@torch.no_grad()
 def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu, fetch_device, fetch_dtype, fetch_result):
     device = fetch_device(gpu)
     dtype = fetch_dtype(x_np.dtype)
@@ -86,6 +87,7 @@ def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu, fetch_devic
         )
 @settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
+@torch.no_grad()
 def test_forward_scalar_scale_bias(x_np, bias_init, scale_init, gpu, fetch_device, fetch_dtype, fetch_result):
     device = fetch_device(gpu)
     dtype = fetch_dtype(x_np.dtype)

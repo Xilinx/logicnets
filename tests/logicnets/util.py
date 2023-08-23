@@ -9,3 +9,6 @@ def gen_ndarray(**shape_kws):
                 elements={'allow_nan': False, 'allow_infinity': False}
             )
 
+def gen_seed():
+    return st.integers(min_value=0, max_value=2**32 - 1)
+

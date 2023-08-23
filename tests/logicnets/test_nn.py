@@ -6,6 +6,7 @@ from hypothesis.extra import numpy as hnp
 import numpy as np
 
 import torch
+import torch.nn.functional as F
 
 from brevitas.nn import QuantReLU
 from brevitas.core.quant import QuantType
@@ -19,7 +20,7 @@ from logicnets.nn import    ScalarBiasScale, \
                             SparseLinear, \
                             SparseLinearNeq
 
-from tests.logicnets.util import gen_ndarray
+from tests.logicnets.util import gen_ndarray, gen_seed
 
 N_MIN=1
 N_MAX=100
@@ -137,4 +138,30 @@ def test_forward_random_fixed_sparsity_mask_2d(x_np, gpu, fetch_device, fetch_dt
     else:
         assert allexact(y_test[mask_np == 1.0], y_ref[mask_np == 1.0])
         assert allexact(y_test[mask_np == 0.0], np.zeros_like(y_ref[mask_np == 0.0]))
+
+@given( x_np=gen_ndarray(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
+        n=st.integers(min_value=1, max_value=MAX_DIM),
+        bias=st.booleans() | st.none(),
+        seed=gen_seed(),
+        gpu=st.booleans(),
+        )
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
+@pytest.mark.hypothesis
+@torch.no_grad()
+def test_forward_sparse_linear(x_np, n, bias, seed, gpu, fetch_device, fetch_dtype, fetch_result, allclose):
+    device = fetch_device(gpu)
+    dtype = fetch_dtype(x_np.dtype)
+    torch.manual_seed(seed)
+    x = torch.from_numpy(x_np).to(device)
+    m = x_np.shape[-1]
+    fan_in = np.random.randint(1,m+1)
+    mask = RandomFixedSparsityMask2D(m, n, fan_in).to(device, dtype)
+    if bias is not None:
+        module = SparseLinear(m, n, mask, bias=bias).to(device, dtype)
+    else:
+        module = SparseLinear(m, n, mask).to(device, dtype)
+    module.eval()
+    y_test = fetch_result(module(x))
+    y_ref = fetch_result(F.linear(x, module.weight*mask(), module.bias))
+    assert allclose(y_test, y_ref)
 

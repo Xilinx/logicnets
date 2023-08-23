@@ -33,6 +33,17 @@ MAX_DIMS=5
 SEED_MIN=0
 SEED_MAX=10
 
+def gen_mask_choice():
+    return st.sampled_from(["dense", "fixed_random"])
+
+def build_mask_2d(choice, m, n, fan_in):
+    if choice == "dense":
+        return DenseMask2D(m, n)
+    elif choice == "fixed_random":
+        return RandomFixedSparsityMask2D(m, n, fan_in)
+    else:
+        raise ValueError(f"Invalid choice for sparsity mask. Choice: {choice}")
+
 def test_instantiate_scalar_bias_scale():
     m = ScalarBiasScale()
     assert isinstance(m, ScalarBiasScale)
@@ -142,20 +153,21 @@ def test_forward_random_fixed_sparsity_mask_2d(x_np, gpu, fetch_device, fetch_dt
 @given( x_np=gen_ndarray(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
         n=st.integers(min_value=1, max_value=MAX_DIM),
         bias=st.booleans() | st.none(),
+        mask_choice=gen_mask_choice(),
         seed=gen_seed(),
         gpu=st.booleans(),
         )
 @settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
-def test_forward_sparse_linear(x_np, n, bias, seed, gpu, fetch_device, fetch_dtype, fetch_result, allclose):
+def test_forward_sparse_linear(x_np, n, bias, mask_choice, seed, gpu, fetch_device, fetch_dtype, fetch_result, allclose):
     device = fetch_device(gpu)
     dtype = fetch_dtype(x_np.dtype)
     torch.manual_seed(seed)
     x = torch.from_numpy(x_np).to(device)
     m = x_np.shape[-1]
     fan_in = np.random.randint(1,m+1)
-    mask = RandomFixedSparsityMask2D(m, n, fan_in).to(device, dtype)
+    mask = build_mask_2d(mask_choice, m, n, fan_in).to(device, dtype)
     if bias is not None:
         module = SparseLinear(m, n, mask, bias=bias).to(device, dtype)
     else:

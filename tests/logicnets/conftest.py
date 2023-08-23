@@ -36,3 +36,15 @@ def fetch_result():
         return x.detach().cpu().numpy()
     return _fetch_result
 
+@pytest.fixture
+def allclose():
+    def _allclose(x, y):
+        return np.allclose(x, y, rtol=1e-05, atol=1e-08, equal_nan=True)
+    return _allclose
+
+@pytest.fixture
+def allexact():
+    def _allexact(x, y):
+        return np.allclose(x, y, rtol=0, atol=0, equal_nan=True)
+    return _allexact
+

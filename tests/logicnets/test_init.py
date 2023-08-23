@@ -37,7 +37,7 @@ def expected_exception(request):
 @settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
-def test_init(mask_np, gpu, fetch_device, fetch_dtype, fetch_result):
+def test_init(mask_np, gpu, fetch_device, fetch_dtype, fetch_result, allexact):
     device = fetch_device(gpu)
     dtype = fetch_dtype(mask_np.dtype)
     n, m = mask_np.shape[0], mask_np.shape[1]
@@ -45,8 +45,8 @@ def test_init(mask_np, gpu, fetch_device, fetch_dtype, fetch_result):
     fan_in = np.random.randint(1,m+1)
     new_mask = random_restrict_fanin(mask, fan_in)
     for i in range(n):
-        assert fan_in == fetch_result(torch.sum(mask[i] == 1.0))
-        assert (m - fan_in) == fetch_result(torch.sum(mask[i] == 0.0))
+        assert allexact(m, fetch_result(torch.sum(mask[i] == 1.0)))
+        assert allexact((m - fan_in), fetch_result(torch.sum(mask[i] == 0.0)))
 
 @pytest.mark.parametrize("shape", [(1,), (1,1,1)])
 @torch.no_grad()

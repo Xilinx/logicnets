@@ -177,3 +177,34 @@ def test_forward_sparse_linear(x_np, n, bias, mask_choice, seed, gpu, fetch_devi
     y_ref = fetch_result(F.linear(x, module.weight*mask(), module.bias))
     assert allclose(y_test, y_ref)
 
+@given( x_np=gen_ndarray(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
+        n=st.integers(min_value=1, max_value=MAX_DIM),
+        bias=st.booleans() | st.none(),
+        mask_choice=gen_mask_choice(),
+        seed=gen_seed(),
+        gpu=st.booleans(),
+        )
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
+@pytest.mark.hypothesis
+@torch.no_grad()
+def test_forward_sparse_linear_neq(x_np, n, bias, mask_choice, seed, gpu, fetch_device, fetch_dtype, fetch_result, allclose):
+    qi = QuantReLU(bit_width=2, max_val=1.0, quant_type=QuantType.INT, scaling_impl_type=ScalingImplType.PARAMETER)
+    qo = QuantReLU(bit_width=2, max_val=1.0, quant_type=QuantType.INT, scaling_impl_type=ScalingImplType.PARAMETER)
+    qbi = QuantBrevitasActivation(qi)
+    qbo = QuantBrevitasActivation(qo)
+    device = fetch_device(gpu)
+    dtype = fetch_dtype(x_np.dtype)
+    torch.manual_seed(seed)
+    x = torch.from_numpy(x_np).to(device)
+    m = x_np.shape[-1]
+    fan_in = np.random.randint(1,m+1)
+    mask = build_mask_2d(mask_choice, m, n, fan_in).to(device, dtype)
+    if bias is not None:
+        module = SparseLinearNeq(m, n, qbi, qbo, sparse_linear_kws={'mask': mask, 'bias': bias}).to(device, dtype)
+    else:
+        module = SparseLinearNeq(m, n, qbi, qbo, sparse_linear_kws={'mask': mask}).to(device, dtype)
+    module.eval()
+    y_test = fetch_result(module(x))
+    y_ref = fetch_result(qbo(F.linear(qbi(x), module.fc.weight*mask(), module.fc.bias)))
+    assert allclose(y_test, y_ref)
+

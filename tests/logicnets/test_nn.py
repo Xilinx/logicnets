@@ -115,3 +115,26 @@ def test_forward_dense_mask_2d(x_np, gpu, fetch_device, fetch_dtype, fetch_resul
     y_ref = x_np
     assert allexact(y_test, y_ref)
 
+@given( x_np=gen_ndarray(min_dims=2, max_dims=2, min_side=MIN_DIM, max_side=MAX_DIM),
+        gpu=st.booleans(),
+        )
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
+@pytest.mark.hypothesis
+@torch.no_grad()
+def test_forward_random_fixed_sparsity_mask_2d(x_np, gpu, fetch_device, fetch_dtype, fetch_result, allexact):
+    device = fetch_device(gpu)
+    dtype = fetch_dtype(x_np.dtype)
+    x = torch.from_numpy(x_np).to(device)
+    n, m = x_np.shape[0], x_np.shape[1]
+    fan_in = np.random.randint(1,m+1)
+    mask = RandomFixedSparsityMask2D(m, n, fan_in).to(device, dtype)
+    mask.eval()
+    y_test = fetch_result(x*mask())
+    y_ref = x_np
+    mask_np = fetch_result(mask())
+    if fan_in == m:
+        assert allexact(y_test, y_ref)
+    else:
+        assert allexact(y_test[mask_np == 1.0], y_ref[mask_np == 1.0])
+        assert allexact(y_test[mask_np == 0.0], np.zeros_like(y_ref[mask_np == 0.0]))
+

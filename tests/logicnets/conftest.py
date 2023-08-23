@@ -5,7 +5,7 @@ import numpy as np
 
 import torch
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def fetch_device():
     def _device(gpu):
         if gpu:
@@ -18,7 +18,7 @@ def fetch_device():
         return device
     return _device
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def fetch_dtype():
     def _dtype(np_dtype):
         if np_dtype == np.float32:
@@ -30,19 +30,19 @@ def fetch_dtype():
         return torch_dtype
     return _dtype
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def fetch_result():
     def _fetch_result(x):
         return x.detach().cpu().numpy()
     return _fetch_result
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def allclose():
     def _allclose(x, y):
         return np.allclose(x, y, rtol=1e-05, atol=1e-08, equal_nan=True)
     return _allclose
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def allexact():
     def _allexact(x, y):
         return np.allclose(x, y, rtol=0, atol=0, equal_nan=True)

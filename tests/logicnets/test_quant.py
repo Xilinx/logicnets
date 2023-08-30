@@ -43,9 +43,9 @@ def test_forward_quant_relu_brevitas_activation(x_np, bit_width, gpu, fetch_devi
     x = torch.from_numpy(x_np).to(device)
     qa = QuantReLU(bit_width=bit_width, max_val=2**(bit_width-1) - 0.5, quant_type=QuantType.INT, scaling_impl_type=ScalingImplType.PARAMETER)
     module = QuantBrevitasActivation(qa).to(device, dtype)
+    module.eval()
     scale_factor, bits = module.get_scale_factor_bits()
     assert bits == bit_width
-    print(f"{fetch_result(scale_factor):.16}")
     assert allclose(fetch_result(scale_factor), np.array(0.5, dtype=x_np.dtype))
     y_test = fetch_result(qa(x))
     y_ref = fetch_result(torch.clamp(torch.round(x / scale_factor), 0, (2**bit_width - 1))*scale_factor)

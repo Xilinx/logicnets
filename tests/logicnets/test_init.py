@@ -44,7 +44,7 @@ def test_init(mask_np, gpu, fetch_device, fetch_dtype, fetch_result, allexact):
     fan_in = np.random.randint(1,m+1)
     new_mask = random_restrict_fanin(mask, fan_in)
     for i in range(n):
-        assert allexact(m, fetch_result(torch.sum(mask[i] == 1.0)))
+        assert allexact(fan_in, fetch_result(torch.sum(mask[i] == 1.0)))
         assert allexact((m - fan_in), fetch_result(torch.sum(mask[i] == 0.0)))
 
 @pytest.mark.parametrize("shape", [(1,), (1,1,1)])

@@ -1,9 +1,16 @@
 
 import pytest
+from hypothesis import settings, Verbosity
 
+import os
 import numpy as np
 
 import torch
+
+settings.register_profile("ci", max_examples=1000, deadline=None)
+settings.register_profile("dev", max_examples=10, deadline=None)
+settings.register_profile("debug", parent=settings.get_profile("dev"), verbosity=Verbosity.verbose)
+settings.load_profile(os.getenv("HYPOTHESIS_PROFILE", "dev"))
 
 @pytest.fixture(scope="session")
 def fetch_device():

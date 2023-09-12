@@ -2,6 +2,9 @@
 from hypothesis import strategies as st
 from hypothesis.extra import numpy as hnp
 
+def wrap(decorator):
+    return decorator
+
 def gen_ndarray(**shape_kws):
     return hnp.arrays(
                 dtype=hnp.floating_dtypes(sizes=(32, 64), endianness='='),

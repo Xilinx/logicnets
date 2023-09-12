@@ -1,6 +1,6 @@
 
 import pytest
-from hypothesis import given, strategies as st, settings, HealthCheck, example
+from hypothesis import given, strategies as st, example
 from hypothesis.extra import numpy as hnp
 
 import numpy as np
@@ -41,7 +41,6 @@ def test_instantiate_quant_brevitas_activation():
 @example(bit_width=2, x_np=np.array([0.24999998509883880615234375], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
 @wrap(example(bit_width=1, x_np=np.array([0.5], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False).xfail(reason="Brevitas issue when initialising scale factor with bit_width=1", raises=AssertionError))
 @wrap(example(bit_width=1, x_np=np.array([0.5], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False).xfail(reason="Brevitas issue when initialising scale factor with bit_width=1", raises=AssertionError))
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
 def test_forward_quant_relu_brevitas_activation(x_np, bit_width, scale_factor, gpu, float_scale, fetch_device, fetch_dtype, fetch_result, allexact, allclose):

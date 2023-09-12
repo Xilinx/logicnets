@@ -1,6 +1,6 @@
 
 import pytest
-from hypothesis import given, strategies as st, settings, HealthCheck
+from hypothesis import given, strategies as st
 from hypothesis.extra import numpy as hnp
 
 import numpy as np
@@ -79,7 +79,6 @@ def test_instantiate_sparse_linear_neq():
         scale_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
         gpu=st.booleans(),
         )
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
 def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu, fetch_device, fetch_dtype, fetch_result, allclose):
@@ -97,7 +96,6 @@ def test_forward_scalar_bias_scale(x_np, bias_init, scale_init, gpu, fetch_devic
         scale_init=st.floats(allow_infinity=False, allow_nan=False, width=32),
         gpu=st.booleans(),
         )
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
 def test_forward_scalar_scale_bias(x_np, bias_init, scale_init, gpu, fetch_device, fetch_dtype, fetch_result, allclose):
@@ -113,7 +111,6 @@ def test_forward_scalar_scale_bias(x_np, bias_init, scale_init, gpu, fetch_devic
 @given( x_np=gen_ndarray(min_dims=2, max_dims=2, min_side=MIN_DIM, max_side=MAX_DIM),
         gpu=st.booleans(),
         )
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
 def test_forward_dense_mask_2d(x_np, gpu, fetch_device, fetch_dtype, fetch_result, allexact):
@@ -130,7 +127,6 @@ def test_forward_dense_mask_2d(x_np, gpu, fetch_device, fetch_dtype, fetch_resul
 @given( x_np=gen_ndarray(min_dims=2, max_dims=2, min_side=MIN_DIM, max_side=MAX_DIM),
         gpu=st.booleans(),
         )
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
 def test_forward_random_fixed_sparsity_mask_2d(x_np, gpu, fetch_device, fetch_dtype, fetch_result, allexact):
@@ -157,7 +153,6 @@ def test_forward_random_fixed_sparsity_mask_2d(x_np, gpu, fetch_device, fetch_dt
         seed=gen_seed(),
         gpu=st.booleans(),
         )
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
 def test_forward_sparse_linear(x_np, n, bias, mask_choice, seed, gpu, fetch_device, fetch_dtype, fetch_result, allclose):
@@ -184,7 +179,6 @@ def test_forward_sparse_linear(x_np, n, bias, mask_choice, seed, gpu, fetch_devi
         seed=gen_seed(),
         gpu=st.booleans(),
         )
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
 def test_forward_sparse_linear_neq(x_np, n, bias, mask_choice, seed, gpu, fetch_device, fetch_dtype, fetch_result, allclose):

@@ -1,6 +1,6 @@
 
 import pytest
-from hypothesis import given, strategies as st, settings, HealthCheck
+from hypothesis import given, strategies as st
 from hypothesis.extra import numpy as hnp
 
 import numpy as np
@@ -34,7 +34,6 @@ def expected_exception(request):
 @given( mask_np=gen_ndarray(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
         gpu=st.booleans(),
         )
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @pytest.mark.hypothesis
 @torch.no_grad()
 def test_init(mask_np, gpu, fetch_device, fetch_dtype, fetch_result, allexact):

@@ -12,7 +12,7 @@ from brevitas.core.quant import QuantType
 from brevitas.core.scaling import ScalingImplType
 from brevitas.core.restrict_val import RestrictValueType
 
-from logicnets.quant import QuantBrevitasActivation
+from logicnets.quant import QuantBrevitasActivation, get_int_state_space
 
 from tests.logicnets.util import gen_ndarray, gen_bit_width, gen_power_of_two, wrap
 
@@ -166,4 +166,19 @@ def test_forward_quant_bipolar_hardtanh_brevitas_activation(x_np, scale_factor, 
     else:
         y_ref = expected_result
     assert validate(y_test, y_ref)
+
+# TODO: Future version of this function should support returning a GPU or float64 tensor
+@pytest.mark.parametrize("bits, signed, narrow_range, expected_result", [
+    (1, False, False, torch.as_tensor(range(0, 2))),
+    (2, False, False, torch.as_tensor(range(0, 4))),
+    (1, False, True, torch.as_tensor(range(0, 1))),
+    (2, False, True, torch.as_tensor(range(0, 3))),
+    (1, True, False, torch.as_tensor(range(-1, 1))),
+    (2, True, False, torch.as_tensor(range(-2, 2))),
+    (1, True, True, torch.as_tensor(range(0, 1))),
+    (2, True, True, torch.as_tensor(range(-1, 2))),
+])
+@torch.no_grad()
+def test_get_int_state_space(bits, signed, narrow_range, expected_result, fetch_result, allexact):
+    assert allexact(fetch_result(get_int_state_space(bits, signed, narrow_range)), fetch_result(expected_result))
 

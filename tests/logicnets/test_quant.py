@@ -115,7 +115,6 @@ def test_forward_quant_hardtanh_brevitas_activation(x_np, bit_width, scale_facto
     y_ref = fetch_result(torch.clamp(torch.round(x / scale_factor), - 2**(bit_width-1), (2**(bit_width-1) - 1))*scale_factor)
     assert validate(y_test, y_ref)
 
-# TODO: Make this for signed activations
 @given( x_np=gen_ndarray(min_dims=MIN_DIMS, max_dims=MAX_DIMS, min_side=MIN_DIM, max_side=MAX_DIM),
         scale_factor=gen_power_of_two(min_val=-1, max_val=0),
         gpu=st.booleans(),

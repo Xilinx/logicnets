@@ -19,7 +19,7 @@ def fetch_device():
             if torch.cuda.is_available():
                 device = "cuda"
             else:
-                pytest.skip("GPU not available")
+                device = "cpu"
         else:
             device = "cpu"
         return device

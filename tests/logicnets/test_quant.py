@@ -40,6 +40,12 @@ def test_instantiate_quant_brevitas_activation():
 @example(bit_width=2, x_np=np.array([0.2500000298023223876953125], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
 @example(bit_width=2, x_np=np.array([0.24999998509883880615234375], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False)
 @example(bit_width=2, x_np=np.array([0.24999998509883880615234375], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.75], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.75], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.750000059604644775390625], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.750000059604644775390625], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.749999940395355224609375], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.749999940395355224609375], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
 @wrap(example(bit_width=1, x_np=np.array([0.5], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False).xfail(reason="Brevitas issue when initialising scale factor with bit_width=1", raises=AssertionError))
 @wrap(example(bit_width=1, x_np=np.array([0.5], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False).xfail(reason="Brevitas issue when initialising scale factor with bit_width=1", raises=AssertionError))
 @pytest.mark.hypothesis
@@ -79,6 +85,12 @@ def test_forward_quant_relu_brevitas_activation(x_np, bit_width, scale_factor, g
 @example(bit_width=2, x_np=np.array([0.2500000298023223876953125], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
 @example(bit_width=2, x_np=np.array([0.24999998509883880615234375], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False)
 @example(bit_width=2, x_np=np.array([0.24999998509883880615234375], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.75], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.75], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.750000059604644775390625], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.750000059604644775390625], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.749999940395355224609375], dtype=np.float32), scale_factor=0.5, gpu=False, float_scale=False)
+@example(bit_width=3, x_np=np.array([0.749999940395355224609375], dtype=np.float32), scale_factor=0.5, gpu=True, float_scale=False)
 @pytest.mark.hypothesis
 @torch.no_grad()
 def test_forward_quant_hardtanh_brevitas_activation(x_np, bit_width, scale_factor, gpu, float_scale, fetch_device, fetch_dtype, fetch_result, allexact, allclose):

@@ -19,6 +19,8 @@ import subprocess
 
 import torch
 
+from .nn import SparseLinearNeq
+
 # Return the indices associated with a '1' value
 # TODO: vectorise this function
 def fetch_mask_indices(mask: torch.Tensor) -> torch.LongTensor:
@@ -83,4 +85,13 @@ def proc_postsynth_file(code_dir):
     proc = subprocess.Popen(call_omx, stdout=subprocess.PIPE, env=os.environ)
     proc.communicate()
 
-
+def get_lut_cost(model):
+    """
+    Compute LUTCost of the given model
+    """
+    total_lut_cost = 0
+    for _, module in model.named_modules():
+        if type(module) == SparseLinearNeq:
+            lut_cost = module.lut_cost()
+            total_lut_cost = total_lut_cost + lut_cost
+    return total_lut_cost

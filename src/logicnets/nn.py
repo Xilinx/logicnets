@@ -116,6 +116,31 @@ class SparseLinearNeq(nn.Module):
         self.apply_input_quant = apply_input_quant
         self.apply_output_quant = apply_output_quant
 
+    def lut_cost(self):
+        """
+        Approximate how many 6:1 LUTs are needed to implement this layer using 
+        LUTCost() as defined in LogicNets paper FPL'20:
+            LUTCost(X, Y) = (Y / 3) * (2^(X - 4) - (-1)^X)
+        where:
+        * X: input fanin bits
+        * Y: output bits 
+        LUTCost() estimates how many LUTs are needed to implement 1 neuron, so 
+        we then multiply LUTCost() by the number of neurons to get the total 
+        number of LUTs needed.
+        NOTE: This function (over)estimates how many 6:1 LUTs are needed to implement
+        this layer b/c it assumes every neuron is connected to the next layer 
+        since we do not have the next layer's sparsity information.
+        """
+        # Compute LUTCost of 1 neuron
+        _, input_bitwidth = self.input_quant.get_scale_factor_bits()
+        _, output_bitwidth = self.output_quant.get_scale_factor_bits()
+        input_bitwidth, output_bitwidth = int(input_bitwidth), int(output_bitwidth)
+        x = input_bitwidth * self.fc.mask.fan_in # neuron input fanin
+        y = output_bitwidth 
+        neuron_lut_cost = (y / 3) * ((2 ** (x - 4)) - ((-1) ** x))
+        # Compute total LUTCost
+        return self.out_features * neuron_lut_cost
+
     # TODO: Move the verilog string templates to elsewhere
     # TODO: Move this to another class
     # TODO: Update this code to support custom bitwidths per input/output

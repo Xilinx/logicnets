@@ -1,0 +1,35 @@
+# Fixed params
+activation_bitwidth:
+- 3
+- 3
+- 4
+epochs: 200
+hidden_layer:
+- 512
+- 512
+- 64
+input_bitwidth: 6
+input_fanin: 2
+neuron_fanin:
+- 4
+- 5
+- 3
+output_bitwidth: 5
+seed: 432384445
+
+# Params to grid search
+grid_search_params:
+  lr:
+  - 0.0001
+  - 0.001
+  - 0.01
+  warm_restart_freq:
+  - 50
+  - 100
+  wd:
+  - 0.001
+  - 0.01
+  - 0.1
+  batch_size:
+  - 512
+  - 1024

@@ -1,0 +1,44 @@
+# Fixed params
+activation_bitwidth:
+- 2
+- 2
+- 3
+- 4
+- 3
+- 4
+batch_size: 512
+ensemble_method: voting
+epochs: 200
+hidden_layer:
+- 128
+- 256
+- 256
+- 256
+- 256
+- 128
+input_bitwidth: 4
+input_fanin: 2
+lr: 0.0001
+neuron_fanin:
+- 4
+- 6
+- 4
+- 2
+- 3
+- 2
+output_bitwidth: 5
+warm_restart_freq: 100
+wd: 0.001
+
+# Params to grid search
+grid_search_params:
+  ensemble_size:
+  - 2
+  - 4
+  - 8
+  - 16
+  - 32
+  seed:
+  - 524926359
+  - 1
+  - 2

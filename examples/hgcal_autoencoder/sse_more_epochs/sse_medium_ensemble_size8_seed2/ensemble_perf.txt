@@ -1,0 +1,4 @@
+Ensemble size 1 val loss: 10.952213287353516
+Ensemble size 2 val loss: 4.175662517547607
+Ensemble size 3 val loss: 1.5597689151763916
+Ensemble size 4 val loss: 0.7155595421791077

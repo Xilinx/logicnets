@@ -1,0 +1,28 @@
+Single model 0 val loss: 0.10842385143041611
+Single model 0 val loss: 0.10842385143041611
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Ensemble size 1 val loss: 0.1717272847890854	Avg EMD = -1
+Single model 1 val loss: 0.07252685725688934
+Ensemble size 2 val loss: 0.7138411402702332	Avg EMD = -1
+Single model 0 val loss: 0.1717272847890854
+Ensemble size 1 val loss: 0.1717272847890854	Avg EMD = -1
+Single model 1 val loss: 0.07252685725688934
+Ensemble size 2 val loss: 0.7138411402702332	Avg EMD = -1
+Single model 0 val loss: 0.1717272847890854
+Ensemble size 1 val loss: 0.1717272847890854	Avg EMD = -1
+Single model 1 val loss: 0.07252685725688934
+Ensemble size 2 val loss: 0.7138411402702332	Avg EMD = -1
+Single model 0 val loss: 0.1717272847890854
+Ensemble size 1 val loss: 0.1717272847890854	Avg EMD = -1
+Single model 1 val loss: 0.07252685725688934
+Ensemble size 2 val loss: 0.7138411402702332	Avg EMD = -1
+Single model 0 val loss: 0.2681849002838135
+Ensemble size 1 val loss: 0.26818495988845825	Avg EMD = -1
+Single model 1 val loss: 0.18719482421875
+Ensemble size 2 val loss: 0.1654444932937622	Avg EMD = -1
+Ensemble size 2 val loss: 0.1654444932937622	Avg EMD = 3.338804753898944

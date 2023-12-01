@@ -1,0 +1,34 @@
+Pre-FGE single model val loss: 0.011829488910734653	Avg EMD: 1.4133291081090613
+Ensemble size 1 val loss: 0.21152281761169434
+Ensemble size 2 val loss: 0.19943757355213165
+Ensemble size 3 val loss: 0.18878641724586487
+Ensemble size 4 val loss: 0.17956025898456573
+Ensemble size 5 val loss: 0.17174804210662842
+Ensemble size 6 val loss: 0.163188636302948
+Ensemble size 7 val loss: 0.15512403845787048
+Ensemble size 8 val loss: 0.14781609177589417
+Ensemble size 9 val loss: 0.1392059177160263
+Ensemble size 10 val loss: 0.13051533699035645
+Ensemble size 11 val loss: 0.12158612906932831
+Ensemble size 12 val loss: 0.11295022815465927
+Ensemble size 13 val loss: 0.10315645486116409
+Ensemble size 14 val loss: 0.09383691102266312
+Ensemble size 15 val loss: 0.0847695991396904
+Ensemble size 16 val loss: 0.07588288187980652
+Ensemble size 17 val loss: 0.06703881174325943
+Ensemble size 18 val loss: 0.05910539999604225
+Ensemble size 19 val loss: 0.05282514914870262
+Ensemble size 20 val loss: 0.0462954044342041
+Ensemble size 21 val loss: 0.040795158594846725
+Ensemble size 22 val loss: 0.0350504070520401
+Ensemble size 23 val loss: 0.0308054368942976
+Ensemble size 24 val loss: 0.026989825069904327
+Ensemble size 25 val loss: 0.02346826158463955
+Ensemble size 26 val loss: 0.021085916087031364
+Ensemble size 27 val loss: 0.018666986376047134
+Ensemble size 28 val loss: 0.016616584733128548
+Ensemble size 29 val loss: 0.015070648863911629
+Ensemble size 30 val loss: 0.014078413136303425
+Ensemble size 31 val loss: 0.013337104581296444
+Single model val loss: 0.01635080575942993	Avg EMD: 1.5561498667103395
+Ensemble size 32 val loss: 0.01305975392460823

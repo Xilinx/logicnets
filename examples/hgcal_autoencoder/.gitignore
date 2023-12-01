@@ -1,0 +1,9 @@
+data/
+# Large ensemble checkpoints
+**/averaging/**/*.pth
+**/voting/**/*.pth
+**/snapshot_test/**/*.pth
+**/sse/**/*.pth
+**/sse_more_epochs/**/*.pth
+**/fge/**/*.pth
+**/adaboost/**/*.pth

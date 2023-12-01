@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.2.2 (64-bit)
+# SW Build 2768091 on Fri Jan 31 21:52:39 MST 2020
+# IP Build 2767358 on Sat Feb  1 00:50:20 MST 2020
+# Start of session at: Wed Oct 11 12:29:26 2023
+# Process ID: 3915
+# Current directory: /workspace/logicnets/examples/hgcal_autoencoder/pipecleaner/hgcal_quant2/results_logicnet
+# Command line: vivado -mode tcl -source logicnet.tcl -tclargs logicnet
+# Log file: /workspace/logicnets/examples/hgcal_autoencoder/pipecleaner/hgcal_quant2/results_logicnet/vivado.log
+# Journal file: /workspace/logicnets/examples/hgcal_autoencoder/pipecleaner/hgcal_quant2/results_logicnet/vivado.jou
+#-----------------------------------------------------------
+source logicnet.tcl

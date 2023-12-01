@@ -1,0 +1,12 @@
+act1_bitwidth: 4
+act2_bitwidth: 4
+batch_size: 512
+epochs: 200
+gpu: true
+input_bitwidth: 6
+input_fanin: 2
+lr: 0.001
+num_dense_feat: 64
+output_fanin: 3
+warm_restart_freq: 50
+wd: 0.5

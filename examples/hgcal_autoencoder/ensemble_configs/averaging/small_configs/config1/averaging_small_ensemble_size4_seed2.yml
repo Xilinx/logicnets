@@ -1,0 +1,26 @@
+activation_bitwidth:
+- 2
+- 2
+- 2
+- 6
+batch_size: 512
+ensemble_method: voting
+ensemble_size: 4
+epochs: 200
+hidden_layer:
+- 128
+- 256
+- 128
+- 128
+input_bitwidth: 4
+input_fanin: 2
+lr: 0.001
+neuron_fanin:
+- 6
+- 5
+- 4
+- 2
+output_bitwidth: 6
+seed: 2
+warm_restart_freq: 100
+wd: 1.0e-05

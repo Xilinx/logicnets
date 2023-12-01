@@ -1,0 +1,5 @@
+module_list.0 lut cost: 217600.0
+module_list.1 lut cost: 16128.0
+module_list.2 lut cost: 27200.0
+module_list.3 lut cost: 2016.0
+Total LUT cost: 262944.0

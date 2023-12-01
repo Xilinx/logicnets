@@ -1,0 +1,5 @@
+Ensemble size 1 val loss: 5.59421443939209
+Ensemble size 2 val loss: 1.3210421800613403
+Ensemble size 3 val loss: 0.27995753288269043
+Single model val loss: 0.02815520577132702	Avg EMD: 1.6265265831385551
+Ensemble size 4 val loss: 0.12576347589492798

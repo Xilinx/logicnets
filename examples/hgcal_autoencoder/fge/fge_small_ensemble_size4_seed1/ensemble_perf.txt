@@ -1,0 +1,6 @@
+Pre-FGE single model val loss: 0.026291929185390472	Avg EMD: 1.691487995280865
+Ensemble size 1 val loss: 0.15902377665042877
+Ensemble size 2 val loss: 0.10457415133714676
+Ensemble size 3 val loss: 0.0443151630461216
+Single model val loss: 0.026201188564300537	Avg EMD: 1.7256189685086658
+Ensemble size 4 val loss: 0.02343229576945305

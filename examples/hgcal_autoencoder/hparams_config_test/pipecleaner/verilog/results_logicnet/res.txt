@@ -1,0 +1,5 @@
+LUT=279
+FF=0
+DSP=0
+BRAM=0
+WNS=

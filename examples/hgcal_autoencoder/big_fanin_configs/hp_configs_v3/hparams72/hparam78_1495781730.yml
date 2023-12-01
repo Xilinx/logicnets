@@ -1,0 +1,21 @@
+activation_bitwidth:
+- 3
+- 2
+- 2
+batch_size: 512
+epochs: 100
+hidden_layer:
+- 64
+- 512
+- 512
+input_bitwidth: 4
+input_fanin: 2
+lr: 0.008307659744398769
+neuron_fanin:
+- 2
+- 2
+- 3
+output_bitwidth: 5
+seed: 1495781730
+warm_restart_freq: 69
+wd: 3.334782771234226e-05

@@ -1,0 +1,34 @@
+num_trials: 9
+num_seeds_per_trial: 3
+search_model_arch: true
+search_learning_params: true
+activation_bitwidth:
+  max: 6
+  min: 2
+hidden_layer:
+  max: 6
+  min: 2
+input_bitwidth:
+  max: 6
+  min: 4
+input_fanin:
+  max: 4
+  min: 2
+neuron_fanin:
+  max: 6
+  min: 2
+num_features:
+  max: 512
+  min: 64
+output_bitwidth:
+  max: 6
+  min: 2
+lr:
+  max: 0.01
+  min: 1.0e-04
+warm_restart_freq:
+  max: 100
+  min: 10
+wd:
+  max: 0.1
+  min: 1.0e-05

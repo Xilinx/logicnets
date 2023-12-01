@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.2.2 (64-bit)
+# SW Build 2768091 on Fri Jan 31 21:52:39 MST 2020
+# IP Build 2767358 on Sat Feb  1 00:50:20 MST 2020
+# Start of session at: Thu Nov  2 21:33:54 2023
+# Process ID: 15105
+# Current directory: /workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/vivadocompile/vivadocompile.runs/synth_1
+# Command line: vivado -log logicnet.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source logicnet.tcl
+# Log file: /workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/vivadocompile/vivadocompile.runs/synth_1/logicnet.vds
+# Journal file: /workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/vivadocompile/vivadocompile.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source logicnet.tcl -notrace

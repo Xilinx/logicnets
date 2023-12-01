@@ -1,1 +1,15 @@
+#  Copyright (C) 2023, Advanced Micro Devices, Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 Ensemble size 1 val loss: 0.1813775897026062	Ensemble size 2 val loss: 0.14420412480831146	Ensemble size 3 val loss: 0.11434563249349594	Ensemble size 4 val loss: 0.08553194999694824	Ensemble size 5 val loss: 0.05761783570051193	Ensemble size 6 val loss: 0.03871236369013786	Ensemble size 7 val loss: 0.026681844145059586	Ensemble size 8 val loss: 0.018030671402812004	

@@ -1,3 +1,32 @@
+# Copyright (C) 2023, Advanced Micro Devices, Inc.
+# Copyright (c) 2019 - 2023 The Ensemble-Pytorch developers.
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+
+# * Neither the name of the copyright holder nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 import os
 import sys
 import time
@@ -143,7 +172,7 @@ def train(model, dataset, params, sampler=None, optimizer=None):
 
 def snapshot_lr_scheduler(optimizer, num_iters, num_models):
     """
-    From: https://github.com/TorchEnsemble-Community/Ensemble-Pytorch 
+    Ref: https://github.com/TorchEnsemble-Community/Ensemble-Pytorch 
     Set the learning rate scheduler for snapshot ensemble.
     Please refer to the equation (2) in original paper for details.
     """
@@ -438,14 +467,14 @@ def train_bagging(model, dataset, params):
     writer = SummaryWriter(params["experiment_dir"])
 
     # Create bagging dataloaders
-    bagging_train_loaders = get_bagging_dataloaders(train_loader, model.num_models)
+    bagging_train_loader = get_bagging_dataloader(train_loader)
 
     # Training loop
     min_loss = np.finfo(np.float32).max
     for epoch in range(0, params["epochs"]):
         model.train()
         total_loss = 0.0
-        for x in tqdm(bagging_train_loaders):
+        for x in tqdm(bagging_train_loader):
             if params["gpu"]:
                 x = x.cuda()
             optimizer.zero_grad()
@@ -479,30 +508,24 @@ def train_bagging(model, dataset, params):
     print(f"Total training time: {str(training_time)}")
 
 
-def get_bagging_dataloaders(original_dataloader, num_models):
+def get_bagging_dataloader(original_dataloader):
     """
-    From: https://github.com/TorchEnsemble-Community/Ensemble-Pytorch/blob/master/torchensemble/bagging.py#L483 
+    Ref: https://github.com/TorchEnsemble-Community/Ensemble-Pytorch/blob/master/torchensemble/bagging.py#L483 
     """
     dataset = original_dataloader.dataset
-    dataloaders = []
-    for _ in range(num_models):
-        # sampling with replacement
-        indices = torch.randint(
-            high=len(dataset), size=(len(dataset),), dtype=torch.int64,
-        )
-        sub_dataset = torch.utils.data.Subset(dataset, indices)
-        dataloader = torch.utils.data.DataLoader(
-            sub_dataset,
-            batch_size=original_dataloader.batch_size,
-            num_workers=original_dataloader.num_workers,
-            collate_fn=original_dataloader.collate_fn,
-            shuffle=True,
-        )
-        dataloaders.append(dataloader)
-    # Zip batch X across all dataloaders, e.g., 
-    # [[batch1 from all dataloaders], .. , [batch_n from all dataloaders]]
-    dataloaders = [list(b) for b in zip(*dataloaders)]
-    return dataloaders
+    # sampling with replacement
+    indices = torch.randint(
+        high=len(dataset), size=(len(dataset),), dtype=torch.int64,
+    )
+    sub_dataset = torch.utils.data.Subset(dataset, indices)
+    dataloader = torch.utils.data.DataLoader(
+        sub_dataset,
+        batch_size=original_dataloader.batch_size,
+        num_workers=original_dataloader.num_workers,
+        collate_fn=original_dataloader.collate_fn,
+        shuffle=True,
+    )
+    return dataloader
 
 
 def train_fge(model, model_config, dataset, params):
@@ -693,7 +716,7 @@ def fge_adjust_lr(
 ):
     """
     Fast Geometric Ensemble learning rate schedule used to create snapshots
-    From: https://github.com/TorchEnsemble-Community/Ensemble-Pytorch 
+    Ref: https://github.com/TorchEnsemble-Community/Ensemble-Pytorch 
     """
     def scheduler(i):
         t = ((epoch % cycle) + i) / cycle
@@ -919,7 +942,6 @@ def train_adaboost(model, model_config, dataset, params, independent=False,ensem
         )
         with open(ensemble_perf_log, "a") as f:
             f.write(f"Single model {i + 1} val loss: {model_val_loss}\n")
-        # Calculate observation errors
         obs_err = compute_adaboost_sample_error(model, dataset, params)
         # Calculate model error (and possible break if too high). We'd want to
         # break if loss is too high because we are training the model on
@@ -931,7 +953,6 @@ def train_adaboost(model, model_config, dataset, params, independent=False,ensem
             model.num_models = len(model.encoder_ensemble)
             break
         beta = model.update_betas(model_err)
-        # Update model weights
         model.update_model_weights()
         if params["gpu"]:
             model.model_weights.cuda()

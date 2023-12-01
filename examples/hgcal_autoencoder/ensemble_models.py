@@ -1,3 +1,24 @@
+# Copyright (c) 2020 Daniel Friedman
+# Copyright (C) 2023, Advanced Micro Devices, Inc.
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import torch
 import torch.nn as nn
 import numpy as np
@@ -163,30 +184,7 @@ class VotingAutoencoderNeqModel(nn.Module): # TODO: Rename to Averaging
     def pytorch_inference(self):
         self.is_verilog_inference = False
 
-
-class BaggingAutoencoderNeqModel(VotingAutoencoderNeqModel):
-    """
-    Bagging learns the same way as the Voting ensemble, except the training data
-    for each member model is sampled with replacement
-    """
-    def __init__(self, config, input_length=64, output_length=16, num_models=4):
-        super().__init__(config, input_length, output_length, num_models)
-        # TODO: Likely will need separate decoders or 1 duplicated, frozen
-        # decoder to train. Will also probably need to train with separate 
-        # optimizers, etc.
-    
-    def pytorch_forward(self, x):
-        # x expects list of batches, 1 batch per model
-        outputs = [encoder(b) for b, encoder in zip(x, self.encoder_ensemble)]
-        avg_outputs = sum(outputs) / self.num_models
-        return self.decoder(avg_outputs)
-    
-    def verilog_forward(self, x):
-        outputs = [encoder.verilog_forward(b) for b, encoder in zip(x, self.encoder_ensemble)]
-        avg_outputs = sum(outputs) / self.num_models
-        return self.decoder(avg_outputs)
-    
-
+# TODO: Make BaseEnsemble class?
 class SnapshotAutoencoderNeqModel(nn.Module):
     """
     Snapshot ensemble of autoencoder models based on the method introduced in
@@ -288,6 +286,12 @@ class FGEAutoencoderNeqModel(SnapshotAutoencoderNeqModel):
     Fast Geometric Ensemble of autoencoder models based on the method introduced
     in Garipov et al., "Loss Surfaces, Mode Connectivity, and Fast Ensembling of
     DNNs", NeurIPS'18
+    """
+
+class BaggingAutoencoderNeqModel(SnapshotAutoencoderNeqModel):
+    """
+    Bagging, i.e., training data for each member model is sampled with
+    replacement
     """
 
 

@@ -19,6 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import copy
 import torch
 import torch.nn as nn
 import numpy as np
@@ -111,6 +112,7 @@ class VotingAutoencoderNeqModel(nn.Module): # TODO: Rename to Averaging
         input_length=64, 
         output_length=16,
         num_models=4,
+        fixed_sparsity_mask=False,
     ):
         super(VotingAutoencoderNeqModel, self).__init__()
         self.shape = (1, 8, 8)  # PyTorch defaults to (C, H, W)
@@ -118,13 +120,38 @@ class VotingAutoencoderNeqModel(nn.Module): # TODO: Rename to Averaging
         # TODO: Fix num neurons?
         self.num_neurons = [input_length] + config["hidden_layer"] + [output_length]
         self.num_models = num_models
-
-        self.encoder_ensemble = nn.ModuleList([
-            EncoderNeqModel(
+        if fixed_sparsity_mask:
+            print("All models set with the same sparsity mask")
+            self.encoder_ensemble = nn.ModuleList()
+            encoder = EncoderNeqModel(
                 config, input_length=input_length, output_length=output_length
-            ) 
-            for _ in range(num_models)
-        ])
+            )
+            self.encoder_ensemble.append(encoder)
+            encoder_param = list(encoder.parameters())[1] # For testing only
+            for _ in range(1, num_models):
+                encoder_copy = EncoderNeqModel(
+                    config, 
+                    input_length=input_length, 
+                    output_length=output_length
+                )
+                encoder_copy.load_state_dict(encoder.state_dict())
+                encoder_copy.reset_parameters() # Reinitialize linear parameters
+                encoder_param_copy = list(encoder_copy.parameters())[1]
+                for i, (name, param) in enumerate(encoder_copy.named_parameters()):
+                    if "mask" in name:
+                        _, encoder_mask_param = list(encoder.named_parameters())[i]
+                        assert torch.equal(param, encoder_mask_param)
+                assert not torch.equal(encoder_param, encoder_param_copy)
+                self.encoder_ensemble.append(encoder_copy)
+        else:
+            self.encoder_ensemble = nn.ModuleList([
+                EncoderNeqModel(
+                    config, 
+                    input_length=input_length, 
+                    output_length=output_length
+                ) 
+                for _ in range(num_models)
+            ])
         self.decoder = Decoder(128)
         self.is_verilog_inference = False
 
@@ -313,15 +340,17 @@ class AdaBoostAutoencoderNeqModel(nn.Module):
         self.shape = (1, 8, 8)  # PyTorch defaults to (C, H, W)
         self.val_sum = None
         # TODO: Fix num neurons to match ensemble size for verilog testing?
-        self.num_neurons = [input_length] + config["hidden_layer"] + [output_length]
+        self.num_neurons = (
+            [input_length] + config["hidden_layer"] + [output_length]
+        )
         self.num_models = num_models
         self.single_model_mode = single_model_mode
         self.num_train_samples = num_train_samples # N
         # Training sample weights
-        self.weights = torch.ones(self.num_train_samples) * 1 / self.num_train_samples
+        self.weights = (
+            torch.ones(self.num_train_samples) * 1 / self.num_train_samples
+        )
         self.model_weights = []
-        # Build matrix of each encoder's output on the training data
-        # self.fitted_encoder_values = torch.empty((self.num_train_samples, self.num_models))
         self.betas = []
         # Snapshot ensemble builds the ensemble as it trains. We will save
         # snapshots of encoder to encoder_ensemble list to build the ensemble
@@ -337,7 +366,9 @@ class AdaBoostAutoencoderNeqModel(nn.Module):
             # Build the ensemble (for evaluation or finetuning)
             self.encoder_ensemble = nn.ModuleList([
                 EncoderNeqModel(
-                    config, input_length=input_length, output_length=output_length
+                    config, 
+                    input_length=input_length, 
+                    output_length=output_length,
                 ) 
                 for _ in range(num_models)
             ])
@@ -401,7 +432,10 @@ class AdaBoostAutoencoderNeqModel(nn.Module):
         # Else evaluate on the full ensemble
         # For now use weighted average using model weights because unclear
         # how to use weighted median for encoded vectors...
-        outputs = [encoder(x) * self.model_weights[i] for i, encoder in enumerate(self.encoder_ensemble)]
+        outputs = [
+            encoder(x) * self.model_weights[i] 
+            for i, encoder in enumerate(self.encoder_ensemble)
+        ]
         avg_outputs = sum(outputs) / sum(self.model_weights)
         return self.decoder(avg_outputs)
     

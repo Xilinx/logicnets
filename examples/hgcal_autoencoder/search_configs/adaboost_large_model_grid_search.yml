@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
 # Fixed params
 activation_bitwidth:
 - 3
@@ -20,9 +21,12 @@ activation_bitwidth:
 batch_size: 512
 ensemble_method: adaboost
 ensemble_hp:
-  independent: True
+  independent: false
+  fixed_sparsity_mask: true
+  # fixed_decoder: ./fixed_decoder/fixed_decoder1/best_loss.pth
 ensemble_size: 32
-epochs: 200
+epochs: 10
+finetune_epochs: 2
 hidden_layer:
 - 512
 - 512

@@ -32,6 +32,10 @@
 # tmux new-session -d -s s04 "./scripts/run_ensemble_exp.sh 2 ./ensemble_configs/averaging/small_configs/config5"
 # tmux new-session -d -s s05 "./scripts/run_ensemble_exp.sh 2 ./ensemble_configs/averaging/small_configs/config6"
 
+# tmux new-session -d -s f00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/averaging/large_fixed_mask_configs/config3 ./averaging"
+# tmux new-session -d -s f01 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/averaging/medium_fixed_mask_configs/config3 ./averaging"
+# tmux new-session -d -s f02 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/averaging/small_fixed_mask_configs/config3 ./averaging"
+
 # medium model
 # xlabs53
 # tmux new-session -d -s a00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/averaging/medium_fr_configs/config1 ./voting"
@@ -53,19 +57,88 @@
 # tmux new-session -d -s f08 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/fge/large_configs/config3 ./fge"
 
 # Adaboost
-tmux new-session -d -s a00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/small_configs/config1 ./adaboost"
-tmux new-session -d -s a01 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/small_configs/config2 ./adaboost"
-tmux new-session -d -s a02 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/small_configs/config3 ./adaboost"
+# tmux new-session -d -s a00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/small_configs/config1 ./adaboost"
+# tmux new-session -d -s a01 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/small_configs/config2 ./adaboost"
+# tmux new-session -d -s a02 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/small_configs/config3 ./adaboost"
+# tmux new-session -d -s a03 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_configs/config1 ./adaboost"
+# tmux new-session -d -s a04 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_configs/config2 ./adaboost"
+# tmux new-session -d -s a05 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_configs/config3 ./adaboost"
+# tmux new-session -d -s a06 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/adaboost/large_configs/config1 ./adaboost"
+# tmux new-session -d -s a07 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/adaboost/large_configs/config2 ./adaboost"
+# tmux new-session -d -s a08 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/adaboost/large_configs/config3 ./adaboost"
 
-tmux new-session -d -s a03 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_configs/config1 ./adaboost"
-tmux new-session -d -s a04 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_configs/config2 ./adaboost"
-tmux new-session -d -s a05 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_configs/config3 ./adaboost"
+tmux new-session -d -s a00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/large_fixed_mask_configs/config2  ./adaboost"
+tmux new-session -d -s a01 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/medium_fixed_mask_configs/config1 ./adaboost"
+tmux new-session -d -s a02 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/small_fixed_mask_configs/config1  ./adaboost"
 
-tmux new-session -d -s a06 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/adaboost/large_configs/config1 ./adaboost"
-tmux new-session -d -s a07 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/adaboost/large_configs/config2 ./adaboost"
-tmux new-session -d -s a08 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/adaboost/large_configs/config3 ./adaboost"
+# tmux kill-session -t a00
+# tmux kill-session -t a01
+# tmux kill-session -t a02
+# tmux kill-session -t a03
+# tmux kill-session -t a04
+# tmux kill-session -t a05
+# tmux kill-session -t a06
+# tmux kill-session -t a07
+# tmux kill-session -t a08
+
+# Warm restart sequential training w/o fixed decoder
+# tmux new-session -d -s seq_ft00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/large_seq_configs/config1  ./adaboost_seq"
+# tmux new-session -d -s seq_ft01 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/large_seq_configs/config2  ./adaboost_seq"
+# tmux new-session -d -s seq_ft02 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/large_seq_configs/config3  ./adaboost_seq"
+
+# tmux new-session -d -s seq_ft02 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_seq_configs/config1 ./adaboost_seq"
+# tmux new-session -d -s seq_ft04 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_seq_configs/config2 ./adaboost_seq"
+# tmux new-session -d -s seq_ft03 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_seq_configs/config3 ./adaboost_seq"
+
+# tmux new-session -d -s seq_ft06 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/small_seq_configs/config1  ./adaboost_seq"
+# tmux new-session -d -s seq_ft04 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/adaboost/small_seq_configs/config2  ./adaboost_seq"
+# tmux new-session -d -s seq_ft05 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/adaboost/small_seq_configs/config3  ./adaboost_seq"
+
+# tmux kill-session -t seq_ft00
+# tmux kill-session -t seq_ft01
+# tmux kill-session -t seq_ft02
+# tmux kill-session -t seq_ft03
+# tmux kill-session -t seq_ft04
+# tmux kill-session -t seq_ft05
+# tmux kill-session -t seq_ft06
+# tmux kill-session -t seq_ft07
+# tmux kill-session -t seq_ft08
 
 # xlabs55
+
+#AdaBoost mini ablation study
+
+# Finetune decoder but initializing new encoder also initialized decoder this time
+# tmux new-session -d -s ind_ft00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/large_ind_decoder_configs/config2  ./adaboost"
+# tmux new-session -d -s ind_ft01 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/medium_ind_decoder_configs/config2 ./adaboost"
+# tmux new-session -d -s ind_ft02 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/small_ind_decoder_configs/config1  ./adaboost"
+
+# Fixed decoder with new independent decoder initialization
+# tmux new-session -d -s ind_fixed00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/large_fixed_decoder_configs/config1  ./adaboost"
+# tmux new-session -d -s ind_fixed01 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/medium_fixed_decoder_configs/config1 ./adaboost"
+# tmux new-session -d -s ind_fixed02 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/adaboost/small_fixed_decoder_configs/config2  ./adaboost"
+
+# Fixed decoder with warm restart sequential training (no encoder/decoder initialization at the start of each boosting)
+# tmux new-session -d -s seq_fixed00 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/large_seq_fixed_decoder_configs/config2  ./adaboost"
+# tmux new-session -d -s seq_fixed01 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_seq_fixed_decoder_configs/config2 ./adaboost"
+# tmux new-session -d -s seq_fixed02 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/small_seq_fixed_decoder_configs/config2  ./adaboost"
+
+# Warm restart sequential training w/o fixed decoder - best so far
+# tmux new-session -d -s seq_ft00 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/large_seq_configs/config3  ./adaboost"
+# tmux new-session -d -s seq_ft01 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/medium_seq_configs/config2 ./adaboost"
+# tmux new-session -d -s seq_ft02 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/adaboost/small_seq_configs/config1  ./adaboost"
+
+# Bagging
+# tmux new-session -d -s b00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/bagging/small_seq_configs/config1  ./bagging"
+# tmux new-session -d -s b01 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/bagging/small_seq_configs/config2  ./bagging"
+# tmux new-session -d -s b02 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/bagging/small_seq_configs/config3  ./bagging"
+# tmux new-session -d -s b03 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/bagging/medium_seq_configs/config1 ./bagging"
+# tmux new-session -d -s b04 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/bagging/medium_seq_configs/config2 ./bagging"
+# tmux new-session -d -s b05 "./scripts/run_gen_ensemble_exp.sh 1 ./ensemble_configs/bagging/medium_seq_configs/config3 ./bagging"
+# tmux new-session -d -s b06 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/bagging/large_seq_configs/config1  ./bagging"
+# tmux new-session -d -s b07 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/bagging/large_seq_configs/config2  ./bagging"
+# tmux new-session -d -s b08 "./scripts/run_gen_ensemble_exp.sh 2 ./ensemble_configs/bagging/large_seq_configs/config3  ./bagging"
+
 
 # Snapshot (SSE)
 # tmux new-session -d -s sse00 "./scripts/run_gen_ensemble_exp.sh 0 ./ensemble_configs/sse/large_configs/config1 ./sse"

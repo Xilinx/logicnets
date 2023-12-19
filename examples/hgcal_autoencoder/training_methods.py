@@ -31,6 +31,7 @@ import os
 import sys
 import time
 import math
+import copy
 import torch
 import datetime
 import numpy as np
@@ -40,7 +41,8 @@ from torch.utils.tensorboard import SummaryWriter
 
 from utils_pt import unnormalize, emd
 from encoder import EncoderNeqModel
-from ensemble_models import AdaBoostAutoencoderNeqModel
+from decoder import Decoder
+from ensemble_models import VotingAutoencoderNeqModel, AdaBoostAutoencoderNeqModel
 from telescope_pt import telescopeMSE8x8
 
 # TODO: Put each training method and associated functions in their own files
@@ -78,8 +80,12 @@ def test(model, test_loader, val_sum=None, gpu=False, compute_emd=False):
         total_loss = total_loss / len(test_loader.dataset)
         
     if compute_emd:
-        input_calQ = np.concatenate([i_calQ.cpu() for i_calQ in input_calQ_list], axis=0)
-        output_calQ = np.concatenate([o_calQ.cpu() for o_calQ in output_calQ_list], axis=0)
+        input_calQ = np.concatenate(
+            [i_calQ.cpu() for i_calQ in input_calQ_list], axis=0,
+        )
+        output_calQ = np.concatenate(
+            [o_calQ.cpu() for o_calQ in output_calQ_list], axis=0,
+        )
         start_time = time.time()
         with multiprocessing.Pool() as pool:
             emd_list = pool.starmap(emd, zip(input_calQ, output_calQ))
@@ -154,6 +160,7 @@ def train(model, dataset, params, sampler=None, optimizer=None):
         writer.add_scalar("val_loss", val_loss, epoch)
         checkpoint = {
             "model_dict": model.state_dict(),
+            "decoder_model_dict": model.decoder.state_dict(),
             "optim_dict": optimizer.state_dict(),
             "val_loss": val_loss,
             "epoch": epoch,
@@ -163,8 +170,17 @@ def train(model, dataset, params, sampler=None, optimizer=None):
             for f in os.listdir(params["experiment_dir"]):
                 if "checkpoint" in f:
                     os.remove(os.path.join(params["experiment_dir"], f))
-            torch.save(checkpoint, os.path.join(params["experiment_dir"], f"checkpoint_epoch{epoch}_loss={val_loss:.3f}.pth"))
-            torch.save(checkpoint, os.path.join(params["experiment_dir"], "best_loss.pth"))
+            torch.save(
+                checkpoint, 
+                os.path.join(
+                    params["experiment_dir"], 
+                    f"checkpoint_epoch{epoch}_loss={val_loss:.3f}.pth"
+                )
+            )
+            torch.save(
+                checkpoint, 
+                os.path.join(params["experiment_dir"], "best_loss.pth")
+            )
         print(f"Epoch: {epoch + 1} / {params['epochs']}\tTrain Loss: {total_loss}\tVal Loss: {val_loss}")
     training_time = datetime.timedelta(seconds=(time.time() - start_time))
     print(f"Total training time: {str(training_time)}")
@@ -207,7 +223,7 @@ def finetune_decoder(model, dataset, params, writer=None):
     best_checkpoint = torch.load(os.path.join(params['experiment_dir'], "last_ensemble_ckpt.pth"))
     model.load_state_dict(best_checkpoint["model_dict"])
 
-    # Finetine in Ensemble mode
+    # Finetune in Ensemble mode
     model.single_model_mode = False
     # Freeze encoder params
     for name, param in model.encoder_ensemble.named_parameters():
@@ -215,7 +231,8 @@ def finetune_decoder(model, dataset, params, writer=None):
         print(f"Freeze param {name}")
     # Configure optimizer
     weight_decay = params["wd"]
-    decay_exclusions = ["bn", "bias", "learned_value"] # Make a list of parameters name fragments which will ignore weight decay
+    # Make a list of parameters name fragments which will ignore weight decay
+    decay_exclusions = ["bn", "bias", "learned_value"] 
     decay_params = set()
     no_decay_params = set()
     for name, param in model.decoder.named_parameters():
@@ -240,15 +257,19 @@ def finetune_decoder(model, dataset, params, writer=None):
         }
     ]
     optimizer =  torch.optim.AdamW(
-        model_params, lr=params["lr"], weight_decay=weight_decay, betas=(0.5, 0.999), 
+        model_params, 
+        lr=params["lr"], 
+        weight_decay=weight_decay, 
+        betas=(0.5, 0.999), 
     )
     # Configure criterion
     criterion = telescopeMSE8x8
     # Configure scheduler
     steps = len(train_loader)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-        optimizer, T_0=steps*params["finetune_epochs"], T_mult=1,
-    )
+    if params["finetune_epochs"] > 0:
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            optimizer, T_0=steps*params["finetune_epochs"], T_mult=1,
+        )
     min_loss = np.finfo(np.float32).max
     for epoch in range(0, params["finetune_epochs"]):
         model.train()
@@ -427,105 +448,103 @@ def train_snapshot_ensemble(model, model_config, dataset, params):
     print(f"Total training time: {str(training_time)}")
 
 
-def train_bagging(model, dataset, params):
+def train_bagging(
+    model, 
+    model_config, 
+    dataset, 
+    params, 
+    ensemble_sizes=[2, 4, 8, 16, 32]
+):
     """
     Train an ensemble of models using bagging (bootstrap aggregating), where 
     each member model has its own training dataset generated from the original
     training set by sampling with replacement.
-    NOTE: Incomplete!
     """
-    start_time = time.time()
-    # Create data loaders for training and inference
-    train_loader = torch.utils.data.DataLoader(
-        dataset["train"], 
+    # Need val_sum to compute EMD
+    _, val_sum = dataset["test"].get_val_max_and_sum()
+    test_loader = torch.utils.data.DataLoader(
+        dataset["test"],
         num_workers=params["num_workers"], 
-        batch_size=params["batch_size"], 
-        pin_memory=True,
-        shuffle=True, 
-    )
-    val_loader = torch.utils.data.DataLoader(
-        dataset["valid"], 
-        num_workers=params["num_workers"], 
-        batch_size=params["batch_size"], 
+        batch_size=params["batch_size"],  
         pin_memory=True,
         shuffle=False, 
     )
-
+    # Draw training samples based on equal weights
+    num_train_samples = len(dataset["train"])
     # Configure optimizer
     optimizer = configure_optimizer(model, params)
-
-    # Configure scheduler
-    steps = len(train_loader)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-        optimizer, T_0=steps*params["warm_restart_freq"], T_mult=1,
-    )
-
-    # Configure criterion
-    criterion = telescopeMSE8x8
-    
-    # Setup tensorboard
-    writer = SummaryWriter(params["experiment_dir"])
-
-    # Create bagging dataloaders
-    bagging_train_loader = get_bagging_dataloader(train_loader)
-
-    # Training loop
-    min_loss = np.finfo(np.float32).max
-    for epoch in range(0, params["epochs"]):
-        model.train()
-        total_loss = 0.0
-        for x in tqdm(bagging_train_loader):
+    for i in range(model.num_models):
+        model.single_model_mode = True
+        if params["independent"] and i > 0: 
+            # Start w/fresh encoder & decoder each time
+            print("Independent training mode")
+            model.encoder = EncoderNeqModel(model_config)
+            if not params["fixed_decoder"]:
+                model.decoder = Decoder()
             if params["gpu"]:
-                x = x.cuda()
-            optimizer.zero_grad()
-            x_hat = model(x)
-            # TODO: Need to have separate criterion per model
-            loss = criterion(x, x_hat)
-            total_loss = total_loss + loss.detach() * len(x)
-            loss.backward()
-            optimizer.step()
-            scheduler.step()
-        total_loss = total_loss / len(train_loader.dataset)
-        total_loss = total_loss.detach().cpu().numpy()
-        writer.add_scalar("train_loss", total_loss, epoch)
-        val_loss, _ = test(model, val_loader, gpu=params["gpu"])
-        writer.add_scalar("val_loss", val_loss, epoch)
-        checkpoint = {
+                model.cuda()
+            optimizer = configure_optimizer(model, params)
+        # Create bagging sampler
+        subset_indices = np.random.choice(
+            num_train_samples, size=num_train_samples
+        )
+        sampler = torch.utils.data.sampler.SubsetRandomSampler(subset_indices)
+        # Train model
+        train(model, dataset, params, sampler=sampler, optimizer=optimizer)
+        # Evaluate best single model on validation data 
+        best_checkpoint = torch.load(
+            os.path.join(params["experiment_dir"], "best_loss.pth")
+        )
+        model.load_state_dict(best_checkpoint["model_dict"])
+        print("Evaluate best single model performance")
+        model_val_loss, single_model_emd = test(
+            model, 
+            test_loader, 
+            val_sum=val_sum, 
+            gpu=params["gpu"], 
+            compute_emd=(i == 0), # Only compute EMD for single model
+        )
+        # Log single model performance
+        os.makedirs(params["experiment_dir"], exist_ok=True)
+        ensemble_perf_log = os.path.join(
+            params["experiment_dir"], 
+            f"ensemble_perf.txt"
+        )
+        with open(ensemble_perf_log, "a") as f:
+            f.write(f"Single model {i + 1} val loss: {model_val_loss}\tAvg EMD = {single_model_emd}\n")
+        # Save model to ensemble
+        snapshot = EncoderNeqModel(model_config)
+        if params["gpu"]:
+            snapshot.cuda()
+        snapshot.load_state_dict(model.encoder.state_dict())
+        model.encoder_ensemble.append(snapshot)
+        # Evaluate ensemble on validation data and save ensemble checkpoint
+        ensemble_val_loss, _ = evaluate_ensemble(model, dataset, params)
+        ensemble_ckpt = {
             "model_dict": model.state_dict(),
             "optim_dict": optimizer.state_dict(),
-            "val_loss": val_loss,
-            "epoch": epoch,
+            "val_loss": ensemble_val_loss,
         }
-        if val_loss < min_loss:
-            min_loss = val_loss
-            for f in os.listdir(params["experiment_dir"]):
-                if "checkpoint" in f:
-                    os.remove(os.path.join(params["experiment_dir"], f))
-            torch.save(checkpoint, os.path.join(params["experiment_dir"], f"checkpoint_epoch{epoch}_loss={val_loss:.3f}.pth"))
-            torch.save(checkpoint, os.path.join(params["experiment_dir"], "best_loss.pth"))
-        print(f"Epoch: {epoch + 1} / {params['epochs']}\tTrain Loss: {total_loss}\tVal Loss: {val_loss}")
-    training_time = datetime.timedelta(seconds=(time.time() - start_time))
-    print(f"Total training time: {str(training_time)}")
-
-
-def get_bagging_dataloader(original_dataloader):
-    """
-    Ref: https://github.com/TorchEnsemble-Community/Ensemble-Pytorch/blob/master/torchensemble/bagging.py#L483 
-    """
-    dataset = original_dataloader.dataset
-    # sampling with replacement
-    indices = torch.randint(
-        high=len(dataset), size=(len(dataset),), dtype=torch.int64,
-    )
-    sub_dataset = torch.utils.data.Subset(dataset, indices)
-    dataloader = torch.utils.data.DataLoader(
-        sub_dataset,
-        batch_size=original_dataloader.batch_size,
-        num_workers=original_dataloader.num_workers,
-        collate_fn=original_dataloader.collate_fn,
-        shuffle=True,
-    )
-    return dataloader
+        torch.save(
+            ensemble_ckpt, 
+            os.path.join(params["experiment_dir"], "last_ensemble_ckpt.pth")
+        )
+        print(f"Saved Bagging model # {len(model.encoder_ensemble)}")
+        if len(model.encoder_ensemble) in ensemble_sizes:
+            finetune_seq_decoder(model, dataset, params)
+            evaluate_ensemble(
+                model, 
+                dataset, 
+                params, 
+                val_sum=val_sum, 
+                compute_emd=True,
+            )
+            if len(model.encoder_ensemble) < model.num_models:
+                # Reset decoder to state prior to finetuning
+                best_checkpoint = torch.load(os.path.join(
+                    params['experiment_dir'], "last_ensemble_ckpt.pth"
+                ))
+                model.load_state_dict(best_checkpoint["model_dict"])
 
 
 def train_fge(model, model_config, dataset, params):
@@ -626,7 +645,6 @@ def train_fge(model, model_config, dataset, params):
     with open(ensemble_perf_log, "a") as f:
         f.write(f"Pre-FGE single model val loss: {model_val_loss}\t")
         f.write(f"Avg EMD: {emd}\n")
-
 
     # Create ensemble
     model.zero_grad()
@@ -734,7 +752,8 @@ def fge_adjust_lr(
 
 def configure_optimizer(model, params):
     weight_decay = params["wd"]
-    decay_exclusions = ["bn", "bias", "learned_value"] # Make a list of parameters name fragments which will ignore weight decay
+    # Make a list of parameters name fragments which will ignore weight decay
+    decay_exclusions = ["bn", "bias", "learned_value"] 
     decay_params = set()
     no_decay_params = set()
     for name, param in model.named_parameters():
@@ -759,7 +778,10 @@ def configure_optimizer(model, params):
         }
     ]
     optimizer =  torch.optim.AdamW(
-        model_params, lr=params["lr"], weight_decay=weight_decay, betas=(0.5, 0.999), 
+        model_params, 
+        lr=params["lr"], 
+        weight_decay=weight_decay, 
+        betas=(0.5, 0.999), 
     )
     return optimizer
 
@@ -812,7 +834,9 @@ def finetune_seq_decoder(model, dataset, params, writer=None):
         shuffle=False, 
     )
     print(f"Finetuning last ensemble saved at: {os.path.join(params['experiment_dir'], 'last_ensemble_ckpt.pth')}")
-    best_checkpoint = torch.load(os.path.join(params['experiment_dir'], "last_ensemble_ckpt.pth"))
+    best_checkpoint = torch.load(
+        os.path.join(params['experiment_dir'], "last_ensemble_ckpt.pth")
+    )
     model.load_state_dict(best_checkpoint["model_dict"])
 
     # Finetine in Ensemble mode
@@ -821,9 +845,14 @@ def finetune_seq_decoder(model, dataset, params, writer=None):
     for name, param in model.encoder_ensemble.named_parameters():
         param.requires_grad = False
         print(f"Freeze param {name}")
+    # Make sure decoder params are unfrozen
+    for name, param in model.decoder.named_parameters():
+        param.requires_grad = True
+        print(f"Unfreeze param {name}")
     # Configure optimizer
     weight_decay = params["wd"]
-    decay_exclusions = ["bn", "bias", "learned_value"] # Make a list of parameters name fragments which will ignore weight decay
+    # Make a list of parameters name fragments which will ignore weight decay
+    decay_exclusions = ["bn", "bias", "learned_value"] 
     decay_params = set()
     no_decay_params = set()
     for name, param in model.decoder.named_parameters():
@@ -848,15 +877,19 @@ def finetune_seq_decoder(model, dataset, params, writer=None):
         }
     ]
     optimizer =  torch.optim.AdamW(
-        model_params, lr=params["lr"], weight_decay=weight_decay, betas=(0.5, 0.999), 
+        model_params, 
+        lr=params["lr"], 
+        weight_decay=weight_decay, 
+        betas=(0.5, 0.999), 
     )
     # Configure criterion
     criterion = telescopeMSE8x8
     # Configure scheduler
     steps = len(train_loader)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-        optimizer, T_0=steps*params["finetune_epochs"], T_mult=1,
-    )
+    if params["finetune_epochs"] > 0:
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            optimizer, T_0=steps*params["finetune_epochs"], T_mult=1,
+        )
     min_loss = np.finfo(np.float32).max
     for epoch in range(0, params["finetune_epochs"]):
         model.train()
@@ -889,14 +922,33 @@ def finetune_seq_decoder(model, dataset, params, writer=None):
             min_loss = val_loss
             torch.save(
                 checkpoint, 
-                os.path.join(params["experiment_dir"], f"last_ensemble{len(model.encoder_ensemble)}_ckpt.pth")
+                os.path.join(
+                    params["experiment_dir"], 
+                    f"last_ensemble{len(model.encoder_ensemble)}_ckpt.pth"
+                )
             )
         print(f"Finetune Epoch: {epoch + 1} / {params['finetune_epochs']}\tTrain Loss: {total_loss}\tVal Loss: {val_loss}")
-    # Reset model
     model.single_model_mode = True
 
 
-def train_adaboost(model, model_config, dataset, params, independent=False,ensemble_sizes=[2, 4, 8, 16, 32]):
+def set_fixed_decoder(model, fixed_decoder):
+    # Load decoder weights
+    print("Freezing decoder weights")
+    decoder_checkpoint = torch.load(fixed_decoder)
+    model.decoder.load_state_dict(decoder_checkpoint["decoder_model_dict"])
+    # Freeze decoder weights
+    for name, param in model.decoder.named_parameters():
+        param.requires_grad = False
+        print(f"Freeze param {name}")
+
+
+def train_adaboost(
+    model, 
+    model_config, 
+    dataset, 
+    params, 
+    ensemble_sizes=[2, 4, 8, 16, 32]
+):
     """
     Based on Adaboost.R2 algorithm from:
     https://dafriedman97.github.io/mlbook/content/c6/s2/boosting.html#regression-with-adaboost-r2
@@ -910,16 +962,31 @@ def train_adaboost(model, model_config, dataset, params, independent=False,ensem
         pin_memory=True,
         shuffle=False, 
     )
+    if params["fixed_decoder"]:
+        set_fixed_decoder(model, params["fixed_decoder"])
     # Configure optimizer
     optimizer = configure_optimizer(model, params)
     for i in range(model.num_models):
         model.single_model_mode = True
-        if independent: # Start w/fresh encoder each time
+        if params["independent"] and i > 0: 
+            # Start w/fresh encoder and decoder each time starting with second model
+            print("Independent training mode")
             model.encoder = EncoderNeqModel(model_config)
+            if not params["fixed_decoder"]:
+                model.decoder = Decoder()
+            if params["gpu"]:
+                model.cuda()
+            optimizer = configure_optimizer(model, params)
+        elif params["fixed_sparsity_mask"] and i > 0:
+            snapshot = EncoderNeqModel(model_config)
+            snapshot.load_state_dict(model.encoder.state_dict())
+            snapshot.reset_parameters()
+            model.encoder = snapshot
             if params["gpu"]:
                 model.cuda()
             optimizer = configure_optimizer(model, params)
         # Draw training samples based on sample weights
+        # sampler = None # TEMP for testing only
         sampler = torch.utils.data.sampler.WeightedRandomSampler(
             model.weights, model.num_train_samples, replacement=True,
         )
@@ -931,17 +998,21 @@ def train_adaboost(model, model_config, dataset, params, independent=False,ensem
         )
         model.load_state_dict(best_checkpoint["model_dict"])
         print("Evaluate best single model performance")
-        model_val_loss, _ = test(
-            model, test_loader, val_sum=None, gpu=params["gpu"], compute_emd=False,
+        model_val_loss, single_model_emd = test(
+            model, 
+            test_loader, 
+            val_sum=val_sum, 
+            gpu=params["gpu"], 
+            compute_emd=(i == 0), # Only compute EMD for single model
         )
-        # Log ensemble performance
+        # Log single model performance
         os.makedirs(params["experiment_dir"], exist_ok=True)
         ensemble_perf_log = os.path.join(
             params["experiment_dir"], 
             f"ensemble_perf.txt"
         )
         with open(ensemble_perf_log, "a") as f:
-            f.write(f"Single model {i + 1} val loss: {model_val_loss}\n")
+            f.write(f"Single model {i + 1} val loss: {model_val_loss}\tAvg EMD = {single_model_emd}\n")
         obs_err = compute_adaboost_sample_error(model, dataset, params)
         # Calculate model error (and possible break if too high). We'd want to
         # break if loss is too high because we are training the model on
@@ -951,6 +1022,7 @@ def train_adaboost(model, model_config, dataset, params, independent=False,ensem
         model_err = torch.sum(model.weights * obs_err)
         if model_err > 0.5:
             model.num_models = len(model.encoder_ensemble)
+            print("Exiting Adaboost training early bc model_err > 0.5. model_err = {model_err}")
             break
         beta = model.update_betas(model_err)
         model.update_model_weights()
@@ -988,7 +1060,9 @@ def train_adaboost(model, model_config, dataset, params, independent=False,ensem
             )
             if len(model.encoder_ensemble) < model.num_models:
                 # Reset decoder to state prior to finetuning
-                best_checkpoint = torch.load(os.path.join(params['experiment_dir'], "last_ensemble_ckpt.pth"))
+                best_checkpoint = torch.load(os.path.join(
+                    params['experiment_dir'], "last_ensemble_ckpt.pth"
+                ))
                 model.load_state_dict(best_checkpoint["model_dict"])
 
 
@@ -1018,8 +1092,12 @@ def compute_adaboost_sample_error(model, dataset, params):
         loss = criterion(x, x_hat, reduction=False)
         # print(f"shape of loss = {loss.shape}")
         # print(f"shape of np loss = {loss.detach().cpu().numpy().shape}")
-        train_losses[batch_idx * last_batch_size : batch_idx * last_batch_size + batch_size] = loss.detach().cpu()
+        train_losses[
+            batch_idx * last_batch_size : batch_idx * last_batch_size 
+            + batch_size
+        ] = loss.detach().cpu()
         last_batch_size = batch_size
     # Calculate observation errors
-    train_losses = train_losses / torch.max(train_losses) # expected shape = (Num train examples, )
+    # expected shape = (Num train examples, )
+    train_losses = train_losses / torch.max(train_losses) 
     return train_losses

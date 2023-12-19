@@ -38,7 +38,9 @@ class EncoderNeqModel(nn.Module):
         self.shape = (1, 8, 8)  # PyTorch defaults to (C, H, W)
         self.input_length = input_length
         self.output_length = output_length
-        self.num_neurons = [input_length] + config["hidden_layer"] + [output_length]
+        self.num_neurons = (
+            [input_length] + config["hidden_layer"] + [output_length]
+        )
 
         self.is_verilog_inference = False
         self.latency = 1
@@ -88,7 +90,9 @@ class EncoderNeqModel(nn.Module):
             else:
                 in_features = config["hidden_layer"][i - 1]
                 lin_mask = RandomFixedSparsityMask2D(
-                    in_features, out_features, fan_in=config["neuron_fanin"][i - 1],
+                    in_features, 
+                    out_features, 
+                    fan_in=config["neuron_fanin"][i - 1],
                 )
                 output_quant = QuantBrevitasActivation(
                     qnn.QuantReLU(
@@ -128,13 +132,22 @@ class EncoderNeqModel(nn.Module):
         sparse_lin_neq_layer = SparseLinearNeq(
             config["hidden_layer"][-1], 
             self.encoded_dim, 
-            input_quant=layers[-1].output_quant, # Make sure same quant object as prev layer's output quant
+            # Make sure same quant object as prev layer's output quant
+            input_quant=layers[-1].output_quant, 
             output_quant=output_quant,
             sparse_linear_kws={'mask': lin_mask},
             apply_input_quant=False,
         )
         layers.append(sparse_lin_neq_layer)
         self.module_list = nn.ModuleList(layers)
+
+    def reset_parameters(self):
+        """
+        Reset parameters in all of the linear layers in the encoder
+        """
+        for l in self.module_list:
+            if type(l) == SparseLinearNeq:
+                l.fc.reset_parameters()
 
     # LogicNets forward methods
     def verilog_forward(self, x):
@@ -170,7 +183,10 @@ class EncoderNeqModel(nn.Module):
             expected = f"{int(ysc_i,2):0{int(total_output_bits)}b}"
             result = f"{res:0{int(total_output_bits)}b}"
             assert(expected == result), f"\nexpect = {expected}\nresult = {result}"
-            res_split = [result[i:i+output_bitwidth] for i in range(0, len(result), output_bitwidth)][::-1]
+            res_split = [
+                result[i:i+output_bitwidth] 
+                for i in range(0, len(result), output_bitwidth)
+            ][::-1]
             yv_i = torch.Tensor(list(map(lambda z: int(z, 2), res_split)))
             y[i,:] = yv_i - torch.abs(torch.min(output_quant.get_bin_state_space()))
             # Dump the I/O pairs
@@ -190,10 +206,20 @@ class EncoderNeqModel(nn.Module):
             return self.verilog_forward(x)
         return self.pytorch_forward(x)
         
-    def verilog_inference(self, verilog_dir, top_module_filename, logfile=None, add_registers: bool = False):
+    def verilog_inference(
+        self, 
+        verilog_dir, 
+        top_module_filename, 
+        logfile=None, 
+        add_registers: bool = False
+    ):
         self.verilog_dir = os.path.realpath(verilog_dir)
         self.top_module_filename = top_module_filename
-        self.dut = PyVerilator.build(f"{self.verilog_dir}/{self.top_module_filename}", verilog_path=[self.verilog_dir], build_dir=f"{self.verilog_dir}/verilator")
+        self.dut = PyVerilator.build(
+            f"{self.verilog_dir}/{self.top_module_filename}", 
+            verilog_path=[self.verilog_dir], 
+            build_dir=f"{self.verilog_dir}/verilator"
+        )
         self.is_verilog_inference = True
         self.logfile = logfile
         if add_registers:
@@ -204,9 +230,42 @@ class EncoderNeqModel(nn.Module):
 
 
 class EncoderLutModel(EncoderNeqModel):
-
     def pytorch_forward(self, x, apply_scale=True):
         x = EncoderNeqModel.pytorch_forward(self, x)
         scale, _ = self.module_list[-1].output_quant.get_scale_factor_bits()
         out = x * scale if apply_scale else x
         return out
+
+
+class EncoderFloatModel(nn.Module):
+    """
+    Encoder with float weights and activations (except output is quantized) used
+    to train decoder for ensemble learning with a fixed, pretrained decoder.
+    """
+    def __init__(
+        self, 
+        input_length=64, 
+        num_dense_feat=128, 
+        output_length=16, 
+        qid_bitwidth=5,
+    ):
+        super(EncoderFloatModel, self).__init__()
+        self.encoded_dim = output_length
+        self.flatten = nn.Flatten()
+        self.dense1 = nn.Linear(input_length, num_dense_feat)
+        self.bn1 = nn.BatchNorm1d(num_dense_feat)
+        self.relu1 = nn.ReLU()
+        self.dense2 = nn.Linear(num_dense_feat, self.encoded_dim)
+        self.bn2 = nn.BatchNorm1d(self.encoded_dim)
+        self.qidentity = qnn.QuantIdentity(
+            bit_width=qid_bitwidth, quant_type=QuantType.INT, 
+        )
+
+    def forward(self, x):
+        x = self.flatten(x)
+        x = self.dense1(x)
+        x = self.bn1(x)
+        x = self.relu1(x)
+        x = self.dense2(x)
+        x = self.bn2(x)
+        return self.qidentity(x)

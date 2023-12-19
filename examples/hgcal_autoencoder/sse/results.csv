@@ -1,3 +1,4 @@
+
 trial,emd,loss,ensemble_size,model_size
 sse_small_ensemble_size8,1.67,0.079,8,small
 sse_large_ensemble_size2,1.675,0.02,2,large

@@ -18,6 +18,13 @@ data/
 **/voting/**/*.pth
 **/snapshot_test/**/*.pth
 **/sse/**/*.pth
+**/sse_deepcopy/**/*.pth
 **/sse_more_epochs/**/*.pth
 **/fge/**/*.pth
+**/fge_deepcopy/**/*.pth
 **/adaboost/**/*.pth
+**/adaboost_deepcopy/**/*.pth
+**/adaboost_seq/**/*.pth
+**/adaboost_fixed_mask_short/**/*.pth
+**/bagging/**/*.pth
+**/bagging_deepcopy/**/*.pth

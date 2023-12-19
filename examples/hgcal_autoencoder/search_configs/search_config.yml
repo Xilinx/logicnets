@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
 num_trials: 9
 num_seeds_per_trial: 3
 search_model_arch: true

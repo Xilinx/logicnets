@@ -1,3 +1,4 @@
+
 trial,emd,loss,ensemble_size,model_size
 averaging_small_ensemble_size32_seed1,1.139,0.007,32,small
 averaging_medium_ensemble_size32_seed1,1.153,0.007,32,medium

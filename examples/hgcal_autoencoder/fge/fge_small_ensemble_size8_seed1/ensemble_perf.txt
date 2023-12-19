@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
 Pre-FGE single model val loss: 0.026291929185390472	Avg EMD: 1.691487995280865
 Ensemble size 1 val loss: 0.1815241426229477
 Ensemble size 2 val loss: 0.15806077420711517

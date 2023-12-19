@@ -1,3 +1,4 @@
+
 trial,emd,loss,hidden_layers,act_bits,neuron_fanin,input_bits,input_fanin,output_bits,lr,lr_t0,wd,batch_size
 large_lr0.001_warm_restart_freq50_wd0.0001_batch_size512,1.385,0.012, [512; 256; 512; 512], [3; 4; 6; 3], [5; 3; 2; 2],5,3,4,0.001,50,0.0001,512
 large_lr0.001_warm_restart_freq100_wd0.01_batch_size1024,1.4,0.011, [512; 256; 512; 512], [3; 4; 6; 3], [5; 3; 2; 2],5,3,4,0.001,100,0.01,1024

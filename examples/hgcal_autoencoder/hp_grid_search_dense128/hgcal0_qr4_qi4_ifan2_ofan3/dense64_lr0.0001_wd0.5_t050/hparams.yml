@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
 act1_bitwidth: 4
 act2_bitwidth: 4
 batch_size: 512

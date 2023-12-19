@@ -29,6 +29,10 @@
 # python3 grid_search.py -c search_configs/voting_small_model_grid_search.yml -d ensemble_configs/averaging/small --experiment_prefix averaging_small
 # python3 grid_search.py -c search_configs/voting_medium_model_grid_search.yml -d ensemble_configs/averaging/medium_fr --experiment_prefix averaging_medium_fr
 
+# python3 grid_search.py -c search_configs/voting_small_model_grid_search.yml -d ensemble_configs/averaging/small_fixed_mask --experiment_prefix averaging_small_fixed_mask
+# python3 grid_search.py -c search_configs/voting_medium_model_grid_search.yml -d ensemble_configs/averaging/medium_fixed_mask --experiment_prefix averaging_medium_fixed_mask
+# python3 grid_search.py -c search_configs/voting_large_model_grid_search.yml -d ensemble_configs/averaging/large_fixed_mask --experiment_prefix averaging_large_fixed_mask
+
 # Snapshot Ensemble
 # python3 grid_search.py -c search_configs/sse_large_model_grid_search.yml -d ensemble_configs/sse/large_more_epochs --experiment_prefix sse_large
 # python3 grid_search.py -c search_configs/sse_medium_model_grid_search.yml -d ensemble_configs/sse/medium_more_epochs --experiment_prefix sse_medium
@@ -40,6 +44,15 @@
 # python3 grid_search.py -c search_configs/fge_small_model_grid_search.yml -d ensemble_configs/fge/small --experiment_prefix fge_small
 
 # Adaboost
-python3 grid_search.py -c search_configs/adaboost_small_model_grid_search.yml -d ensemble_configs/adaboost/small --experiment_prefix adaboost_small
-python3 grid_search.py -c search_configs/adaboost_medium_model_grid_search.yml -d ensemble_configs/adaboost/medium --experiment_prefix adaboost_medium
-python3 grid_search.py -c search_configs/adaboost_large_model_grid_search.yml -d ensemble_configs/adaboost/large --experiment_prefix adaboost_large
+# python3 grid_search.py -c search_configs/adaboost_small_model_grid_search.yml -d ensemble_configs/adaboost/small_seq --experiment_prefix adaboost_small_seq
+# python3 grid_search.py -c search_configs/adaboost_medium_model_grid_search.yml -d ensemble_configs/adaboost/medium_seq --experiment_prefix adaboost_medium_seq
+# python3 grid_search.py -c search_configs/adaboost_large_model_grid_search.yml -d ensemble_configs/adaboost/large_seq --experiment_prefix adaboost_large_seq
+
+python3 grid_search.py -c search_configs/adaboost_small_model_grid_search.yml  -d ensemble_configs/adaboost/fixed_mask_10epochs --experiment_prefix  adaboost_small_fixed_mask_10epochs
+python3 grid_search.py -c search_configs/adaboost_medium_model_grid_search.yml -d ensemble_configs/adaboost/fixed_mask_10epochs --experiment_prefix adaboost_medium_fixed_mask_10epochs
+# python3 grid_search.py -c search_configs/adaboost_large_model_grid_search.yml  -d ensemble_configs/adaboost/large_fixed_mask --experiment_prefix  adaboost_large_fixed_mask_10epochs
+
+# Bagging
+# python3 grid_search.py -c search_configs/bagging_small_model_grid_search.yml  -d ensemble_configs/bagging/small_seq  --experiment_prefix bagging_small_seq
+# python3 grid_search.py -c search_configs/bagging_medium_model_grid_search.yml -d ensemble_configs/bagging/medium_seq --experiment_prefix bagging_medium_seq
+# python3 grid_search.py -c search_configs/bagging_large_model_grid_search.yml  -d ensemble_configs/bagging/large_seq  --experiment_prefix bagging_large_seq

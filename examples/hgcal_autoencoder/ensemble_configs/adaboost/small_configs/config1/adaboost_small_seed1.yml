@@ -23,6 +23,7 @@ ensemble_hp:
 ensemble_method: adaboost
 ensemble_size: 32
 epochs: 200
+finetune_epochs: 10
 hidden_layer:
 - 128
 - 256

@@ -26,9 +26,22 @@ from argparse import ArgumentParser
 
 from dataset import HGCalAutoencoderDataset
 from autoencoder import AutoencoderNeqModel
-from ensemble_models import VotingAutoencoderNeqModel, SnapshotAutoencoderNeqModel, FGEAutoencoderNeqModel, AdaBoostAutoencoderNeqModel
+from ensemble_models import (
+    VotingAutoencoderNeqModel,
+    SnapshotAutoencoderNeqModel,
+    FGEAutoencoderNeqModel,
+    AdaBoostAutoencoderNeqModel,
+    BaggingAutoencoderNeqModel,
+)
+from training_methods import (
+    train,
+    test,
+    train_snapshot_ensemble,
+    train_fge,
+    train_adaboost,
+    train_bagging,
+)
 from telescope_pt import move_constants_to_gpu
-from training_methods import train, test, train_snapshot_ensemble, train_fge, train_adaboost
 from logicnets.nn import SparseLinearNeq
 
 ENSEMBLING_METHODS = ["voting", "snapshot", "fge", "adaboost", "bagging"]
@@ -102,18 +115,27 @@ def main(args):
         finetune_epochs = config["finetune_epochs"]
     else:
         finetune_epochs = 0 # By default
-    # FGA default hyperparameters
+    # FGE default hyperparameters
     cycle = 4
     lr1 = 1e-3
     lr2 = 1e-5
+    independent = True
+    fixed_decoder = None
     ensemble_method = None
-    # TODO: Rename voting to averaging
+    fixed_sparsity_mask = False
     if "ensemble_method" in config.keys():
         # Ensemble learning
         ensemble_method = config["ensemble_method"]
         ensemble_size = config["ensemble_size"]
         if ensemble_method == "voting":
-            model = VotingAutoencoderNeqModel(config, num_models=ensemble_size)
+            if "ensemble_hp" in config.keys():
+                fixed_sparsity_mask = config["ensemble_hp"]["fixed_sparsity_mask"]
+            model = VotingAutoencoderNeqModel(
+                config, 
+                num_models=ensemble_size, 
+                fixed_sparsity_mask=fixed_sparsity_mask
+            )
+
         elif ensemble_method == "snapshot":
             model = SnapshotAutoencoderNeqModel(
                 config, num_models=ensemble_size, single_model_mode=args.train,
@@ -125,7 +147,6 @@ def main(args):
             cycle = config["ensemble_hp"]["cycle"]
             lr1   = config["ensemble_hp"]["lr1"]
             lr2   = config["ensemble_hp"]["lr2"]
-        # TODO: Instantiate other ensembles
         elif ensemble_method == "adaboost":
             model = AdaBoostAutoencoderNeqModel(
                 config, 
@@ -134,13 +155,26 @@ def main(args):
                 single_model_mode=args.train
             )
             independent = config["ensemble_hp"]["independent"]
+            if "fixed_decoder" in config["ensemble_hp"].keys():
+                fixed_decoder = config["ensemble_hp"]["fixed_decoder"]
+            if "ensemble_hp" in config.keys():
+                fixed_sparsity_mask = config["ensemble_hp"]["fixed_sparsity_mask"]
+        elif ensemble_method == "bagging":
+            model = BaggingAutoencoderNeqModel(
+                config, num_models=ensemble_size, single_model_mode=args.train,
+            )
+            independent = config["ensemble_hp"]["independent"]
+            if "fixed_decoder" in config["ensemble_hp"].keys():
+                fixed_decoder = config["ensemble_hp"]["fixed_decoder"]
         else:
             raise ValueError(f"Unsupported ensemble method: {ensemble_method}")
     else: # Single model learning
         # Build model
         model = AutoencoderNeqModel(config)
         # Compute LUTCost of whole model
-        encoder_lut_cost = get_lut_cost(model.encoder, experiment_dir, args.experiment_name)
+        encoder_lut_cost = get_lut_cost(
+            model.encoder, experiment_dir, args.experiment_name
+        )
         print(f"Encoder LUTCost = {encoder_lut_cost}")
 
      # Push model and constants to GPU if necessary
@@ -166,6 +200,8 @@ def main(args):
             "warm_restart_freq": config["warm_restart_freq"],
             # Sequential ensemble learning hyperparemeter
             "independent": independent,
+            "fixed_decoder": fixed_decoder,
+            "fixed_sparsity_mask": fixed_sparsity_mask, 
             # FGE hyperparameters
             "cycle": cycle,
             "lr1": lr1,
@@ -183,14 +219,9 @@ def main(args):
         elif ensemble_method == "fge":
             train_fge(model, config, dataset, train_params)
         elif ensemble_method == "adaboost":
-            train_adaboost(
-                model, 
-                config, 
-                dataset, 
-                train_params, 
-                independent=independent,
-            )
-        # TODO: Implement other ensembling learning methods
+            train_adaboost(model, config, dataset, train_params)
+        elif ensemble_method == "bagging":
+            train_bagging(model, config, dataset, train_params)
         else:
             train(model, dataset, train_params)
 
@@ -209,26 +240,37 @@ def main(args):
                 model.model_weights = checkpoint["model_weights"]
                 if args.gpu:
                     model.model_weights.cuda()
-            if ensemble_method == "snapshot" or ensemble_method == "fge" or ensemble_method == "adaboost":
+            if (
+                ensemble_method == "snapshot"
+                or ensemble_method == "fge"
+                or ensemble_method == "adaboost"
+                or ensemble_method == "bagging"
+            ):
                 model.single_model_mode = False
         else:
-            raise ValueError("No checkpoint provided for evaluation. Provide a path to checkpoint argument, i.e., --checkpoint CHECKPOINT_PATH") 
+            raise ValueError(
+                "No checkpoint provided for evaluation. " \
+                "Provide a path to checkpoint argument, " \
+                "i.e., --checkpoint CHECKPOINT_PATH"
+            ) 
     elif args.train:
         evaluate_model = True 
-        if ensemble_method == "snapshot" or ensemble_method == "fge" or ensemble_method == "adaboost":
-            print(f"Evaluating last ensemble saved at: {os.path.join(experiment_dir, 'last_ensemble_ckpt.pth')}")
-            best_checkpoint = torch.load(os.path.join(experiment_dir, "last_ensemble_ckpt.pth"))
-            model.load_state_dict(best_checkpoint["model_dict"])
+        if ensemble_method in ENSEMBLING_METHODS and "voting" not in ensemble_method:
+            ensemble_ckpt_path = os.path.join(
+                experiment_dir, 'last_ensemble_ckpt.pth'
+            )
+            print(f"Evaluating last ensemble saved at: {ensemble_ckpt_path}")
+            best_checkpoint = torch.load(ensemble_ckpt_path)
             if ensemble_method == "adaboost":
                 model.model_weights = best_checkpoint["model_weights"]
                 if args.gpu:
                     model.model_weights.cuda()
             model.single_model_mode = False
-        # TODO: Implement proper checkpoint loading for various ensemble
         else:
-            print(f"Evaluating best model saved at: {os.path.join(experiment_dir, 'best_loss.pth')}")
-            best_checkpoint = torch.load(os.path.join(experiment_dir, "best_loss.pth"))
-            model.load_state_dict(best_checkpoint["model_dict"])
+            ckpt_path = os.path.join(experiment_dir, 'best_loss.pth')
+            print(f"Evaluating best model saved at: {ckpt_path}")
+            best_checkpoint = torch.load(ckpt_path)
+        model.load_state_dict(best_checkpoint["model_dict"])
 
     if evaluate_model:
         print("Evaluating model")
@@ -248,7 +290,8 @@ def main(args):
         os.makedirs(experiment_dir, exist_ok=True)
         test_results_log = os.path.join(
             experiment_dir, 
-            args.experiment_name + f"_loss={test_loss:.3f}" + eval_tag + "_emd.txt"
+            args.experiment_name \
+            + f"_loss={test_loss:.3f}" + eval_tag + "_emd.txt"
         )
         with open(test_results_log, "w") as f:
             f.write(str(avg_emd))

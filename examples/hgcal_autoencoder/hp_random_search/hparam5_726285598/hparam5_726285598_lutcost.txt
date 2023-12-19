@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
 module_list.0 lut cost: 1049088.0
 module_list.1 lut cost: 874240.0
 module_list.2 lut cost: 2688.0

@@ -1,3 +1,4 @@
+
 trial,emd,loss,ensemble_size,model_size
 fge_large_ensemble_size32_seed1,1.304,0.009,32,large
 fge_large_ensemble_size16_seed1,1.311,0.009,16,large

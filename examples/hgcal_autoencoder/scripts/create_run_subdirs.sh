@@ -14,7 +14,7 @@
 #  limitations under the License.
 
 
-CONFIG_DIR=./ensemble_configs/adaboost/large
+CONFIG_DIR=./ensemble_configs/adaboost/small_fixed_mask
 
 for i in {1..3}; do 
 new_dir=${CONFIG_DIR}_configs/config${i}

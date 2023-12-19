@@ -165,7 +165,6 @@ class HGCalAutoencoderDataset(Dataset):
             data_dir=None, 
             process_data=False,
             split="train",
-            ensemble_learning=False,
     ) -> None:
         super().__init__()
         self.data_dir = data_dir
@@ -179,7 +178,6 @@ class HGCalAutoencoderDataset(Dataset):
         self.train_data = None
         self.val_data = None
         self.split = split
-        self.ensemble_learning = ensemble_learning
 
         if process_data: # Only need to run once
             self.process_data()
@@ -255,4 +253,4 @@ class HGCalAutoencoderDataset(Dataset):
         return len(self.X)
     
     def __getitem__(self, idx):
-        return (self.X[idx], self.X[idx]) if self.ensemble_learning else self.X[idx]
+        return self.X[idx]

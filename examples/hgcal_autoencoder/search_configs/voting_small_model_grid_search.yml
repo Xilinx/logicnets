@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
 # Fixed params
 activation_bitwidth:
 - 2
@@ -20,6 +21,8 @@ activation_bitwidth:
 - 6
 batch_size: 512
 ensemble_method: voting
+ensemble_hp:
+  fixed_sparsity_mask: true
 epochs: 200
 hidden_layer:
 - 128

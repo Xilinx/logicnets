@@ -12,4 +12,5 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
 Ensemble size 1 val loss: 0.18687044084072113	Ensemble size 2 val loss: 0.1801995187997818	Ensemble size 3 val loss: 0.17625270783901215	Ensemble size 4 val loss: 0.1543048471212387	Ensemble size 5 val loss: 0.13380976021289825	Ensemble size 6 val loss: 0.12416994571685791	Ensemble size 7 val loss: 0.11349593847990036	Ensemble size 8 val loss: 0.09712880849838257	Ensemble size 9 val loss: 0.08367318660020828	Ensemble size 10 val loss: 0.0704793781042099	Ensemble size 11 val loss: 0.05649194121360779	Ensemble size 12 val loss: 0.04715963825583458	Ensemble size 13 val loss: 0.03591092675924301	Ensemble size 14 val loss: 0.02727586030960083	Ensemble size 15 val loss: 0.02108404040336609	Ensemble size 16 val loss: 0.017468800768256187	

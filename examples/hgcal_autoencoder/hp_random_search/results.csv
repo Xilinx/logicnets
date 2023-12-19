@@ -1,3 +1,4 @@
+
 trial,emd,lut_cost,loss,hidden_layers,act_bits,neuron_fanin,input_bits,input_fanin,output_bits,lr,lr_t0,wd
 hparam8_1916071045,1.419,2140224.0,0.012, [512; 256; 512; 512], [3; 4; 6; 3], [5; 3; 2; 2],5,3,4,0.0053,54,0.000566
 hparam17_432384445,1.434,442768.0,0.012, [512; 512; 64], [3; 3; 4], [4; 5; 3],6,2,5,0.00211,74,0.013042

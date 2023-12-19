@@ -1,3 +1,4 @@
+
 trial,emd,loss,ensemble_size,model_size
 sse_large_ensemble_size8_seed432384445,1.296,0.01,8,large
 sse_large_ensemble_size32_seed432384445,1.298,0.008,32,large
@@ -14,16 +15,19 @@ sse_large_ensemble_size4_seed2,1.357,0.012,4,large
 sse_medium_ensemble_size32_seed1,1.362,0.019,32,medium
 sse_medium_ensemble_size32_seed2,1.362,0.023,32,medium
 sse_large_ensemble_size8_seed2,1.362,0.011,8,large
+sse_medium_ensemble_size8_seed524926359,1.379,0.025,8,medium
 sse_large_ensemble_size2_seed1,1.383,0.009,2,large
 sse_medium_ensemble_size16_seed1,1.391,0.019,16,medium
 sse_medium_ensemble_size16_seed2,1.404,0.023,16,medium
 sse_large_ensemble_size2_seed2,1.408,0.012,2,large
 sse_large_ensemble_size16_seed2,1.41,0.013,16,large
 sse_large_ensemble_size32_seed2,1.417,0.013,32,large
+sse_medium_ensemble_size8_seed1,1.429,0.019,8,medium
 sse_medium_ensemble_size4_seed524926359,1.458,0.025,4,medium
 sse_small_ensemble_size32_seed2,1.472,0.022,32,small
 sse_small_ensemble_size16_seed2,1.476,0.022,16,small
 sse_small_ensemble_size8_seed963241121,1.478,0.019,8,small
+sse_medium_ensemble_size8_seed2,1.482,0.023,8,medium
 sse_small_ensemble_size8_seed2,1.487,0.022,8,small
 sse_small_ensemble_size8_seed1,1.506,0.019,8,small
 sse_small_ensemble_size4_seed963241121,1.51,0.019,4,small

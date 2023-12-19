@@ -1,0 +1,56 @@
+#  Copyright (C) 2023, Advanced Micro Devices, Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+Single model 1 val loss: 0.024597637355327606	Avg EMD = 1.6575707978184677
+Ensemble size 1 val loss: 0.5660209059715271	Avg EMD = -1
+Single model 2 val loss: 0.023781390860676765	Avg EMD = -1
+Ensemble size 2 val loss: 0.44539737701416016	Avg EMD = -1
+Ensemble size 2 val loss: 0.02993258275091648	Avg EMD = 1.8714384865127711
+Single model 3 val loss: 0.02320060320198536	Avg EMD = -1
+Ensemble size 3 val loss: 0.2341412603855133	Avg EMD = -1
+Single model 4 val loss: 0.02379033714532852	Avg EMD = -1
+Ensemble size 4 val loss: 0.1903795450925827	Avg EMD = -1
+Ensemble size 4 val loss: 0.023028915748000145	Avg EMD = 1.6467063405209907
+Single model 5 val loss: 0.023846089839935303	Avg EMD = -1
+Ensemble size 5 val loss: 0.17571303248405457	Avg EMD = -1
+Single model 6 val loss: 0.023724762722849846	Avg EMD = -1
+Ensemble size 6 val loss: 0.16150224208831787	Avg EMD = -1
+Single model 7 val loss: 0.02364540286362171	Avg EMD = -1
+Ensemble size 7 val loss: 0.15664783120155334	Avg EMD = -1
+Single model 8 val loss: 0.023531517013907433	Avg EMD = -1
+Ensemble size 8 val loss: 0.1499217003583908	Avg EMD = -1
+Ensemble size 8 val loss: 0.021061332896351814	Avg EMD = 1.5403324568226175
+Single model 9 val loss: 0.02379053644835949	Avg EMD = -1
+Ensemble size 9 val loss: 0.15121188759803772	Avg EMD = -1
+Single model 10 val loss: 0.02376234158873558	Avg EMD = -1
+Ensemble size 10 val loss: 0.14898812770843506	Avg EMD = -1
+Single model 11 val loss: 0.024500828236341476	Avg EMD = -1
+Ensemble size 11 val loss: 0.14763657748699188	Avg EMD = -1
+Single model 12 val loss: 0.02470840886235237	Avg EMD = -1
+Ensemble size 12 val loss: 0.14031746983528137	Avg EMD = -1
+Single model 13 val loss: 0.024613311514258385	Avg EMD = -1
+Ensemble size 13 val loss: 0.13439112901687622	Avg EMD = -1
+Single model 14 val loss: 0.02596854604780674	Avg EMD = -1
+Ensemble size 14 val loss: 0.12868082523345947	Avg EMD = -1
+Single model 15 val loss: 0.02522054687142372	Avg EMD = -1
+Ensemble size 15 val loss: 0.1204419955611229	Avg EMD = -1
+Single model 16 val loss: 0.026409316807985306	Avg EMD = -1
+Ensemble size 16 val loss: 0.11238102614879608	Avg EMD = -1
+Ensemble size 16 val loss: 0.019905785098671913	Avg EMD = 1.425370695775835
+Single model 17 val loss: 0.02680603601038456	Avg EMD = -1
+Ensemble size 17 val loss: 0.1091550812125206	Avg EMD = -1
+Single model 18 val loss: 0.026763735339045525	Avg EMD = -1
+Ensemble size 18 val loss: 0.10234562307596207	Avg EMD = -1
+Single model 19 val loss: 0.02729714848101139	Avg EMD = -1
+Ensemble size 19 val loss: 0.09736107289791107	Avg EMD = -1

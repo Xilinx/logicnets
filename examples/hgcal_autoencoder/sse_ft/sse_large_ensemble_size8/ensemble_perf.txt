@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
 Ensemble size 1 val loss: 5.484145164489746	Avg EMD: 3.324208282115748
 Ensemble size 2 val loss: 0.7541316747665405	Avg EMD: 3.1564213409827304
 Ensemble size 3 val loss: 0.2297953963279724	Avg EMD: 2.976632376608761

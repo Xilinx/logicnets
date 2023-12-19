@@ -39,7 +39,7 @@ from pyverilator import PyVerilator
 from logicnets.quant import QuantBrevitasActivation
 from logicnets.nn import SparseLinearNeq, RandomFixedSparsityMask2D
 
-from encoder import EncoderNeqModel, EncoderLutModel
+from encoder import EncoderNeqModel, EncoderLutModel, EncoderFloatModel
 from decoder import Decoder
 
 from dataset import ARRANGE, ARRANGE_MASK
@@ -215,3 +215,51 @@ class AutoencoderLutModel(AutoencoderNeqModel):
             input_length=input_length,
             output_length=output_length,
         )
+
+class AutoencoderFloatModel(nn.Module):
+    def __init__(self, config):
+        super(AutoencoderFloatModel, self).__init__()
+        self.shape = (1, 8, 8)  # PyTorch defaults to (C, H, W)
+        self.encoder = EncoderFloatModel(
+            num_dense_feat=config["num_dense_feat"],
+            qid_bitwidth=config["output_bitwidth"],
+        )
+        self.decoder = Decoder(num_dense_feat=config["num_dense_feat"])
+
+    # Methods to measure model's physics performance
+    def invert_arrange(self):
+        """
+        Invert the arrange mask
+        """
+        remap = []
+        hashmap = {}  # cell : index mapping
+        found_duplicate_charge = len(ARRANGE[ARRANGE_MASK == 1]) > len(
+            torch.unique(ARRANGE[ARRANGE_MASK == 1])
+        )
+        for i in range(len(ARRANGE)):
+            if ARRANGE_MASK[i] == 1:
+                if found_duplicate_charge:
+                    if CALQ_MASK[i] == 1:
+                        hashmap[int(ARRANGE[i])] = i
+                else:
+                    hashmap[int(ARRANGE[i])] = i
+        for i in range(len(torch.unique(ARRANGE))):
+            remap.append(hashmap[i])
+        return torch.tensor(remap)
+
+    def map_to_calq(self, x):
+        """
+        Map the input/output of the autoencoder into CALQs orders
+        """
+        remap = self.invert_arrange()
+        image_size = self.shape[0] * self.shape[1] * self.shape[2]
+        reshaped_x = x.reshape(len(x), image_size)
+        reshaped_x[:, ARRANGE_MASK == 0] = 0
+        return reshaped_x[:, remap]
+
+    def set_val_sum(self, val_sum):
+        self.val_sum = val_sum
+
+    def forward(self, x):
+        return self.decoder(self.encoder(x))
+

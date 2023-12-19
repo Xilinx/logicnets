@@ -1,0 +1,45 @@
+#  Copyright (C) 2023, Advanced Micro Devices, Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+
+activation_bitwidth:
+- 3
+- 2
+- 2
+- 2
+- 5
+- 3
+batch_size: 512
+epochs: 100
+hidden_layer:
+- 256
+- 512
+- 64
+- 512
+- 512
+- 64
+input_bitwidth: 4
+input_fanin: 4
+lr: 0.0004080046173080596
+neuron_fanin:
+- 4
+- 6
+- 2
+- 5
+- 2
+- 4
+output_bitwidth: 2
+seed: 1986458753
+warm_restart_freq: 80
+wd: 3.580343960088393e-05

@@ -1,0 +1,43 @@
+#  Copyright (C) 2023, Advanced Micro Devices, Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+
+Single model 0 val loss: 0.10842385143041611
+Single model 0 val loss: 0.10842385143041611
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Single model 0 val loss: 0.1717272847890854
+Ensemble size 1 val loss: 0.1717272847890854	Avg EMD = -1
+Single model 1 val loss: 0.07252685725688934
+Ensemble size 2 val loss: 0.7138411402702332	Avg EMD = -1
+Single model 0 val loss: 0.1717272847890854
+Ensemble size 1 val loss: 0.1717272847890854	Avg EMD = -1
+Single model 1 val loss: 0.07252685725688934
+Ensemble size 2 val loss: 0.7138411402702332	Avg EMD = -1
+Single model 0 val loss: 0.1717272847890854
+Ensemble size 1 val loss: 0.1717272847890854	Avg EMD = -1
+Single model 1 val loss: 0.07252685725688934
+Ensemble size 2 val loss: 0.7138411402702332	Avg EMD = -1
+Single model 0 val loss: 0.1717272847890854
+Ensemble size 1 val loss: 0.1717272847890854	Avg EMD = -1
+Single model 1 val loss: 0.07252685725688934
+Ensemble size 2 val loss: 0.7138411402702332	Avg EMD = -1
+Single model 0 val loss: 0.2681849002838135
+Ensemble size 1 val loss: 0.26818495988845825	Avg EMD = -1
+Single model 1 val loss: 0.18719482421875
+Ensemble size 2 val loss: 0.1654444932937622	Avg EMD = -1
+Ensemble size 2 val loss: 0.1654444932937622	Avg EMD = 3.338804753898944

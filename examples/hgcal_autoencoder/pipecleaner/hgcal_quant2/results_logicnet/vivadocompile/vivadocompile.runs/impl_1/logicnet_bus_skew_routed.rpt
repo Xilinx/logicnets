@@ -1,0 +1,16 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2019.2.2 (lin64) Build 2768091 Fri Jan 31 21:52:39 MST 2020
+| Date              : Wed Oct 11 12:52:33 2023
+| Host              : f3f82623a8e8 running 64-bit unknown
+| Command           : report_bus_skew -warn_on_violation -file logicnet_bus_skew_routed.rpt -pb logicnet_bus_skew_routed.pb -rpx logicnet_bus_skew_routed.rpx
+| Design            : logicnet
+| Device            : xcu280-fsvh2892
+| Speed File        : -2L  PRODUCTION 1.27 01-22-2020
+| Temperature Grade : E
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Bus Skew Report
+
+No bus skew constraints
+

@@ -1,0 +1,35 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2.2 (lin64) Build 2768091 Fri Jan 31 21:52:39 MST 2020
+| Date         : Thu Nov  2 21:48:57 2023
+| Host         : 8ee88c6ed9a2 running 64-bit unknown
+| Command      : report_drc -file logicnet_drc_routed.rpt -pb logicnet_drc_routed.pb -rpx logicnet_drc_routed.rpx
+| Design       : logicnet
+| Device       : xcu280-fsvh2892-2L-e
+| Speed File   : -2L
+| Design State : Fully Routed
+------------------------------------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: design_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max violations: <unlimited>
+             Violations found: 0
++------+----------+-------------+------------+
+| Rule | Severity | Description | Violations |
++------+----------+-------------+------------+
++------+----------+-------------+------------+
+
+2. REPORT DETAILS
+-----------------
+

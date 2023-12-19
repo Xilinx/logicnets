@@ -1,0 +1,610 @@
+#-----------------------------------------------------------
+# Vivado v2019.2.2 (64-bit)
+# SW Build 2768091 on Fri Jan 31 21:52:39 MST 2020
+# IP Build 2767358 on Sat Feb  1 00:50:20 MST 2020
+# Start of session at: Thu Nov  2 21:33:54 2023
+# Process ID: 15105
+# Current directory: /workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/vivadocompile/vivadocompile.runs/synth_1
+# Command line: vivado -log logicnet.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source logicnet.tcl
+# Log file: /workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/vivadocompile/vivadocompile.runs/synth_1/logicnet.vds
+# Journal file: /workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/vivadocompile/vivadocompile.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source logicnet.tcl -notrace
+Command: synth_design -top logicnet -part xcu280-fsvh2892-2L-e -fanout_limit 400 -directive PerformanceOptimized -retiming -fsm_extraction one_hot -keep_equivalent_registers -resource_sharing off -no_lc -shreg_min_size 5 -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xcu280'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xcu280'
+INFO: [Device 21-403] Loading part xcu280-fsvh2892-2L-e
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 15110 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 2856.105 ; gain = 123.684 ; free physical = 73954 ; free virtual = 116211
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'logicnet' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/logicnet.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N0' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N0.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N0.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N0' (1#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N0.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N1' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N1.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N1.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N1' (2#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N1.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N2' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N2.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N2.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N2' (3#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N2.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N3' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N3.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N3.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N3' (4#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N3.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N4' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N4.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N4.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N4' (5#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N4.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N5' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N5.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N5.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N5' (6#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N5.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N6' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N6.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N6.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N6' (7#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N6.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N7' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N7.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N7.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N7' (8#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N7.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N8' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N8.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N8.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N8' (9#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N8.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N9' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N9.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N9.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N9' (10#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N9.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N10' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N10.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N10.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N10' (11#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N10.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N11' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N11.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N11.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N11' (12#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N11.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N12' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N12.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N12.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N12' (13#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N12.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N13' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N13.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N13.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N13' (14#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N13.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N14' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N14.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N14.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N14' (15#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N14.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N15' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N15.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N15.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N15' (16#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N15.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N16' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N16.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N16.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N16' (17#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N16.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N17' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N17.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N17.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N17' (18#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N17.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N18' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N18.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N18.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N18' (19#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N18.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N19' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N19.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N19.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N19' (20#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N19.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N20' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N20.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N20.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N20' (21#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N20.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N21' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N21.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N21.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N21' (22#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N21.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N22' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N22.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N22.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N22' (23#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N22.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N23' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N23.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N23.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N23' (24#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N23.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N24' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N24.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N24.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N24' (25#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N24.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N25' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N25.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N25.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N25' (26#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N25.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N26' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N26.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N26.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N26' (27#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N26.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N27' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N27.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N27.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N27' (28#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N27.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N28' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N28.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N28.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N28' (29#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N28.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N29' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N29.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N29.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N29' (30#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N29.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N30' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N30.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N30.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N30' (31#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N30.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer0_N31' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N31.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N31.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer0_N31' (32#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0_N31.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'layer0' (33#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer0.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N0' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N0.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N0.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N0' (34#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N0.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N1' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N1.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N1.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N1' (35#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N1.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N2' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N2.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N2.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N2' (36#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N2.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N3' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N3.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N3.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N3' (37#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N3.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N4' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N4.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N4.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N4' (38#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N4.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N5' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N5.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N5.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N5' (39#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N5.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N6' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N6.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N6.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N6' (40#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N6.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N7' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N7.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N7.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N7' (41#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N7.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N8' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N8.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N8.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N8' (42#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N8.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N9' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N9.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N9.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N9' (43#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N9.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N10' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N10.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N10.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N10' (44#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N10.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N11' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N11.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N11.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N11' (45#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N11.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N12' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N12.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N12.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N12' (46#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N12.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N13' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N13.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N13.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N13' (47#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N13.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N14' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N14.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N14.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N14' (48#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N14.v:1]
+INFO: [Synth 8-6157] synthesizing module 'layer1_N15' [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N15.v:1]
+INFO: [Synth 8-5534] Detected attribute (* rom_style = "distributed" *) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N15.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'layer1_N15' (49#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1_N15.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'layer1' (50#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/layer1.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'logicnet' (51#1) [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/logicnet.v:1]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[55]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[54]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[37]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[36]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[23]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[22]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[9]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[8]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[1]
+WARNING: [Synth 8-3331] design layer1 has unconnected port M0[0]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[117]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[116]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[99]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[98]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[83]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[82]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[65]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[64]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[51]
+WARNING: [Synth 8-3331] design layer0 has unconnected port M0[50]
+WARNING: [Synth 8-3331] design logicnet has unconnected port clk
+WARNING: [Synth 8-3331] design logicnet has unconnected port rst
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:08 . Memory (MB): peak = 2932.793 ; gain = 200.371 ; free physical = 73969 ; free virtual = 116227
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:07 ; elapsed = 00:00:09 . Memory (MB): peak = 2947.637 ; gain = 215.215 ; free physical = 73968 ; free virtual = 116226
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:09 . Memory (MB): peak = 2947.637 ; gain = 215.215 ; free physical = 73968 ; free virtual = 116226
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2947.637 ; gain = 0.000 ; free physical = 73961 ; free virtual = 116220
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/logicnet.xdc]
+WARNING: [Vivado 12-507] No nets matched 'clk'. [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/logicnet.xdc:1]
+CRITICAL WARNING: [Vivado 12-4739] create_clock:No valid object(s) found for '-objects [get_nets clk]'. [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/logicnet.xdc:1]
+Resolution: Check if the specified object(s) exists in the current design. If it does, ensure that the correct design hierarchy was specified for the object. If you are working with clocks, make sure create_clock was used to create the clock object before it is referenced.
+Finished Parsing XDC File [/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/logicnet.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3118.199 ; gain = 0.000 ; free physical = 73857 ; free virtual = 116116
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.10 ; elapsed = 00:00:00.16 . Memory (MB): peak = 3121.168 ; gain = 2.969 ; free physical = 73855 ; free virtual = 116114
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 3121.168 ; gain = 388.746 ; free physical = 73933 ; free virtual = 116193
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xcu280-fsvh2892-2L-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 3121.168 ; gain = 388.746 ; free physical = 73933 ; free virtual = 116193
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 3121.168 ; gain = 388.746 ; free physical = 73933 ; free virtual = 116193
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:18 ; elapsed = 00:00:24 . Memory (MB): peak = 3121.168 ; gain = 388.746 ; free physical = 73929 ; free virtual = 116190
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 9024 (col length:94)
+BRAMs: 4032 (col length: RAMB18 288 RAMB36 144)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[117]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[116]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[113]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[112]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[99]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[98]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[95]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[94]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[83]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[82]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[81]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[80]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[65]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[64]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[51]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[50]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[31]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[30]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[23]
+WARNING: [Synth 8-3331] design logicnet has unconnected port M0[22]
+WARNING: [Synth 8-3331] design logicnet has unconnected port clk
+WARNING: [Synth 8-3331] design logicnet has unconnected port rst
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:23 ; elapsed = 00:00:31 . Memory (MB): peak = 3121.168 ; gain = 388.746 ; free physical = 73905 ; free virtual = 116172
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+ROM:
++------------+---------------------------------+---------------+----------------+
+|Module Name | RTL Object                      | Depth x Width | Implemented As | 
++------------+---------------------------------+---------------+----------------+
+|layer0_N0   | M1r                             | 256x2         | LUT            | 
+|layer0_N1   | M1r                             | 256x2         | LUT            | 
+|layer0_N2   | M1r                             | 256x2         | LUT            | 
+|layer0_N3   | M1r                             | 256x2         | LUT            | 
+|layer0_N4   | M1r                             | 256x2         | LUT            | 
+|layer0_N5   | M1r                             | 256x2         | LUT            | 
+|layer0_N6   | M1r                             | 256x2         | LUT            | 
+|layer0_N7   | M1r                             | 256x2         | LUT            | 
+|layer0_N8   | M1r                             | 256x2         | LUT            | 
+|layer0_N9   | M1r                             | 256x2         | LUT            | 
+|layer0_N10  | M1r                             | 256x2         | LUT            | 
+|layer0_N11  | M1r                             | 256x2         | LUT            | 
+|layer0_N12  | M1r                             | 256x2         | LUT            | 
+|layer0_N13  | M1r                             | 256x2         | LUT            | 
+|layer0_N14  | M1r                             | 256x2         | LUT            | 
+|layer0_N15  | M1r                             | 256x2         | LUT            | 
+|layer0_N16  | M1r                             | 256x2         | LUT            | 
+|layer0_N17  | M1r                             | 256x2         | LUT            | 
+|layer0_N18  | M1r                             | 256x2         | LUT            | 
+|layer0_N19  | M1r                             | 256x2         | LUT            | 
+|layer0_N20  | M1r                             | 256x2         | LUT            | 
+|layer0_N21  | M1r                             | 256x2         | LUT            | 
+|layer0_N22  | M1r                             | 256x2         | LUT            | 
+|layer0_N23  | M1r                             | 256x2         | LUT            | 
+|layer0_N24  | M1r                             | 256x2         | LUT            | 
+|layer0_N25  | M1r                             | 256x2         | LUT            | 
+|layer0_N26  | M1r                             | 256x2         | LUT            | 
+|layer0_N27  | M1r                             | 256x2         | LUT            | 
+|layer0_N28  | M1r                             | 256x2         | LUT            | 
+|layer0_N29  | M1r                             | 256x1         | LUT            | 
+|layer0_N30  | M1r                             | 256x2         | LUT            | 
+|layer0_N31  | M1r                             | 256x2         | LUT            | 
+|layer1_N0   | M1r                             | 256x2         | LUT            | 
+|layer1_N1   | M1r                             | 256x2         | LUT            | 
+|layer1_N2   | M1r                             | 256x2         | LUT            | 
+|layer1_N3   | M1r                             | 256x2         | LUT            | 
+|layer1_N4   | M1r                             | 256x2         | LUT            | 
+|layer1_N5   | M1r                             | 256x2         | LUT            | 
+|layer1_N6   | M1r                             | 256x2         | LUT            | 
+|layer1_N7   | M1r                             | 256x2         | LUT            | 
+|layer1_N8   | M1r                             | 256x2         | LUT            | 
+|layer1_N9   | M1r                             | 256x2         | LUT            | 
+|layer1_N10  | M1r                             | 256x2         | LUT            | 
+|layer1_N11  | M1r                             | 256x2         | LUT            | 
+|layer1_N12  | M1r                             | 256x2         | LUT            | 
+|layer1_N13  | M1r                             | 256x2         | LUT            | 
+|layer1_N14  | M1r                             | 256x2         | LUT            | 
+|layer1_N15  | M1r                             | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N7_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N1_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N29_inst/M1r | 256x1         | LUT            | 
+|logicnet    | layer0_inst/layer0_N24_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N5_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N2_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N23_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N6_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N3_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N31_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N26_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N16_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N4_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N22_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N3_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N5_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N6_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N21_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N9_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N8_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N1_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N7_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N13_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N8_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N9_inst/M1r  | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N25_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N10_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N11_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N20_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N12_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N10_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N13_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer0_inst/layer0_N19_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N14_inst/M1r | 256x2         | LUT            | 
+|logicnet    | layer1_inst/layer1_N15_inst/M1r | 256x2         | LUT            | 
++------------+---------------------------------+---------------+----------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:57 ; elapsed = 00:01:34 . Memory (MB): peak = 3457.043 ; gain = 724.621 ; free physical = 73408 ; free virtual = 115673
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:57 ; elapsed = 00:01:34 . Memory (MB): peak = 3457.043 ; gain = 724.621 ; free physical = 73408 ; free virtual = 115673
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5816] Retiming module `logicnet`
+	Numbers of forward move = 0, and backward move = 0
+
+
+INFO: [Synth 8-5816] Retiming module `logicnet' done
+
+
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:57 ; elapsed = 00:01:34 . Memory (MB): peak = 3484.074 ; gain = 751.652 ; free physical = 73394 ; free virtual = 115660
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:01:01 ; elapsed = 00:01:38 . Memory (MB): peak = 3497.949 ; gain = 765.527 ; free physical = 73394 ; free virtual = 115660
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:01 ; elapsed = 00:01:38 . Memory (MB): peak = 3497.949 ; gain = 765.527 ; free physical = 73394 ; free virtual = 115660
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:01 ; elapsed = 00:01:38 . Memory (MB): peak = 3497.949 ; gain = 765.527 ; free physical = 73394 ; free virtual = 115660
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:01 ; elapsed = 00:01:38 . Memory (MB): peak = 3497.949 ; gain = 765.527 ; free physical = 73394 ; free virtual = 115660
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:01 ; elapsed = 00:01:38 . Memory (MB): peak = 3497.949 ; gain = 765.527 ; free physical = 73394 ; free virtual = 115660
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:01 ; elapsed = 00:01:38 . Memory (MB): peak = 3497.949 ; gain = 765.527 ; free physical = 73394 ; free virtual = 115660
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+------+------+
+|      |Cell  |Count |
++------+------+------+
+|1     |LUT2  |     1|
+|2     |LUT3  |    13|
+|3     |LUT4  |    30|
+|4     |LUT5  |    43|
+|5     |LUT6  |   192|
+|6     |MUXF7 |    18|
+|7     |MUXF8 |     9|
++------+------+------+
+
+Report Instance Areas: 
++------+--------------------+-----------+------+
+|      |Instance            |Module     |Cells |
++------+--------------------+-----------+------+
+|1     |top                 |           |   306|
+|2     |  layer0_inst       |layer0     |   184|
+|3     |    layer0_N10_inst |layer0_N10 |     9|
+|4     |    layer0_N12_inst |layer0_N12 |     8|
+|5     |    layer0_N13_inst |layer0_N13 |     4|
+|6     |    layer0_N14_inst |layer0_N14 |     5|
+|7     |    layer0_N15_inst |layer0_N15 |     7|
+|8     |    layer0_N16_inst |layer0_N16 |     3|
+|9     |    layer0_N17_inst |layer0_N17 |     4|
+|10    |    layer0_N19_inst |layer0_N19 |     8|
+|11    |    layer0_N1_inst  |layer0_N1  |     6|
+|12    |    layer0_N20_inst |layer0_N20 |     4|
+|13    |    layer0_N21_inst |layer0_N21 |     6|
+|14    |    layer0_N22_inst |layer0_N22 |     7|
+|15    |    layer0_N23_inst |layer0_N23 |     4|
+|16    |    layer0_N24_inst |layer0_N24 |     9|
+|17    |    layer0_N25_inst |layer0_N25 |     7|
+|18    |    layer0_N26_inst |layer0_N26 |     8|
+|19    |    layer0_N28_inst |layer0_N28 |     7|
+|20    |    layer0_N29_inst |layer0_N29 |     9|
+|21    |    layer0_N2_inst  |layer0_N2  |     8|
+|22    |    layer0_N30_inst |layer0_N30 |     8|
+|23    |    layer0_N31_inst |layer0_N31 |     8|
+|24    |    layer0_N3_inst  |layer0_N3  |     6|
+|25    |    layer0_N5_inst  |layer0_N5  |     7|
+|26    |    layer0_N6_inst  |layer0_N6  |    11|
+|27    |    layer0_N7_inst  |layer0_N7  |     8|
+|28    |    layer0_N8_inst  |layer0_N8  |     7|
+|29    |    layer0_N9_inst  |layer0_N9  |     6|
+|30    |  layer1_inst       |layer1     |   122|
+|31    |    layer1_N0_inst  |layer1_N0  |     8|
+|32    |    layer1_N10_inst |layer1_N10 |    11|
+|33    |    layer1_N11_inst |layer1_N11 |     5|
+|34    |    layer1_N12_inst |layer1_N12 |    11|
+|35    |    layer1_N13_inst |layer1_N13 |     6|
+|36    |    layer1_N14_inst |layer1_N14 |     8|
+|37    |    layer1_N15_inst |layer1_N15 |    11|
+|38    |    layer1_N1_inst  |layer1_N1  |     3|
+|39    |    layer1_N2_inst  |layer1_N2  |     6|
+|40    |    layer1_N3_inst  |layer1_N3  |     9|
+|41    |    layer1_N4_inst  |layer1_N4  |     5|
+|42    |    layer1_N5_inst  |layer1_N5  |     7|
+|43    |    layer1_N6_inst  |layer1_N6  |    10|
+|44    |    layer1_N7_inst  |layer1_N7  |    15|
+|45    |    layer1_N8_inst  |layer1_N8  |     1|
+|46    |    layer1_N9_inst  |layer1_N9  |     6|
++------+--------------------+-----------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:01 ; elapsed = 00:01:38 . Memory (MB): peak = 3497.949 ; gain = 765.527 ; free physical = 73394 ; free virtual = 115660
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 22 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:56 ; elapsed = 00:01:31 . Memory (MB): peak = 3497.949 ; gain = 591.996 ; free physical = 73430 ; free virtual = 115696
+Synthesis Optimization Complete : Time (s): cpu = 00:01:01 ; elapsed = 00:01:38 . Memory (MB): peak = 3497.957 ; gain = 765.527 ; free physical = 73430 ; free virtual = 115696
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 3509.918 ; gain = 0.000 ; free physical = 73497 ; free virtual = 115763
+INFO: [Netlist 29-17] Analyzing 27 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3553.270 ; gain = 0.000 ; free physical = 73411 ; free virtual = 115677
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Common 17-83] Releasing license: Synthesis
+164 Infos, 46 Warnings, 1 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:01:24 ; elapsed = 00:02:14 . Memory (MB): peak = 3553.270 ; gain = 2036.375 ; free physical = 73544 ; free virtual = 115810
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 3553.270 ; gain = 0.000 ; free physical = 73544 ; free virtual = 115810
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+INFO: [Common 17-1381] The checkpoint '/workspace/logicnets/examples/hgcal_autoencoder/hparams_config_test/pipecleaner/verilog/results_logicnet/vivadocompile/vivadocompile.runs/synth_1/logicnet.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file logicnet_utilization_synth.rpt -pb logicnet_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Thu Nov  2 21:36:21 2023...

@@ -1,0 +1,21 @@
+#  Copyright (C) 2023, Advanced Micro Devices, Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+
+Pre-FGE single model val loss: 0.026291929185390472	Avg EMD: 1.691487995280865
+Ensemble size 1 val loss: 0.15902377665042877
+Ensemble size 2 val loss: 0.10457415133714676
+Ensemble size 3 val loss: 0.0443151630461216
+Single model val loss: 0.026201188564300537	Avg EMD: 1.7256189685086658
+Ensemble size 4 val loss: 0.02343229576945305

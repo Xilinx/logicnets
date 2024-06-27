@@ -1,0 +1,13 @@
+trial,emd,loss,ensemble_size,model_size
+adaboost_large_seq_seed432384445,1.445,0.013,1,large
+adaboost_large_ind_decoder_seed432384445,1.445,0.013,1,large
+adaboost_small_single_no_sampler_model,1.568,0.023,1,small
+adaboost_medium_seq_seed524926359,1.578,0.027,1,medium
+adaboost_medium_ind_decoder_seed524926359,1.578,0.027,1,medium
+adaboost_small_seq_seed963241121,1.638,0.023,1,small
+adaboost_small_ind_decoder_seed963241121,1.638,0.023,1,small
+adaboost_seq_medium_fixed_decoder_seed524926359,1.812,0.03,1,medium
+adaboost_medium_fixed_decoder_seed524926359,1.812,0.03,1,medium
+adaboost_small_seq_fixed_decoder_seed963241121,2.062,0.037,1,small
+adaboost_small_single_no_sampler_fixed_decoder_model,2.095,0.037,1,small
+adaboost_large_seq_fixed_decoder_seed432384445,2.153,0.038,1,large

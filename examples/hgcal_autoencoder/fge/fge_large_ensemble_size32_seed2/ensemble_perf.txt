@@ -1,0 +1,49 @@
+#  Copyright (C) 2023, Advanced Micro Devices, Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+
+Pre-FGE single model val loss: 0.015144199132919312	Avg EMD: 1.4876116768357541
+Ensemble size 1 val loss: 0.216994971036911
+Ensemble size 2 val loss: 0.2049606740474701
+Ensemble size 3 val loss: 0.19742728769779205
+Ensemble size 4 val loss: 0.18826790153980255
+Ensemble size 5 val loss: 0.17969125509262085
+Ensemble size 6 val loss: 0.17318663001060486
+Ensemble size 7 val loss: 0.16282683610916138
+Ensemble size 8 val loss: 0.15292133390903473
+Ensemble size 9 val loss: 0.14527732133865356
+Ensemble size 10 val loss: 0.13539661467075348
+Ensemble size 11 val loss: 0.12713274359703064
+Ensemble size 12 val loss: 0.11799438297748566
+Ensemble size 13 val loss: 0.1101200059056282
+Ensemble size 14 val loss: 0.10159614682197571
+Ensemble size 15 val loss: 0.09342065453529358
+Ensemble size 16 val loss: 0.08488981425762177
+Ensemble size 17 val loss: 0.07737013697624207
+Ensemble size 18 val loss: 0.06867486238479614
+Ensemble size 19 val loss: 0.06057204678654671
+Ensemble size 20 val loss: 0.05277596786618233
+Ensemble size 21 val loss: 0.04617079347372055
+Ensemble size 22 val loss: 0.039732035249471664
+Ensemble size 23 val loss: 0.034397680312395096
+Ensemble size 24 val loss: 0.029771795496344566
+Ensemble size 25 val loss: 0.02602340094745159
+Ensemble size 26 val loss: 0.022704502567648888
+Ensemble size 27 val loss: 0.020072391256690025
+Ensemble size 28 val loss: 0.01805098168551922
+Ensemble size 29 val loss: 0.016525812447071075
+Ensemble size 30 val loss: 0.01598445139825344
+Ensemble size 31 val loss: 0.01521272212266922
+Single model val loss: 0.015366354957222939	Avg EMD: 1.4905174347951813
+Ensemble size 32 val loss: 0.014867985621094704

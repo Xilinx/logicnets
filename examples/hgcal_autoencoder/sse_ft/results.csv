@@ -1,0 +1,12 @@
+
+trial,emd,loss,ensemble_size,model_size
+sse_large_ensemble_size32,1.279,0.008,32,large
+sse_large_ensemble_size16,1.303,0.008,16,large
+sse_large_ensemble_size4,1.346,0.01,4,large
+sse_large_ensemble_size8,1.36,0.01,8,large
+sse_large_ensemble_size2,1.37,0.011,2,large
+sse_small_ensemble_size32,1.48,0.02,32,small
+sse_small_ensemble_size16,1.493,0.02,16,small
+sse_small_ensemble_size8,1.519,0.021,8,small
+sse_small_ensemble_size2,1.591,0.022,2,small
+sse_small_ensemble_size4,1.632,0.022,4,small
